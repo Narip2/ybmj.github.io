@@ -3,7 +3,7 @@ node_js:
 - stable # nodejs的版本
 branches:
   only:
-  - dev  # 设置自动化部署的源码分支
+  - hexo  # 设置自动化部署的源码分支
 cache:
   directories:
     - node_modules
