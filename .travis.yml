@@ -1,0 +1,29 @@
+language: node_js
+node_js:
+- stable # nodejs的版本
+branches:
+  only:
+  - dev  # 设置自动化部署的源码分支
+cache:
+  directories:
+    - node_modules
+before_install:
+- export TZ='Asia/Shanghai'
+- npm install -g hexo
+- npm install -g hexo-cli
+before_script:
+# 设置github账户信息 注意修改成自己的信息
+- git config --global user.name "ybmj"
+- git config --global user.email "576072415@qq.com"
+# github仓库操作
+- sed -i "s/gh_token/${GH_TOKEN}/g" ./_config.yml
+install:
+- npm install
+- npm install hexo-deployer-git --save
+# 执行的命令
+script:
+- hexo clean
+- hexo generate
+# 执行的成功后执行
+after_success:
+- hexo deploy
