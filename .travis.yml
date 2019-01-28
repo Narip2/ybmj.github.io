@@ -10,7 +10,10 @@ cache:
 before_install:
 - export TZ='Asia/Shanghai'
 - npm install -g hexo
+- npm audit fix
 - npm install -g hexo-cli
+- npm audit fix
+
 before_script:
 # 设置github账户信息 注意修改成自己的信息
 - git config --global user.name "ybmj"
@@ -19,7 +22,9 @@ before_script:
 - sed -i "s/gh_token/${GH_TOKEN}/g" ./_config.yml
 install:
 - npm install
+- npm audit fix
 - npm install hexo-deployer-git --save
+- npm audit fix
 # 执行的命令
 script:
 - hexo clean
