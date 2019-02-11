@@ -93,3 +93,10 @@ symbols_count_time:
   time: true
   total_symbols: true
   total_time: true
+
+tabs:
+  enable: true
+  transition:
+    tabs: false
+    labels: true
+  border_radius: 0
