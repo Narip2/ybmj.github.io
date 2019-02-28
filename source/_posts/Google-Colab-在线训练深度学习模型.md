@@ -61,3 +61,11 @@ checkPoint = keras.callbacks.ModelCheckpoint(
 这里的保存是`model.save()`
 
 这样下一次重新训练的时候只要加载上一次训练好的模型就可以啦！
+
+
+---
+
+参考文献：
+[官方新手教程](https://medium.com/deep-learning-turkey/google-colab-free-gpu-tutorial-e113627b9f5d)
+[参考文章：云盘挂载](https://www.jianshu.com/p/000d2a9d36a0)
+[参考文章：断线保护](https://www.cnblogs.com/baiting/p/8420637.html)
