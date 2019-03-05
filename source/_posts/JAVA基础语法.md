@@ -17,7 +17,7 @@ public class FirstSample{
     }
 }
 ```
-
+<!--more-->
 
 **{% label success@public: %}** 访问修饰符
 
