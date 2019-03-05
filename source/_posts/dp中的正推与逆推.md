@@ -2,7 +2,7 @@
 title: dp中的正推与逆推
 date: 2019-03-01 10:01:38
 categories:
-- ACM
+- ACM/ICPC
 tags:
 - 动态规划
 ---
