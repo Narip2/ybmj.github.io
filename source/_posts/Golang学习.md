@@ -121,3 +121,49 @@ func f() (result int) {
 Defer可以用于标识那些`surrounding function`结束之前**必须要执行的操作**
 
 [参考文献](https://blog.csdn.net/wangshubo1989/article/details/74357138)
+
+
+### 方法
+
+#### 方法和函数的区别
+方法声明的时候会在`func`后加上接收器
+```go
+type fuck struct{}
+func (f fuck) set(){}   // 方法
+func set(){}            // 函数
+```
+
+#### 在方法中修改接收器的值
+调用方法时，接收器的传递是值传递，如果想要修改接收器的值，必须传入指针。
+```go
+package main
+
+import "fmt"
+
+type fuck struct {
+	x, y int
+}
+
+func (f fuck) set1() {
+	f.x = 1
+	f.y = 2
+}
+func (f *fuck) set2() {
+	(*f).x = 1
+	(*f).y = 2
+}
+func main() {
+	a := fuck{3, 4}
+	fmt.Println(a.x, a.y)
+	a.set1()
+	fmt.Println(a.x, a.y)
+	a.set2()    // 不需要 (&a).set2()  编译器会优化
+	fmt.Println(a.x, a.y)
+}
+```
+输出：
+```
+3 4
+3 4
+1 2
+```
