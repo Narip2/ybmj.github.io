@@ -41,6 +41,7 @@ struct Trie {
   int val[maxnode];
   int sz;
 
+    
   void init() {
     memset(ch[0], 0, sizeof(ch[0]));
     sz = 1;

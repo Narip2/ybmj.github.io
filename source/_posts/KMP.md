@@ -4,20 +4,11 @@ comments: true
 date: 2018-04-13 09:51:56
 categories:
 - ACM
+tags:
 - 字符串
 - KMP
 ---
  
-# 介绍
-**功能：**
-用来查找指定字符串。（从A串中查找B串）
-
-**优点：**
-O(n)的复杂度，比较快。
-
-**本质：**
-序列检测器。
-<!--more-->
 # 思想
 ![](http://img0.ph.126.net/Lq09RFOcBsW5E-vkWGhTEg==/6632310213841238574.png)
 
@@ -27,17 +18,15 @@ O(n)的复杂度，比较快。
 去寻找最长的公共前后缀，一旦失配，直接“后缀变前缀”，从上图来说ababe,最长
 公共前后缀就是ab,（不考虑e，因为假设在e处失配）。
 
-![](http://ozrmo3j0k.bkt.clouddn.com/kmp.PNG)
-
-如图，在3处失配后，直接跳到1位置继续进行匹配。
 
 这个back数组的含义就是：在第i位失配之后，[0, back[i]-1] 已经是成功的匹配了。 只要继续匹配第i位和back[i]即可。
-
 # 模板
 ```cpp
-struct MP{
+/*
+在0处失配，就表示模式串该向右移动了，标志为-1.
+*/
+struct KMP{
     int back[maxn];
-
     void getfail(string line){
         int i,k;
         k = back[0] = -1;
