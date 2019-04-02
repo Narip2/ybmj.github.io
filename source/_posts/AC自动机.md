@@ -1,50 +1,28 @@
 ---
-title: ACM模板
-date: 2019-04-01 23:05:52
+title: AC自动机
+date: 2019-04-02 10:06:57
 categories:
 - ACM
 tags:
-- 模板
+- 字符串
+- AC自动机
 ---
 
-## 字符串
-### KMP
-```cpp
-struct KMP{
-    int back[maxn];
-    void getfail(string line){
-        int i,k;
-        k = back[0] = -1;
-        i = 0;
-        while(i < line.size()){
-            while(k != -1 && line[i] != line[k]) k = back[k];
-            back[++i] = ++k;
-        }
-    }
-    int match(string T,string P){
-        int i = 0,k = 0;
-        int ret = 0;
-        getfail(P);
-        while(i < T.size()){
-            while(k != -1 && T[i] != P[k]) k = back[k];
-            ++i;++k;
-            if(k >= P.size()){
-                ret++;
-                k = back[k];
-            }
-        }
-        return ret;
-    }
-};
-```
+## 介绍
 
-### AC自动机
+[参考博客1](https://www.luogu.org/blog/42196/qiang-shi-tu-xie-ac-zi-dong-ji)
+[参考博客1](http://www.cnblogs.com/cjyyb/p/7196308.html)
+
+## 复杂度分析
+时间复杂度：
+- `insert`：主串的长度
+- `build`：结点数×字符集大小
+- `query`：主串的长度？
+
+空间复杂度：
+- 结点数 约等于 模式串的大小×模式串的数量
+## 模板
 ```cpp
-/*
-insert: 字符串长度
-build: 结点数*字符集大小
-query: 字符串长度
-*/
 struct Trie {
     int ch[maxn][26], f[maxn], val[maxn];
     int sz, rt;
@@ -96,3 +74,15 @@ struct Trie {
     }
 }
 ```
+
+## 练习
+
+**HDU2222: 一个主串，多个模式串，问主串中有多少种模式串**
+记录单词结尾的val数组，访问一次之后就要清空，这样就可以统计种类了。
+
+---
+
+**HDU2896: 多个主串，多个模式串，问每个主串中有多少种模式串**
+因为每个主串最多有3个模式串，所以可以记录一次匹配中有哪些val被访问了，匹配结束后恢复一下即可。
+
+---
