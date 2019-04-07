@@ -168,5 +168,5 @@ struct Trie {
 **HDU2243: 问有多少个长度至多为n的串不包含模式串**
 相对于上一题多了一个求和，需要用到公式：
 
-$$ \left(\begin{matrix}A & E \\ 0 & E\end{matrix}\right)^n = \left(\begin{matrix}A^n & E+A+A^2+...+A^{n-1} \\ 0 & E\end{matrix}\right) $$
+$$ \left(\begin{matrix}A & E \\\\ 0 & E\end{matrix}\right)^n = \left(\begin{matrix}A^n & E+A+A^2+...+A^{n-1} \\\\ 0 & E\end{matrix}\right) $$
 ---
