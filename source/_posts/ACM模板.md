@@ -7,6 +7,8 @@ tags:
 - 模板
 ---
 
+<!--more-->
+
 ## 字符串
 ### KMP
 ```cpp
@@ -56,7 +58,7 @@ struct Trie {
     int idx(char c) { return c - 'A'; }
     void insert(const char* s) {
         int u = 0;
-        for (int i = 0; i < s[i]; i++) {
+        for (int i = 0; s[i]; i++) {
             int c = idx(s[i]);
             if (ch[u][c] == -1) ch[u][c] = newnode();
             u = ch[u][c];
@@ -75,6 +77,7 @@ struct Trie {
         while (!q.empty()) {
             int u = q.front();
             q.pop();
+            // val[u] |= val[f[u]];
             for (int c = 0; c < 26; c++) {
                 if (~ch[u][c])
                     f[ch[u][c]] = ch[f[u]][c], q.push(ch[u][c]);
@@ -94,5 +97,102 @@ struct Trie {
         }
         return res;
     }
+} trie;
+```
+```cpp
+// 指针版
+struct Node {
+    Node *f, *ch[Types];
+    int val;
+    Node() {
+        val = 0;
+        f = nullptr;
+        for (int i = 0; i < Types; i++) ch[i] = nullptr;
+    }
+};
+struct Trie {
+    vector<Node *> nodes;  // 全部结点，方便删除
+    Node *rt;
+    void init() {
+        rt = new Node();
+        nodes.push_back(rt);
+    }
+    int idx(const char &c) { return c - 'A'; }
+    void insert(int id, const char *s) {
+        Node *u = rt;
+        for (int i = 0, c; s[i]; i++) {
+            c = idx(s[i]);
+            if (u->ch[c] == nullptr)
+                u->ch[c] = new Node(), nodes.push_back(u->ch[c]);
+            u = u->ch[c];
+        }
+        u->val++;
+    }
+    void build() {
+        queue<Node *> q;
+        rt->f = rt;
+        for (int i = 0; i < Types; i++) {
+            if (rt->ch[i] != nullptr)
+                rt->ch[i]->f = rt, q.push(rt->ch[i]);
+            else
+                rt->ch[i] = rt;
+        }
+        while (!q.empty()) {
+            Node *u = q.front();
+            q.pop();
+            for (int i = 0; i < Types; i++) {
+                if (u->ch[i] != nullptr)
+                    u->ch[i]->f = u->f->ch[i], q.push(u->ch[i]);
+                else
+                    u->ch[i] = u->f->ch[i];
+            }
+        }
+    }
+    int query(const char *s) {
+        int ret = 0;
+        Node *u = rt;
+        for (int i = 0, c; s[i]; i++) {
+            c = idx(s[i]);
+            u = u->ch[c];
+            for (auto p = u; p != rt && p->val != -1; p = p->f) {
+                ret += p->val;
+                p->val = -1;
+            }
+        }
+        return ret;
+    }
+    void delTrie() {
+        for (auto &v : nodes) delete v;
+        nodes.clear();
+    }
+} trie;
+```
+
+## 数学
+### 矩阵快速幂
+```cpp
+namespace Matrix {
+// Matrix mat(row, vec(col));
+typedef vector<ll> vec;
+typedef vector<vec> mat;
+mat mul(mat& A, mat& B) {
+    mat C(A.size(), vec(B[0].size()));
+    for (int i = 0; i < A.size(); i++)
+        for (int k = 0; k < B.size(); k++)
+            if (A[i][k])
+                for (int j = 0; j < B[0].size(); j++)
+                    C[i][j] = (C[i][j] + A[i][k] * B[k][j]) % mod;
+    return C;
 }
+mat Pow(mat A, ll n) {
+    mat B(A.size(), vec(A.size()));
+    for (int i = 0; i < A.size(); i++) B[i][i] = 1;
+    while (n) {
+        if (n & 1) B = mul(B, A);
+        A = mul(A, A);
+        n >>= 1;
+    }
+    return B;
+}
+}  // namespace Matrix
 ```
