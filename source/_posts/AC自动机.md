@@ -35,7 +35,7 @@ struct Trie {
     int idx(char c) { return c - 'A'; }
     void insert(const char* s) {
         int u = 0;
-        for (int i = 0; i < s[i]; i++) {
+        for (int i = 0; s[i]; i++) {
             int c = idx(s[i]);
             if (ch[u][c] == -1) ch[u][c] = newnode();
             u = ch[u][c];
@@ -54,6 +54,7 @@ struct Trie {
         while (!q.empty()) {
             int u = q.front();
             q.pop();
+            // val[u] |= val[f[u]];
             for (int c = 0; c < 26; c++) {
                 if (~ch[u][c])
                     f[ch[u][c]] = ch[f[u]][c], q.push(ch[u][c]);
@@ -73,7 +74,8 @@ struct Trie {
         }
         return res;
     }
-}
+} trie;
+```
 ```cpp
 // 指针版
 struct Node {
@@ -169,4 +171,5 @@ struct Trie {
 相对于上一题多了一个求和，需要用到公式：
 
 $$ \left(\begin{matrix}A & E \\\\ 0 & E\end{matrix}\right)^n = \left(\begin{matrix}A^n & E+A+A^2+...+A^{n-1} \\\\ 0 & E\end{matrix}\right) $$
+
 ---

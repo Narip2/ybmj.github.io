@@ -169,6 +169,19 @@ struct Trie {
 ```
 
 ## 数学
+### 猜想
+哥德巴赫猜想：
+- 任何不小于7的奇数，都可以写成三个质数之和(已被证明)
+- 任何不小于4的偶数，都可以写成两个质数之和
+
+四色定理：
+- 任何一张平面地图只用四种颜色就能使具有公共边界的国家着上不同的颜色
+
+费马大定理：
+- 当整数n>2时，关于x,y,z的不定方程$x^n+y^n=z^n$无正整数解
+
+###
+
 ### 矩阵快速幂
 ```cpp
 namespace Matrix {
@@ -195,4 +208,66 @@ mat Pow(mat A, ll n) {
     return B;
 }
 }  // namespace Matrix
+```
+
+### 扩展欧几里得
+```cpp
+// ax + by = gcd(a,b)
+// return d = gcd(a,b)
+ll ex_gcd(ll a, ll b, ll &x, ll &y) {
+    if (a == 0 && b == 0) return -1;  // 无最大公因数
+    ll d = a;
+    if (b)
+        d = ex_gcd(b, a % b, y, x), y -= x * (a / b);
+    else
+        x = 1, y = 0;
+    return d;
+}
+
+// X = x + dx * t, Y = y - dy * t
+// x是最小非负整数解
+bool solve(ll a, ll b, ll c, ll &x, ll &y, ll &dx, ll &dy) {
+    ll x0, y0, d;
+    d = ex_gcd(a, b, x, y);
+    if (d == -1 || c % d) return false;  //无解
+    dx = b / d, dy = a / d;
+    x = x0 * c / d;
+    x = (x % dx + dx) % dx;
+    y = (c - a * x) / b;
+    return true;
+}
+```
+
+### 逆元
+
+#### 费马小定理求逆元
+```cpp
+// 要求: p为质数
+ll inv(ll a, ll p) { return Pow(a, p - 2); }
+```
+#### ex_gcd
+```cpp
+// 要求: a与p互质
+ll inv(ll a, ll p) {
+    ll x, y;
+    ll d = ex_gcd(a, p, x, y);
+    return d == 1 ? (x % p + p) % p : -1;
+}
+```
+
+#### 阶乘逆元线性递推
+```cpp
+getInv(int n) {
+    f[0] = 1;
+    for (int i = 1; i < n; i++) f[i] = f[i - 1] * i % mod;
+    inv[n - 1] = Pow(f[n - 1], mod - 2);
+    for (int i = n - 2; ~i; i--) inv[i] = inv[i + 1] * (i + 1) % mod;
+}
+```
+
+#### 逆元线性递推
+```cpp
+getInv(int n) {
+    for (int i = 2; i < n; i++) inv[i] = inv[mod % i] * (mod - mod / i) % mod;
+}
 ```
