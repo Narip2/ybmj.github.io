@@ -279,3 +279,19 @@ getInv(int n) {
     for (int i = 2; i < n; i++) inv[i] = inv[mod % i] * (mod - mod / i) % mod;
 }
 ```
+
+### 快速乘
+```
+inline ll Mul(ll a, ll b, ll m) {
+    if (m <= (ll)1e9)
+        return a * b % m;
+    else if (m <= (ll)1e12)
+        return (((a * (b >> 20) % m) << 20) + (a * (b & ((1 << 20) - 1)))) % m;
+    else {
+        ll d = (ll)floor(a * (long double)b / m + 0.5);
+        ll ret = (a * b - d * m) % m;
+        if (ret < 0) ret += m;
+        return ret;
+    }
+}
+```
