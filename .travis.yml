@@ -22,7 +22,7 @@ before_script:
 - sed -i "s/gh_token/${GH_TOKEN}/g" ./_config.yml
 install:
 - npm install
-- npm audit fix
+# - npm audit fix
 - npm install hexo-deployer-git --save
 - npm audit fix
 # 执行的命令
