@@ -168,6 +168,76 @@ struct Trie {
 } trie;
 ```
 
+### 后缀数组
+```cpp
+/*
+sa[i]：表示排名为 i 的后缀的起始位置
+rk[i]：表示从 i 开始的后缀的排名
+height[i] = LCP(suffix(sa[i-1]), suffix(sa[i])) ：排名为 i-1 和排名为 i 的两个后缀的最长公共前缀
+h[i] = height[rank[i]] ：起始位置为 i 的后缀和它前一名的后缀的最长公共前缀
+build 复杂度:O(nlogn)
+sa下标从1开始编号，0表示加入的最小字符'\0'
+*/
+struct SA {
+    char s[maxn];
+    int sa[maxn], t[maxn], t2[maxn], c[maxn], rank[maxn], height[maxn];
+    void build(int m, int n) {  // [0,m-1]字符集, [0,n-1] 字符串
+        n++;
+        int *x = t, *y = t2;
+        for (int i = 0; i < m; i++) c[i] = 0;
+        for (int i = 0; i < n; i++) c[x[i] = s[i]]++;
+        for (int i = 1; i < m; i++) c[i] += c[i - 1];
+        for (int i = n - 1; ~i; i--) sa[--c[x[i]]] = i;
+        for (int k = 1; k <= n; k <<= 1) {
+            int p = 0;
+            for (int i = n - k; i < n; i++) y[p++] = i;
+            for (int i = 0; i < n; i++)
+                if (sa[i] >= k) y[p++] = sa[i] - k;
+            for (int i = 0; i < m; i++) c[i] = 0;
+            for (int i = 0; i < n; i++) c[x[y[i]]]++;
+            for (int i = 1; i < m; i++) c[i] += c[i - 1];
+            for (int i = n - 1; ~i; i--) sa[--c[x[y[i]]]] = y[i];
+            swap(x, y);
+            p = 1;
+            x[sa[0]] = 0;
+            for (int i = 1; i < n; i++)
+                x[sa[i]] =
+                    y[sa[i - 1]] == y[sa[i]] && y[sa[i - 1] + k] == y[sa[i] + k]
+                        ? p - 1
+                        : p++;
+            if (p >= n) break;
+            m = p;
+        }
+        n--;
+        int k = 0;
+        for (int i = 0; i <= n; i++) rank[sa[i]] = i;
+        for (int i = 0; i < n; i++) {
+            if (k) k--;
+            int j = sa[rank[i] - 1];
+            while (s[i + k] == s[j + k]) k++;
+            height[rank[i]] = k;
+        }
+    }
+    int dp[maxn][30];
+    void initRmq(int n) {
+        for (int i = 1; i <= n; i++) dp[i][0] = height[i];
+        for (int j = 1; (1 << j) <= n; j++)
+            for (int i = 1; i + (1 << j) - 1 <= n; i++)
+                dp[i][j] = min(dp[i][j - 1], dp[i + (1 << (j - 1))][j - 1]);
+    }
+    int rmq(int l, int r) {
+        int k = 31 - __builtin_clz(r - l + 1);
+        return min(dp[l][k], dp[r - (1 << k) + 1][k]);
+    }
+    int lcp(int a, int b) {
+        a = rank[a], b = rank[b];
+        if (a > b) swap(a, b);
+        return rmq(a + 1, b);
+    }
+} sa;
+```
+
+
 ## 数学
 ### 小知识
 **哥德巴赫猜想：**
