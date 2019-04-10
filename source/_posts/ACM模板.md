@@ -2,15 +2,17 @@
 title: ACM模板
 date: 2019-04-01 23:05:52
 categories:
-- ACM
+  - ACM
 tags:
-- 模板
+  - 模板
 ---
 
 <!--more-->
 
 ## 字符串
+
 ### KMP
+
 ```cpp
 struct KMP{
     int back[maxn];
@@ -40,7 +42,8 @@ struct KMP{
 };
 ```
 
-### AC自动机
+### AC 自动机
+
 ```cpp
 /*
 insert: 字符串长度
@@ -99,6 +102,7 @@ struct Trie {
     }
 } trie;
 ```
+
 ```cpp
 // 指针版
 struct Node {
@@ -169,14 +173,16 @@ struct Trie {
 ```
 
 ### 后缀数组
+
 ```cpp
 /*
 sa[i]：表示排名为 i 的后缀的起始位置
-rk[i]：表示从 i 开始的后缀的排名
+rank[i]：表示从 i 开始的后缀的排名
 height[i] = LCP(suffix(sa[i-1]), suffix(sa[i])) ：排名为 i-1 和排名为 i 的两个后缀的最长公共前缀
 h[i] = height[rank[i]] ：起始位置为 i 的后缀和它前一名的后缀的最长公共前缀
 build 复杂度:O(nlogn)
-sa下标从1开始编号，0表示加入的最小字符'\0'
+// 需要保证s[n]为之前没有出现过的最小的字符。必要时手动添加，或者自动'\0'。
+// sa下标从1开始编号，sa[0]表示加入的最小字符'\0'
 */
 struct SA {
     char s[maxn];
@@ -230,6 +236,7 @@ struct SA {
         return min(dp[l][k], dp[r - (1 << k) + 1][k]);
     }
     int lcp(int a, int b) {
+        // 返回起始地址为a和b的两个后缀串的lcp
         a = rank[a], b = rank[b];
         if (a > b) swap(a, b);
         return rmq(a + 1, b);
@@ -237,30 +244,37 @@ struct SA {
 } sa;
 ```
 
-
 ## 数学
+
 ### 小知识
+
 **哥德巴赫猜想：**
-- 任何不小于7的奇数，都可以写成三个质数之和(已被证明)
-- 任何不小于4的偶数，都可以写成两个质数之和
+
+- 任何不小于 7 的奇数，都可以写成三个质数之和(已被证明)
+- 任何不小于 4 的偶数，都可以写成两个质数之和
 
 **四色定理：**
+
 - 任何一张平面地图只用四种颜色就能使具有公共边界的国家着上不同的颜色
 
 **费马大定理：**
-- 当整数n>2时，关于x,y,z的不定方程$x^n+y^n=z^n$无正整数解
+
+- 当整数 n>2 时，关于 x,y,z 的不定方程$x^n+y^n=z^n$无正整数解
 
 **费马小定理：**
-- 对于质数p，对于任意整数a，均满足$a^p \equiv a$ (mod p)
+
+- 对于质数 p，对于任意整数 a，均满足$a^p \equiv a$ (mod p)
 
 **欧拉定理：**
-- 若正整数a，n互质，则$a ^ {\phi(n)} \equiv 1$ mod(n)
+
+- 若正整数 a，n 互质，则$a ^ {\phi(n)} \equiv 1$ mod(n)
 
 **欧拉定理推论：**
-- 若正整数a，n互质，那么对于任意正整数b，有$a^b \equiv a ^{b \% \phi(n)}$ mod(n)
 
+- 若正整数 a，n 互质，那么对于任意正整数 b，有$a^b \equiv a ^{b \% \phi(n)}$ mod(n)
 
 ### 矩阵快速幂
+
 ```cpp
 namespace Matrix {
 // Matrix mat(row, vec(col));
@@ -289,6 +303,7 @@ mat Pow(mat A, ll n) {
 ```
 
 ### 扩展欧几里得
+
 ```cpp
 // ax + by = gcd(a,b)
 // return d = gcd(a,b)
@@ -319,11 +334,14 @@ bool solve(ll a, ll b, ll c, ll &x, ll &y, ll &dx, ll &dy) {
 ### 逆元
 
 #### 费马小定理求逆元
+
 ```cpp
 // 要求: p为质数
 ll inv(ll a, ll p) { return Pow(a, p - 2); }
 ```
+
 #### ex_gcd
+
 ```cpp
 // 要求: a与p互质
 ll inv(ll a, ll p) {
@@ -334,6 +352,7 @@ ll inv(ll a, ll p) {
 ```
 
 #### 阶乘逆元线性递推
+
 ```cpp
 getInv(int n) {
     f[0] = 1;
@@ -344,6 +363,7 @@ getInv(int n) {
 ```
 
 #### 逆元线性递推
+
 ```cpp
 getInv(int n) {
     for (int i = 2; i < n; i++) inv[i] = inv[mod % i] * (mod - mod / i) % mod;
@@ -351,6 +371,7 @@ getInv(int n) {
 ```
 
 ### 快速乘
+
 ```
 inline ll Mul(ll a, ll b, ll m) {
     if (m <= (ll)1e9)
