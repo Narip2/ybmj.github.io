@@ -187,6 +187,7 @@ build 复杂度:O(nlogn)
 struct SA {
     char s[maxn];
     int sa[maxn], t[maxn], t2[maxn], c[maxn], rank[maxn], height[maxn];
+    int dp[maxn][30];
     void build(int m, int n) {  // [0,m-1]字符集, [0,n-1] 字符串
         n++;
         int *x = t, *y = t2;
@@ -224,7 +225,6 @@ struct SA {
             height[rank[i]] = k;
         }
     }
-    int dp[maxn][30];
     void initRmq(int n) {
         for (int i = 1; i <= n; i++) dp[i][0] = height[i];
         for (int j = 1; (1 << j) <= n; j++)
