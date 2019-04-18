@@ -244,6 +244,34 @@ struct SA {
 } sa;
 ```
 
+### Manacher 最长回文子串
+
+```cpp
+const int maxn = 1e6+5;
+char Ma[maxn*2];    //插入新字符后的字符串
+int Mp[maxn*2];     //以当前位置为对称轴的回文半径
+
+void Manacher(string &s){
+    int l = 0;
+    Ma[l++] = '$';      //防止越界
+    Ma[l++] = '#';
+    for(int i=0;i<s.size();i++){
+        Ma[l++] = s[i];
+        Ma[l++] = '#';
+    }
+    Ma[l] = 0;      //结尾设置为空字符，防止越界
+    int mx = 1,id = 1;
+    for(int i=1;i<l;i++){
+        Mp[i] = mx > i ? min(Mp[2*id-i],mx-i) : 1;
+        while(Ma[i+Mp[i]] == Ma[i-Mp[i]]) Mp[i] ++; //扩展
+        if(i + Mp[i] > mx){
+            mx = i + Mp[i];
+            id = i;
+        }
+    }
+}
+```
+
 ## 数学
 
 ### 小知识
@@ -384,5 +412,1324 @@ inline ll Mul(ll a, ll b, ll m) {
         if (ret < 0) ret += m;
         return ret;
     }
+}
+```
+
+### FFT
+
+```cpp
+namespace fft {
+typedef double db;
+
+struct cp {
+    db x, y;
+    cp() { x = y = 0; }
+    cp(db x, db y) : x(x), y(y) {}
+};
+
+inline cp operator+(cp a, cp b) { return cp(a.x + b.x, a.y + b.y); }
+inline cp operator-(cp a, cp b) { return cp(a.x - b.x, a.y - b.y); }
+inline cp operator*(cp a, cp b) {
+    return cp(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
+}
+inline cp conj(cp a) { return cp(a.x, -a.y); }
+
+int base = 1;
+vector<cp> roots = {{0, 0}, {1, 0}};
+vector<int> rev = {0, 1};
+
+const db PI = acosl(-1.0);
+
+void ensure_base(int nbase) {
+    if (nbase <= base) return;
+    rev.resize(static_cast<unsigned long>(1 << nbase));
+    for (int i = 0; i < (1 << nbase); i++)
+        rev[i] = (rev[i >> 1] >> 1) + ((i & 1) << (nbase - 1));
+    roots.resize(static_cast<unsigned long>(1 << nbase));
+    while (base < nbase) {
+        db angle = 2 * PI / (1 << (base + 1));
+        for (int i = 1 << (base - 1); i < (1 << base); i++) {
+            roots[i << 1] = roots[i];
+            db angle_i = angle * (2 * i + 1 - (1 << base));
+            roots[(i << 1) + 1] = cp(cos(angle_i), sin(angle_i));
+        }
+        base++;
+    }
+}
+
+void fft(vector<cp>& a, int n = -1) {
+    if (n == -1) n = a.size();
+    assert((n & (n - 1)) == 0);
+    int zeros = __builtin_ctz(n);
+    ensure_base(zeros);
+    int shift = base - zeros;
+    for (int i = 0; i < n; i++)
+        if (i < (rev[i] >> shift)) swap(a[i], a[rev[i] >> shift]);
+    for (int k = 1; k < n; k <<= 1)
+        for (int i = 0; i < n; i += 2 * k)
+            for (int j = 0; j < k; j++) {
+                cp z = a[i + j + k] * roots[j + k];
+                a[i + j + k] = a[i + j] - z;
+                a[i + j] = a[i + j] + z;
+            }
+}
+
+vector<cp> fa, fb;
+
+vector<int> multiply(vector<int>& a, vector<int>& b) {
+    int need = a.size() + b.size() - 1;
+    int nbase = 0;
+    while ((1 << nbase) < need) nbase++;
+    ensure_base(nbase);
+    int sz = 1 << nbase;
+    if (sz > (int)fa.size()) fa.resize(static_cast<unsigned long>(sz));
+    for (int i = 0; i < sz; i++) {
+        int x = (i < (int)a.size() ? a[i] : 0);
+        int y = (i < (int)b.size() ? b[i] : 0);
+        fa[i] = cp(x, y);
+    }
+    fft(fa, sz);
+    cp r(0, -0.25 / sz);
+    for (int i = 0; i <= (sz >> 1); i++) {
+        int j = (sz - i) & (sz - 1);
+        cp z = (fa[j] * fa[j] - conj(fa[i] * fa[i])) * r;
+        if (i != j) {
+            fa[j] = (fa[i] * fa[i] - conj(fa[j] * fa[j])) * r;
+        }
+        fa[i] = z;
+    }
+    fft(fa, sz);
+    vector<int> res(static_cast<unsigned long>(need));
+    for (int i = 0; i < need; i++) {
+        res[i] = fa[i].x + 0.5;
+    }
+    return res;
+}
+};  // namespace fft
+```
+
+### 欧拉函数
+
+```cpp
+// 求单个Eular函数
+map<ll, ll> Eular;  //记忆化
+ll eular(ll n) {
+    ll &ret = Eular[n];
+    if (ret) return ret;
+    ret = n;
+    for (ll i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            ret -= ret / i;
+            while (n % i == 0) n /= i;
+        }
+    }
+    if (n > 1) ret -= ret / n;
+    return ret;
+}
+
+// 线性筛 (同时得到欧拉函数和素数表)
+const int maxn = 1e7 + 5;
+bool vis[maxn];
+int prime[maxn], phi[maxn];
+void init() {
+    clr(vis, 0);
+    phi[1] = 1;
+    int tot = 0;
+    for (int i = 2; i < maxn; i++) {
+        if (!vis[i]) {
+            prime[tot++] = i;
+            phi[i] = i - 1;
+        }
+        for (int k = 0; k < tot && 1LL * i * prime[k] < maxn; k++) {
+            vis[i * prime[k]] = 1;
+            if (i % prime[k] == 0) {
+                phi[i * prime[k]] = phi[i] * prime[k];
+                break;
+            }
+            phi[i * prime[k]] = phi[i] * (prime[k] - 1);
+        }
+    }
+}
+```
+
+## 图论
+
+### DFS 序
+
+```cpp
+// u 的子树区间 [in[u], out[u]]
+// 下标从1开始
+const int maxn = 100;
+vector<int> G[maxn];
+int in[maxn], out[maxn];
+int dfn;
+
+void init() { dfn = 0; }
+void dfs(int u, int fa) {
+    in[u] = ++dfn;
+    for (auto &v : G[u]) {
+        if (v != fa) dfs(v, u);
+    }
+    out[u] = dfn;
+}
+```
+
+### 割点
+
+```cpp
+vector<int> G[maxn];
+int dfs_clock, dfn[maxn];
+bool iscut[maxn];
+int dfs(int u, int fa) {
+    int lowu = dfn[u] = ++dfs_clock;
+    int child = 0;
+    for (auto &v : G[u]) {
+        if (!dfn[v]) {
+            child++;
+            int lowv = dfs(v, u);
+            lowu = min(lowu, lowv);
+            if (lowv >= dfn[u]) iscut[u] = true;
+        } else if (dfn[v] < dfn[u] && v != fa)
+            lowu = min(lowu, dfn[v]);
+    }
+    if (fa < 0 && child == 1) iscut[u] = false;  // root
+    return lowu;
+}
+```
+
+### 割边
+
+```cpp
+vector<pii> G[maxn];  // first: 下一个点， second: 该边的编号
+int dfs_clock, dfn[maxn];
+bool iscut[N];  // N: 边数
+
+int dfs(int u, int fa) {
+    int lowu = dfn[u] = ++dfs_clock;
+    // int father = 0;
+    for (auto &V : G[u]) {
+        int v = V.first;
+        int id = V.second;  // 边的编号
+        // if(v == fa) father++;
+        if (!dfn[v]) {
+            int lowv = dfs(v, u);
+            lowu = min(lowv, lowu);
+            if (lowv > dfn[u]) iscut[id] = true;
+        } else if (dfn[v] < dfn[u] && v != fa)
+            lowu = min(lowu, dfn[v]);
+    }
+    // if(father > 1) return dfn[fa];
+    return lowu;
+}
+```
+
+### 点双联通分量
+
+```cpp
+vector<int> G[maxn], bcc[maxn];
+int bcc_cnt, dfs_clock;
+int dfn[maxn], iscut[maxn], bccno[maxn];
+stack<pii> stk;
+int dfs(int u) {
+    int lowu = dfn[u] = ++dfs_clock;
+    int child = 0;
+    for (auto &v : G[u]) {
+        pii e = {u, v};
+        if (!dfn[v]) {
+            stk.push(e);
+            child++;
+            int lowv = dfs(v, u);
+            lowu = min(lowu, lowv);
+            if (lowv >= dfn[u]) {  // u为割点
+                iscut[u] = true;
+                bcc_cnt++;
+                bcc[bcc_cnt].clear();  //注意！bcc从1开始编号
+                for (;;) {
+                    pii x = stk.top();
+                    stk.pop();
+                    if (bccno[x.first] != bcc_cnt)
+                        bcc[bcc_cnt].push_back(x.first), bcc[x.first] = bcc_cnt;
+                    if (bccno[x.second] != bcc_cnt)
+                        bcc[bcc_cnt].push_back(x.second),
+                            bcc[x.second] = bcc_cnt;
+                    if (x.first == u && x.second == v) break;
+                }
+            }
+        } else if (dfn[v] < dfn[u] && v != fa) {
+            stk.push(e);
+            lowu = min(lowu, dfn[v]);
+        }
+    }
+    if (fa < 0 && child == 1) iscut[u] = 0;
+    return lowu;
+}
+//割顶的bccno无意义
+void solve(int n) {
+    //调用结束后stack保证为空，所以不用清空
+    memset(iscut, 0, sizeof(iscut));
+    memset(bccno, 0, sizeof(bccno));
+    memset(dfn, 0, sizeof(dfn));
+    dfs_clock = bcc_cnt = 0;
+    for (int i = 0; i < n; i++)
+        if (!dfn[i]) dfs(i, -1);
+}
+```
+
+### 边双联通分量
+
+```cpp
+vector<int> G[maxn];
+int bcc_cnt, dfs_clock;
+int dfn[maxn], bccno[maxn];
+stack<int> stk;
+int dfs(int u, int fa) {
+    int lowu = dfn[u] = ++dfs_clock;
+    stk.push(u);
+    bool flag = false;  // 有重边
+    for (auto &v : G[u]) {
+        if (v == fa && !flag) {
+            flag = true;
+            continue;
+        }
+        if (!dfn[v]) {
+            int lowv = dfs(v, u);
+            lowu = min(lowu, lowv);
+        } else
+            lowu = min(lowu, dfn[v]);
+    }
+    if (lowu == dfn[u]) {
+        bcc_cnt++;  // 编号从1开始
+        while (!stk.empty()) {
+            int v = stk.top();
+            bccno[v] = bcc_cnt;
+            if (u == v) break;
+        }
+    }
+}
+```
+
+### 强连通分量
+
+```cpp
+vector<int> G[maxn];
+int scc, dfs_clock, top;  // scc: 强连通分量的数量
+bool instack[maxn];
+int dfn[maxn], low[maxn], belong[maxn], Stack[maxn];
+// int num[maxn];      // 每个强连通分量的数量。 1 ~ scc
+// int maps[maxn];      //缩点之后 每个点对应的新点的标号
+void Tarjan(int u) {
+    dfn[u] = low[u] = ++dfs_clock;
+    instack[u] = true;
+    Stack[top++] = u;
+    for (auto &v : G[u]) {
+        if (!dfn[v]) {
+            Tarjan(v);
+            low[u] = min(low[u], low[v]);
+        } else if (instack[v])
+            low[u] = min(low[u], dfn[v]);
+    }
+    if (dfn[u] == low[u]) {
+        ++scc;
+        int cnt = 0;
+        int now;
+        while (top > 0) {
+            now = Stack[--top];
+            instack[now] = false;
+            belong[now] = u;
+            ++cnt;
+            if (now == u) {
+                // num[scc] = cnt;
+                // maps[u] = scc;
+                break;
+            }
+        }
+    }
+}
+void solve(int n) {
+    memset(instack, 0, sizeof(instack));
+    memset(dfn, 0, sizeof(dfn));
+    scc = dfs_clock = top = 0;
+    for (int i = 1; i <= n; i++) {  // 点的标号从1开始
+        if (!dfn[i]) Tarjan(i);
+    }
+}
+```
+
+### 单源最短路
+
+#### Dijkstra
+
+```cpp
+// O(ElogV)
+typedef pair<int, int> pii;
+const int maxn = 100;
+int d[maxn];
+vector<pii> G[maxn];
+
+inline void addedge(int u, int v, int w) {
+    G[u].push_back(make_pair(w, v));
+    // G[v].push_back(make_pair(w,u));
+}
+void dijkstra(int s, int n) {
+    for (int i = 0; i < n; i++) d[i] = INF;
+    d[s] = 0;
+    priority_queue<pii, vector<pii>, greater<pii> > pq;
+    pq.push(mp(0, s));
+    while (!pq.empty()) {
+        pii now = pq.top();
+        pq.pop();
+        int v = now.second;
+        if (d[v] < now.first) continue;  //剪枝！ 重要
+        for (int i = 0; i < G[v].size(); i++) {
+            pii e = G[v][i];
+            int to = e.second;
+            if (d[to] > d[v] + e.first) {
+                d[to] = d[v] + e.first;
+                pq.push(pii(d[to], to));
+            }
+        }
+    }
+}
+```
+
+#### Bellman-Ford
+
+### 最小生成树
+
+#### Kruskal
+
+```cpp
+const int maxn = 10;
+struct Edge {
+    int u, v, w;
+    Edge(int u = 0, int v = 0, int w = 0) : u(u), v(v), w(w) {}
+    bool operator<(const Edge &A) const { return w < A.w; }
+};
+vector<Edge> edges;
+int par[maxn];
+void addedge(int u, int v, int w) {
+    edges.push_back(Edge(u, v, w));
+    // edges.push_back(Edge(v, u, w));
+}
+
+int find(int x) { return par[x] == x ? x : find(par[x]); }
+
+int kruskal(int n) {
+    int ans = 0;
+    for (int i = 0; i < n; i++) par[i] = i;
+    sort(edges.begin(), edges.end());  //按权值排序
+    int cnt = 0;
+    for (int i = 0; i < edges.size(); i++) {
+        if (cnt >= n - 1) break;
+        Edge &now = edges[i];
+        int x = find(now.u);
+        int y = find(now.v);
+        if (x != y) {
+            cnt++;
+            par[x] = y;
+            ans += now.w;
+        }
+    }
+    return ans;
+}
+```
+
+#### Prim
+
+```cpp
+// 耗费矩阵cost[][],标号从0开始,0~n-1
+// 返回最小生成树的权值,返回-1表示原图不连通
+// O(n^2)
+const int maxn = 100;
+bool vis[maxn];
+int lowc[maxn];
+int cost[maxn][maxn];  //初始化为正无穷
+
+int Prim(int n) {
+    int ans = 0;
+    clr(vis, 0);
+    vis[0] = 1;
+    for (int i = 1; i < n; i++) lowc[i] = cost[0][i];
+    for (int i = 1; i < n; i++) {
+        int minc = INF;
+        int p = -1;
+        for (int j = 0; j < n; j++)
+            if (!vis[j] && minc > lowc[j]) {
+                minc = lowc[j];
+                p = j;
+            }
+        if (minc == INF) return -1;
+        vis[p] = 1;
+        ans += minc;
+        for (int j = 0; j < n; j++)
+            if (!vis[j] && lowc[j] > cost[p][j]) lowc[j] = cost[p][j];
+    }
+    return ans;
+}
+```
+
+### 最近公共祖先 LCA
+
+#### ST
+
+```cpp
+// 在线算法，预处理O(nlogn)，查询O(1)
+const int maxn = 1000000;
+struct LCA {
+    vector<int> G[maxn], sp;
+    int dep[maxn], dfn[maxn];
+    pii dp[21][maxn << 1];
+    void init(int n) {
+        for (int i = 0; i <= n; i++) G[i].clear();
+        sp.clear();
+    }
+    void addEdge(int u, int v) {
+        G[u].push_back(v);
+        G[v].push_back(u);
+    }
+    void dfs(int u, int fa) {
+        dep[u] = dep[fa] + 1;
+        dfn[u] = sp.size();
+        sp.push_back(u);
+        for (auto &v : G[u]) {
+            if (v == fa) continue;
+            dfs(v, u);
+            sp.push_back(u);
+        }
+    }
+    void initRmq() {
+        int n = sp.size();
+        for (int i = 0; i < n; i++) dp[0][i] = {dfn[sp[i]], sp[i]};
+        for (int i = 1; (1 << i) <= n; i++)
+            for (int j = 0; j + (1 << i) - 1 < n; j++)
+                dp[i][j] = min(dp[i - 1][j], dp[i - 1][j + (1 << (i - 1))]);
+    }
+    int lca(int u, int v) {
+        int l = dfn[u], r = dfn[v];
+        if (l > r) swap(l, r);
+        int k = 31 - __builtin_clz(r - l + 1);
+        return min(dp[k][l], dp[k][r - (1 << k) + 1]).second;
+    }
+} lca;
+```
+
+#### Tarjan
+
+```cpp
+// 离线算法 O(n+q)
+const int maxn = 1000000;
+struct LCA {
+    vector<int> G[maxn];
+    vector<pii> Q[maxn];
+    bool vis[maxn];
+    int par[maxn], dist[maxn], ANS[maxn];
+
+    int find(int u) { return u == par[u] ? u : par[u] = find(par[u]); }
+    void merge(int u, int v) {
+        u = find(u);
+        v = find(v);
+        if (u != v) {
+            par[v] = u;
+        }
+    }
+
+    void init(int n, int m) {
+        for (int i = 0; i < n + 1; i++) {
+            G[i].clear();
+            vis[i] = false;
+            par[i] = i;
+        }
+        for (int i = 0; i < m + 1; i++) Q[i].clear();
+    }
+
+    void add_edge(int u, int v) {
+        G[u].pb(v);
+        G[v].pb(u);
+    }
+
+    void add_query(int u, int v, int id) {
+        Q[u].pb(mp(v, id));
+        Q[v].pb(mp(u, id));
+    }
+
+    void Tarjan(int u, int fa) {
+        vis[u] = true;
+        for (auto v : G[u]) {
+            if (fa != v) {
+                Tarjan(v, u);
+                merge(u, v);  // 注意合并顺序，一定是v合并到u上
+            }
+        }
+        for (auto V : Q[u]) {
+            if (vis[V.first] == true) {
+                ANS[V.second] = find(V.first);  // 公共祖先为par[v]
+            }
+        }
+    }
+} lca;
+```
+
+### Dsu-on-tree
+
+```cpp
+// O(nlogn)
+// 统计所有子树的信息。启发式合并，保留重儿子的信息。
+// 给一棵树，每个节点都有一个颜色，每次查询问某棵子树上颜色为c的节点数
+vector<int> *vec[maxn], G[maxn];
+int cnt[maxn], sz[maxn], col[maxn];
+bool vis[maxn], bigc[maxn];
+
+int szdfs(int u, int fa) {
+    sz[u] = vis[u] = 1;
+    for (auto &v : G[u])
+        if (v != fa && !vis[v]) sz[u] += szdfs(v, u);
+    return sz[u];
+}
+
+void add(int u, int fa, int x) {
+    cnt[col[u]] += x;
+    for (auto &v : G[u])
+        if (v != fa && !bigc[v]) add(v, u, x);
+}
+
+void dfs(int u, int fa, bool keep) {
+    int mx = -1, bc = -1;
+    for (auto &v : G[u])
+        if (v != fa && sz[v] > mx) {
+            mx = sz[v];
+            bc = v;
+        }
+    for (auto &v : G[u])
+        if (v != fa && v != bc)
+            dfs(v, u, 0);  // run a dfs on small childs and clear them from cnt
+    if (bc != -1) {
+        dfs(bc, u, 1);
+        bigc[bc] = 1;
+    }  // bigChild marked as big and not cleared from cnt
+    add(u, fa, 1);
+
+    // now cnt[c] is the number of vertices in subtree of vertex v that has
+    // color c. You can answer the queries easily.
+    if (bc != -1) bigc[bc] = 0;
+    if (!keep) add(u, fa, -1);
+}
+```
+
+### 网络流
+
+#### 最大流
+
+```cpp
+struct Edge{
+    int from,to,cap,flow;
+    Edge(int u,int v,int c,int f): from(u),to(v),cap(c),flow(f) {}
+};
+struct EdmonsKarp{          //时间复杂度O(v*E*E)
+    int n,m;
+    vector<Edge> edges;     //边数的两倍
+    vector<int> G[maxn];    //邻接表，G[i][j]表示节点i的第j条边在e数组中的序号
+    int a[maxn];            //起点到i的可改进量
+    int p[maxn];            //最短路树上p的入弧编号
+
+    void init(int n){
+        for(int i=0;i<=n;i++) G[i].clear();
+        edges.clear();
+    }
+
+    void AddEdge(int from,int to,int cap){
+        edges.push_back(Edge(from,to,cap,0));
+        edges.push_back(Edge(to,from,0,0));     //反向弧
+        m = edges.size();
+        G[from].push_back(m-2);
+        G[to].push_back(m-1);
+    }
+
+    int Maxflow(int s,int t){
+        int flow = 0;
+        for(;;){
+            memset(a,0,sizeof(a));
+            queue<int> Q;
+            Q.push(s);
+            a[s] = INF;
+            while(!Q.empty()){
+                int x = Q.front();Q.pop();
+                for(int i=0;i<G[x].size();i++){
+                    Edge& e = edges[G[x][i]];
+                    if(!a[e.to] && e.cap > e.flow){     //!a[e.to] 是了保证不会回退和出现分叉
+                        p[e.to] = G[x][i];      //记录边的编号
+                        a[e.to] = min(a[x],e.cap - e.flow);
+                        Q.push(e.to);
+                    }
+                }
+                if(a[t]) break;         //走到汇点
+            }
+            if(!a[t]) break;            //没有一条增广路存在
+            for(int u=t;u != s;u = edges[p[u]].from){
+                edges[p[u]].flow += a[t];
+                edges[p[u]^1].flow -= a[t];
+            }
+            flow += a[t];
+        }
+        return flow;
+    }
+};
+```
+
+#### 最小费用最大流
+
+```cpp
+struct Edge{
+    int from,to,cap,flow,cost;
+    Edge(int u,int v,int c,int f,int w):from(u),to(v),cap(c),flow(f),cost(w) {}
+};
+
+struct MCMF{
+    int n,m;
+    vector<Edge> edges;
+    vector<int> G[maxn];
+    int inq[maxn];      //是否在队列中
+    int d[maxn];        //bellmanford 到源点距离
+    int p[maxn];        //上一条弧
+    int a[maxn];        //可改进量
+
+    void init(int n){
+        this-> n = n;
+        for(int i=0;i<=n;i++) G[i].clear();
+        edges.clear();
+    }
+
+    void AddEdge(int from,int to,int cap,int cost){
+        edges.push_back(Edge(from,to,cap,0,cost));
+        edges.push_back(Edge(to,from,0,0,-cost));
+        m = edges.size();
+        G[from].push_back(m-2);
+        G[to].push_back(m-1);
+    }
+
+    bool BellmanFord(int s,int t,int& flow,ll& cost){
+        for(int i=0;i<=n;i++) d[i] = INF;
+        memset(inq,0,sizeof(inq));
+        d[s] = 0; inq[s] = 1; p[s] = 0; a[s] = INF;
+        queue<int> Q;
+        Q.push(s);
+        while(!Q.empty()){
+            int u = Q.front(); Q.pop();
+            inq[u] = 0;
+            for(int i=0;i<G[u].size();i++){
+                Edge& e = edges[G[u][i]];
+                if(e.cap > e.flow && d[e.to] > d[u] + e.cost){
+                    d[e.to] = d[u] + e.cost;
+                    p[e.to] = G[u][i];
+                    a[e.to] = min(a[u], e.cap - e.flow);
+                    if(!inq[e.to]) {Q.push(e.to); inq[e.to] = 1;}
+                }
+            }
+        }
+        if(d[t] == INF) return false;    // 当没有可增广的路时退出
+        flow += a[t];
+        cost += (ll)d[t] * (ll)a[t];
+        for(int u=t; u!= s; u = edges[p[u]].from){
+            edges[p[u]].flow += a[t];
+            edges[p[u]^1].flow -= a[t];
+        }
+        return true;
+    }
+
+    int MincostMaxflow(int s,int t,ll& cost){
+        int flow = 0; cost = 0;
+        while(BellmanFord(s,t,flow,cost));
+        return flow;
+    }
+};
+```
+
+## 数据结构
+
+### 树状数组
+
+```cpp
+// 数组下标必须从1开始
+
+// 单点更新区间查询
+int BIT[maxn];
+inline int lowb(int x) { return x & (-x); }
+inline int query(int l,int r){
+    int ret = 0;
+    for(int i=l-1;i>0;i-=lowb(i)) ret -= BIT[i];
+    for(int i=r;i>0;i-=lowb(i)) ret += BIT[i];
+    return ret;
+}
+inline void update(int x,int y,int n){
+    for(int i=x;i<=n;i+=lowb(i)) BIT[i] += y;
+}
+//区间更新单点查询
+int diff[maxn];
+inline int lowb(int x) {return x &(-x);}
+inline int query(int x){
+    int ret = 0;
+    for(int i=x;i>0;i-=lowb(i)) ret += diff[i];
+    return ret;
+}
+inline void update(int l,int r,int val,int n){
+    for(int i=l;i<=n;i+=lowb(i)) diff[i] += val;
+    for(int i=r+1;i<=n;i+=lowb(i)) diff[i] -= val;
+}
+```
+
+### 线段树
+
+```cpp
+// 左闭右闭
+#define lson (rt << 1)
+#define rson (rt << 1 | 1)
+#define lson_len (len - (len >> 1))
+#define rson_len (len >> 1)
+const int maxn = "Edit";
+int seg[maxn << 2];
+```
+
+**单点更新，区间查询**
+
+```cpp
+// 左闭右闭 [l,r]
+void pushup(int rt) { seg[rt] = seg[lson] + seg[rson]; }
+
+void build(int l, int r, int rt) {
+    if (l == r) {
+        seg[rt] = num[l];
+        // cin >> seg[rt];   //建立的时候直接输入叶节点
+        return;
+    }
+    int m = (l + r) >> 1;
+    build(l,m,lson);
+    build(m+1,r,rson);
+    pushup(rt);
+}
+
+void update(int p, int add, int l, int r, int rt) {
+    if (l == r) {
+        seg[rt] += add;
+        return;
+    }
+    int m = (l + r) >> 1;
+    if (p <= m) update(p, add,l,m,lson);
+    else update(p, add, m+1,r,rson);
+    pushup(rt);
+}
+int query(int L, int R, int l, int r, int rt) {  // L R 是要查询的区间
+    if (L <= l && r <= R) return seg[rt];
+    int m = (l + r) >> 1, ret = 0;
+    if (L <= m) s += query(L, R, l,m,lson);
+    if (m < R) s += query(L, R, m+1,r,rson);
+    return ret;
+}
+
+// update interval
+// lazy[rt]用于存放懒惰标记，注意PushDown时标记的传递
+const int maxn = "Edit";
+int lazy[maxn << 2], seg[maxn << 2];
+
+void pushup(int rt) { seg[rt] = seg[lson] + seg[rson]; }
+void pushdown(int rt, int len) {
+    if (lazy[rt] == 0) return;
+    lazy[lson] += lazy[rt];
+    lazy[rson] += lazy[rt];
+    seg[lson] += lazy[rt] * lson_len;
+    seg[rson] += lazy[rt] * rson_len;
+    lazy[rt] = 0;
+}
+void build(int l, int r, int rt) {
+    lazy[rt] = 0;
+    if (l == r) {
+        seg[rt] = num[l];
+        //cin >> seg[rt];
+        return;
+    }
+    int m = (l + r) >> 1;
+    build(l,m,lson);
+    build(m+1,r,rson);
+    pushup(rt);
+}
+void update(int L, int R, int add, int l, int r, int rt) {    // L R 是要更新的区间
+    if (L <= l && r <= R) {
+        lazy[rt] += add;
+        seg[rt] += add * (r - l + 1);
+        return;
+    }
+    pushdown(rt, r - l + 1);
+    int m = (l + r) >> 1;
+    if (L <= m) update(L, R, add, l,m,lson);
+    if (m < R) update(L, R, add, m+1,r,rson);
+    pushup(rt);
+}
+int query(int L, int R, int l, int r, int rt) {
+    if (L <= l && r <= R) return seg[rt];
+    pushdown(rt, r - l + 1);
+    int m = (l + r) >> 1, ret = 0;
+    if (L <= m) ret += query(L, R, l,m,lson);
+    if (m < R) ret += query(L, R, m+1,r,rson);
+    return ret;
+}
+
+// interval merge
+struct Seg{
+    int mx,lmx,rmx;
+};
+
+void pushup(int rt,int len){
+    seg[rt].mx = max(seg[lson].mx, max(seg[rson].mx, seg[lson].rmx + seg[rson].lmx));
+    seg[rt].lmx = seg[lson].lmx;
+    seg[rt].rmx = seg[rson].rmx;
+    if(seg[rt].lmx == lson_len) seg[rt].lmx += seg[rson].lmx;
+    if(seg[rt].rmx == rson_len) seg[rt].rmx += seg[lson].rmx;
+}
+```
+
+### 单调栈
+
+```cpp
+int L[maxn], R[maxn];
+int a[maxn];
+
+// 找到左边第一个大于它的元素位置l，和右边第一个大于它的元素位置r
+// [l,r]
+void init(int n) {
+    stack<int> st;
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && a[i] > a[st.top()]) st.pop();
+        if (st.empty())
+            L[i] = 0;
+        else
+            L[i] = st.top() + 1;
+        st.push(i);
+    }
+    while (!st.empty()) st.pop();
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && a[i] > a[st.top()]) st.pop();
+        if (st.empty())
+            R[i] = n-1;
+        else
+            R[i] = st.top() - 1;
+        st.push(i);
+    }
+}
+```
+
+### 单调队列
+
+```cpp
+deque<pii> dq;  // (pos, val)
+
+for(int i=1;i<=n;i++){
+    while(dq.size() && 队首过期) dq.pop_front();
+    while(dq.size() && 加入当前元素后队列不单调) dq.pop_back();
+    dq.push_back(当前元素)
+    队首进行决策
+}
+```
+
+### 树链剖分
+
+```cpp
+const int maxn = 1000000;
+struct HLD {
+    int n, dfn;
+    int sz[maxn], top[maxn], son[maxn], dep[maxn], par[maxn], id[maxn],rk[maxn];
+    vector<int> G[maxn];
+    void init(int n) {
+        this->n = n;
+        clr(son, -1);
+        dfn = 0;
+        for (int i = 0; i <= n; i++) G[i].clear();
+    }
+    void addedge(int u,int v){
+        G[u].pb(v);
+        G[v].pb(u);
+    }
+    void dfs(int u,int fa,int d){
+        dep[u] = d;
+        par[u] = fa;
+        sz[u] = 1;
+        for(auto &v:G[u]){
+            if(v == fa) continue;
+            dfs(v,u,d+1);
+            sz[u] += sz[v];
+            if(son[u] == -1 || sz[v] > sz[son[u]]) son[u] = v;
+        }
+    }
+    void link(int u,int t){
+        top[u] = t;
+        id[u] = ++dfn;
+        rk[dfn] = u;
+        if(son[u] == -1) return ;
+        link(son[u],t);
+        for(auto &v:G[u]){
+            if(v != son[u] && v != par[u])
+                link(v,v);
+        }
+    }
+
+    void update(int u,int v,int w) {} // 数据结构
+    int query(int u,int v) {}         // 数据结构
+
+    void update_path(int u,int v,int w){
+        while(top[u] != top[v]){
+            if(dep[top[u]] < dep[top[v]]) swap(u,v);
+            update(id[top[u]],id[u],w);
+            u = par[top[u]];
+        }
+        // if(u == v) return;   // 边权变点权
+        if(dep[u] > dep[v]) swap(u,v);
+        update(id[u],id[v],w);
+        // update(id[u] + 1,id[v],w);  // 边权变点权
+
+    }
+    int query_path(int u,int v){
+        int ret = 0;
+        while(top[u] != top[v]){
+            if(dep[top[u]] < dep[top[v]]) swap(u,v);
+            ret += query(id[top[u]],id[u]);
+            u = par[top[u]];
+        }
+        // if(u == v) return ret;   // 边权变点权
+        if(dep[u] > dep[v]) swap(u,v);
+        ret += query(id[u],id[v]);
+        // ret += query(id[u] + 1,id[v]);  // 边权变点权
+        return ret;
+    }
+} hld;
+```
+
+### 主席树
+
+```cpp
+const int maxn = 100;
+const int N = maxn + Qlog(n);
+int root[maxn];     // 记录每个版本的根节点
+int sum[N], lch[N], rch[N];
+int dfn = 0;
+
+// 单点修改，区间查询
+inline void pushup(int rt) { sum[rt] = sum[lch[rt]] + sum[rch[rt]]; }
+void build(int &k, int l, int r) {
+    k = ++dfn;
+    if (l == r) {
+        sum[k] = a[l];
+        return;
+    }
+    int m = l + r >> 1;
+    build(lch[k], l, m);
+    build(rch[k], m + 1, r);
+    pushup(k);
+}
+
+void newnode(int old, int k) {
+    lch[k] = lch[old];
+    rch[k] = rch[old];
+    sum[k] = sum[old];
+}
+void update(int old, int &k, int l, int r, int p, int x) {
+    k = ++dfn;
+    newnode(old, k);
+    if (l == r) {
+        sum[k] += x;
+        return;
+    }
+    int m = l + r >> 1;
+    if (p <= m) update(lch[old], lch[k], l, m, p, x);
+    if (p > m) update(rch[old], rch[k], m + 1, r, p, x);
+    pushup(k);
+}
+
+int query(int k, int l, int r, int L, int R) {
+    if (L <= l && R >= r) return sum[k];
+    int m = l + r >> 1;
+    int ret = 0;
+    if(m >= L) ret += query(lch[k],l,m,L,R);
+    if(m < R) ret += query(rch[k],m+1,r,L,R);
+    return ret;
+}
+
+// 区间更新 区间查询
+int lazy[N];
+
+inline void pushup(int rt, int len) {
+    sum[rt] = sum[lch[rt]] + sum[rch[rt]] + len * lazy[sum];
+}
+void build(int &k, int l, int r) {
+    k = ++dfn;
+    lazy[k] = 0;
+    if (l == r) {
+        cin >> sum[k];
+        return;
+    }
+    int m = l + r >> 1;
+    build(lch[k], l, m);
+    build(rch[k], m + 1, r);
+    pushup(k, r - l + 1);
+}
+
+inline void newnode(int old, int k) {
+    lch[k] = lch[old];
+    rch[k] = rch[old];
+    sum[k] = sum[old];
+    lazy[k] = lazy[old];
+}
+void update(int old, int &k, int l, int r, int L, int R, int x) {
+    k = ++dfn;
+    newnode(old, k);
+    if (L <= l && R >= r) {
+        sum[k] += x * (r - l + 1);
+        lazy[k] += x;
+        return;
+    }
+    int m = l + r >> 1;
+    if (m >= L) update(lch[old], lch[k], l, m, L, R, x);
+    if (m < R) update(rch[old], rch[k], m + 1, r, L, R, x);
+    pushup(k, r - l + 1);
+}
+
+int query(int k, int l, int r, int L, int R, int x) {
+    if (L <= l && R >= r) return sum[k] + x * (r - l + 1);
+    x += lazy[k];
+    int m = l + r >> 1;
+    int ret = 0;
+    if(m >= L) ret += query(lch[k],l,m,L,R,x);
+    if(m < R) ret += query(rch[k],m+1,r,L,R,x);
+    return ret;
+}
+```
+
+## 动态规划
+
+### RMQ
+
+#### 一维 RMQ
+
+```cpp
+// nlog(n) 预处理， log(n) 查询
+// 起始下标为1
+const int maxn = 100;
+int dp[maxn][maxn];
+int a[maxn];
+void rmq_init(int n) {
+    for (int i = 1; i <= n; i++) dp[i][0] = a[i];
+    for (int k = 1; (1 << k) <= n; k++) {
+        for (int i = 1; i + (1 << k) < n; i++) {
+            dp[i][k] = min(dp[i][k - 1], dp[i + (1 << (k - 1))][k - 1]);
+        }
+    }
+}
+int rmq(int l, int r) {
+    int k = 31 - __builtin_clz(r - l + 1);  // 前导零的个数
+    return min(d[l][k], d[r - (1 << k) + 1][k]);
+}
+```
+
+#### 二维 RMQ
+
+```cpp
+// dp[r][c][i][k]: 表示(r,c)为左上角,(r + 2^i - 1, c + 2^k - 1)为右下角的矩阵中的最小值
+// 预处理 n*m*log(n)*log(m)， 查询 log(nm)
+// 起始下标为1
+const int maxn = 100;
+int dp[maxn][maxn][maxn][maxn];
+int a[maxn][maxn];
+void rmq_init(int n, int m) {
+    for (int i = 1; i <= n; i++) {
+        for (int k = 1; k <= m; k++) {
+            dp[i][k][0][0] = a[i][k];
+        }
+    }
+    for (int i = 0; (1 << i) <= n; i++) {
+        for (int k = 0; (1 << k) <= m; k++) {
+            if (!i && !k) continue;
+            for (int r = 1; r + (1 << i) - 1 <= n; r++) {
+                for (int c = 1; c + (1 << k) - 1 <= m; c++) {
+                    if (!k)
+                        dp[r][c][i][k] =
+                            min(dp[r][c][i - 1][k],
+                                dp[r + (1 << (i - 1))][c][i - 1][k]);
+                    else
+                        dp[r][c][i][k] =
+                            min(dp[r][c][i][k - 1],
+                                dp[r][c + (1 << (k - 1))][i][k - 1]);
+                }
+            }
+        }
+    }
+}
+int rmq(int x1, int y1,int x2,int y2) {
+    int kx = 31 - __builtin_clz(x2 - x1 + 1);
+    int ky = 31 - __builtin_clz(y2 - y1 + 1);
+    int m1 = dp[x1][y1][kx][ky];
+    int m2 = dp[x2 - (1 << kx) + 1][y1][kx][ky];
+    int m3 = dp[x1][y2 - (1 << ky) + 1][kx][ky];
+    int m4 = dp[x2 - (1 << kx) + 1][y2 - (1 << ky) + 1][kx][ky];
+    return min({m1,m2,m3,m4});
+}
+```
+
+### 子集 DP
+
+```cpp
+// O(3^n)
+for (int i = 1; i < (1 << n); i++) {
+    for (int j = i; j; j = (j - 1) & i) {
+        /*
+            j为i的子集
+        */
+    }
+}
+```
+
+```cpp
+// O(n2^n)
+for (int i = 0; i < n; i++) {
+    for (int j = 0; j < (1 << n); j++) {
+        if (j & (1 << i)) {
+        /*
+            j ^ (1 << i) 为 j 的子集
+        */
+        }
+    }
+}
+```
+
+## 博弈
+
+### SG 函数
+
+```cpp
+// sg[] = 0 必败，其余必胜
+const int maxn = 100;
+int f[N];
+int SG[maxn];  //
+int S[maxn];   // x 的后继状态
+
+void getSG(int n) {
+    SG[0] = 0;  // clr(SG,0);
+    for (int i = 1; i < maxn; i++) {
+        clr(S, 0);
+        for (int k = 0; f[k] <= i && k < n; k++) S[SG[i - f[k]]] = 1;
+        for (int k = 0;; k++) {
+            if (!S[k]) {
+                SG[i] = k;
+                break;
+            }
+        }
+    }
+}
+
+// 单点SG查询
+void init(){
+    clr(SG,-1);
+}
+int getSG(int n, int foo) {
+    if (SG[foo] != -1) return SG[foo];
+    // int S[N] = {0};
+    set<int> S;
+    for (int k = 0; f[k] <= foo && k < n; k++) {
+        int bar = getSG(n, foo - f[k]);
+        S.insert(bar);
+        // S[bar] = 1;
+    }
+    for (int k = 0;; k++) {
+        if (S.find(k) == S.end()) {
+            return SG[foo] = k;
+        }
+    }
+}
+```
+
+## 其它
+
+### 三分
+
+#### 整数三分
+
+```cpp
+// 求极大值
+int find(int l, int r) {
+    while (l < r - 1) {
+        int m1 = l + r >> 1;
+        int m2 = m1 + r >> 1;
+        if (work(m1) > work(m2))
+            r = m2;
+        else
+            l = m1;
+    }
+    return work(l) > work(r) ? l : r;
+}
+```
+
+#### 浮点三分
+
+```cpp
+// 求极小值
+double find(double l, double r) {
+    double m1, m2;
+    while (r - l >= eps) {
+        m1 = l + (r - l) / 3;
+        m2 = r - (r - l) / 3;
+        // m1 = l + r >> 1;
+        // m2 = m1 + r >> 1;
+        if (work(m1) > work(m2))
+            l = m1;
+        else
+            r = m2;
+    }
+    return (m1 + m2) / 2;
+}
+```
+
+### 三维前缀和
+
+```cpp
+int a[maxn][maxn][maxn];
+
+int sum(int x1, int y1, int z1, int x2, int y2, int z2) {
+    return a[x2][y2][z2] - a[x1 - 1][y2][z2] - a[x2][y1 - 1][z2] -
+           a[x2][y2][z1 - 1] + a[x1 - 1][y1 - 1][z2] + a[x1 - 1][y2][z1 - 1] +
+           a[x2][y1 - 1][z1 - 1] - a[x1 - 1][y1 - 1][z1 - 1];
+}
+
+void init(int n) {
+    for (int i = 0; i < n; i++)
+        for (int k = 0; k < n; k++)
+            for (int t = 0; t < n; t++) a[i][k][t] += a[i - 1][k][t];
+    for (int i = 0; i < n; i++)
+        for (int k = 0; k < n; k++)
+            for (int t = 0; t < n; t++) a[i][k][t] += a[i][k - 1][t];
+    for (int i = 0; i < n; i++)
+        for (int k = 0; k < n; k++)
+            for (int t = 0; t < n; t++) a[i][k][t] += a[i][k][t - 1];
+}
+```
+
+### 离散化
+
+```cpp
+// c++11
+vector<int> a,b;
+for(int i=0;i<n;i++){
+    cin >> a[i];
+    b[i] = a[i];
+}
+b.resize(distance(b.begin(),unique(b.begin(),b.end())));
+
+inline int getid(int x){
+    return lower_bound(b.begin(),b.end(),x) - b.begin() + 1;
+}
+```
+
+```cpp
+for(int i=0;i<n;i++){
+    A[i] = B[i];
+}
+sort(B,B+n);
+int size = unique(B,B+n) - B;
+for(int i=0;i<n;++){
+    A[i] = lower_bound(B,B+size,A[i]) - B + 1;
 }
 ```

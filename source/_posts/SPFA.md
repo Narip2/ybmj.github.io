@@ -3,9 +3,11 @@ title: SPFA
 comments: true
 date: 2018-06-22 22:27:38
 categories:
-- ACM
-- 图论
-- 最短路
+  - ACM
+  - 图论
+tags:
+  - 图论
+  - 最短路
 ---
 
 ```cpp

@@ -3,17 +3,20 @@ title: Dijkstra
 comments: true
 date: 2018-03-09 15:18:14
 categories:
-- ACM
-- 图论
-- 最短路
+  - ACM
+  - 图论
+tags:
+  - 图论
+  - 最短路
 ---
 
 # Dijkstra
+
 ## 思想
 
 本质上是个贪心。
 
-从起点开始，依次把连通的路放到优先队列里（权值小的在top),然后每次取top，相当于
+从起点开始，依次把连通的路放到优先队列里（权值小的在 top),然后每次取 top，相当于
 连接这条边，再把与边的另一点所连接的边都放到优先队列里。（把已经连接的边看作一个整体）
 
 **注意**: 图中不能存在负权边
@@ -21,6 +24,7 @@ categories:
 **时间复杂度** : $O(E \times logV)$
 
 ## 模板
+
 ```cpp
 typedef pair<int, int> pii;
 const int maxn = 100;
@@ -51,6 +55,4 @@ void dijkstra(int s, int n) {
         }
     }
 }
-
 ```
-

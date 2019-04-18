@@ -3,30 +3,32 @@ title: RMQ
 comments: true
 date: 2018-07-03 08:10:47
 categories:
-- ACM
-- 数据结构
-- RMQ
+  - ACM
+  - 动态规划
+tags:
+  - RMQ
 ---
 
 # RMQ
 
 RMQ: Range Minimum Query 范围最小值
 
-## 一维RMQ
+## 一维 RMQ
 
-$dp[i][k]$: 表示从i位置开始，长度为$2^k$的一段元素中的最小值。
+$dp[i][k]$: 表示从 i 位置开始，长度为$2^k$的一段元素中的最小值。
 
 $dp[i][k] = min(dp[i][k-1], dp[i + (1 << (k-1))][k-1])$
 
 ![](http://ozrmo3j0k.bkt.clouddn.com/Selection_010.png)
 
-查询区间$[l,r]$的时候要先找到第一个k,使得$2^{k+1} > r - l + 1$
+查询区间$[l,r]$的时候要先找到第一个 k,使得$2^{k+1} > r - l + 1$
 
 那么答案就是$min(dp[l][k],dp[r - (1 << k) + 1][k])$
 
-时间复杂度为： 预处理nlogn, 查询logn
+时间复杂度为： 预处理 nlogn, 查询 logn
 
 ### 模板
+
 ```cpp
 // nlog(n) 预处理， log(n) 查询
 // 起始下标为1
@@ -47,13 +49,12 @@ int rmq(int l, int r) {
 }
 ```
 
-## 二维RMQ
+## 二维 RMQ
 
 $dp[r][c][i][k]$: 表示$(r,c)$为左上角,$(r + 2^{i} - 1, c + 2^{k} - 1)$为右下角的矩阵中的最小值
 
-
 ```cpp
-// 预处理 n*m*log(n)*log(m)， 查询 log(nm) 
+// 预处理 n*m*log(n)*log(m)， 查询 log(nm)
 // 起始下标为1
 const int maxn = 100;
 int dp[maxn][maxn][maxn][maxn];
@@ -92,4 +93,3 @@ int rmq(int x1, int y1,int x2,int y2) {
     return min({m1,m2,m3,m4});
 }
 ```
-

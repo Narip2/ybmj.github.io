@@ -60,7 +60,6 @@ void dfs(int u, int fa, bool keep) {
     if (bc != -1) bigc[bc] = 0;
     if (!keep) add(u, fa, -1);
 }
-
 ```
 
 ```cpp
