@@ -359,6 +359,46 @@ bool solve(ll a, ll b, ll c, ll &x, ll &y, ll &dx, ll &dy) {
 }
 ```
 
+### CRT
+
+```cpp
+// mod两两互质
+// 通解 re + k * M
+// 返回最小非负整数解
+void crt(ll r[], ll m[], ll n, ll &re, ll &M) {
+    M = 1, re = 0;
+    for (int i = 0; i < n; i++) M *= m[i];
+    for (int i = 0; i < n; i++) {
+        ll x, y,  tm = M / m[i];
+        ll d = exgcd(tm, m[i], x, y);
+        re = (re + tm * x * r[i]) % M;
+    }
+    re = (re + M) % M;
+}
+```
+
+#### EXCRT
+
+```cpp
+// mod不满足两两互质
+// 通解为 re + k*M
+// 返回最小非负整数解
+bool excrt(ll r[], ll m[], ll n, ll &re, ll &M) {
+    ll x, y;
+    M = m[0], re = r[0];
+    for (int i = 1; i < n; i++) {
+        ll d = exgcd(M, m[i],  x, y);
+        if ((r[i] - re) % d != 0) return 0;
+        x = (r[i] - re) / d * x % (m[i] / d);
+        re += x * M;
+        M = M / d * m[i];
+        re %= M;
+    }
+    re = (re + M) % M;
+    return 1;
+}
+```
+
 ### 逆元
 
 #### 费马小定理求逆元
@@ -1346,6 +1386,10 @@ struct HLD {
         G[u].pb(v);
         G[v].pb(u);
     }
+     void build() {
+        dfs(1, 1, 1);
+        link(1, 1);
+    }
     void dfs(int u,int fa,int d){
         dep[u] = d;
         par[u] = fa;
@@ -1362,7 +1406,7 @@ struct HLD {
         id[u] = ++dfn;
         rk[dfn] = u;
         if(son[u] == -1) return ;
-        link(son[u],t);
+        link(son[u],t);     // 保证重链的dfs序是连续的
         for(auto &v:G[u]){
             if(v != son[u] && v != par[u])
                 link(v,v);
@@ -1378,10 +1422,10 @@ struct HLD {
             update(id[top[u]],id[u],w);
             u = par[top[u]];
         }
-        // if(u == v) return;   // 边权变点权
+        // if(u == v) return;   // 边权
         if(dep[u] > dep[v]) swap(u,v);
-        update(id[u],id[v],w);
-        // update(id[u] + 1,id[v],w);  // 边权变点权
+        update(id[u],id[v],w);         // 点权
+        // update(id[u] + 1,id[v],w);  // 边权
 
     }
     int query_path(int u,int v){
@@ -1391,10 +1435,10 @@ struct HLD {
             ret += query(id[top[u]],id[u]);
             u = par[top[u]];
         }
-        // if(u == v) return ret;   // 边权变点权
+        // if(u == v) return ret;   // 边权
         if(dep[u] > dep[v]) swap(u,v);
-        ret += query(id[u],id[v]);
-        // ret += query(id[u] + 1,id[v]);  // 边权变点权
+        ret += query(id[u],id[v]);         // 点权
+        // ret += query(id[u] + 1,id[v]);  // 边权
         return ret;
     }
 } hld;

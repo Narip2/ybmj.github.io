@@ -50,9 +50,16 @@ $son[u]$ 保存重儿子
 
 $rk[u]$ 保存当前 dfs 标号在树中所对应的节点
 
-$top[u]$ 保存当前节点所在链的顶端节点
+$top[u]$ 保存当前节点所在链的顶端节点。如果该点不在重链上则 top[u]=u
 
 $id[u]$ 保存树中每个节点剖分以后的新编号（DFS 的执行顺序）
+
+**算法过程**
+
+- dfs 去找出所有重儿子
+- link 去连接重链，保证重链的 dfs 序是连续的（因为重链是要维护的信息）
+- update_path(u,v) 如果 top[u] == top[v]，说明 u 和 v 在同一条重链上，直接按 dfs 序用数据结构去更新即可（update(id[u],id[v])）。如果 top[u] != top[v]，我们需要深度大的点往上跳（update(id[top[u]],id[u])）。
+- 查询同理
 
 **注意**
 
@@ -80,6 +87,10 @@ struct HLD {
         G[u].pb(v);
         G[v].pb(u);
     }
+     void build() {
+        dfs(1, 1, 1);
+        link(1, 1);
+    }
     void dfs(int u,int fa,int d){
         dep[u] = d;
         par[u] = fa;
@@ -96,7 +107,7 @@ struct HLD {
         id[u] = ++dfn;
         rk[dfn] = u;
         if(son[u] == -1) return ;
-        link(son[u],t);
+        link(son[u],t);     // 保证重链的dfs序是连续的
         for(auto &v:G[u]){
             if(v != son[u] && v != par[u])
                 link(v,v);
@@ -112,10 +123,10 @@ struct HLD {
             update(id[top[u]],id[u],w);
             u = par[top[u]];
         }
-        // if(u == v) return;   // 边权变点权
+        // if(u == v) return;   // 边权
         if(dep[u] > dep[v]) swap(u,v);
-        update(id[u],id[v],w);
-        // update(id[u] + 1,id[v],w);  // 边权变点权
+        update(id[u],id[v],w);         // 点权
+        // update(id[u] + 1,id[v],w);  // 边权
 
     }
     int query_path(int u,int v){
@@ -125,10 +136,10 @@ struct HLD {
             ret += query(id[top[u]],id[u]);
             u = par[top[u]];
         }
-        // if(u == v) return ret;   // 边权变点权
+        // if(u == v) return ret;   // 边权
         if(dep[u] > dep[v]) swap(u,v);
-        ret += query(id[u],id[v]);
-        // ret += query(id[u] + 1,id[v]);  // 边权变点权
+        ret += query(id[u],id[v]);         // 点权
+        // ret += query(id[u] + 1,id[v]);  // 边权
         return ret;
     }
 } hld;
