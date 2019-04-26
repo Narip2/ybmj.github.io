@@ -301,6 +301,14 @@ void Manacher(string &s){
 
 - 若正整数 a，n 互质，那么对于任意正整数 b，有$a^b \equiv a ^{b \% \phi(n)}$ mod(n)
 
+**威尔逊定理：**
+
+- p 为素数的充要条件为$(p-1)! \equiv -1 \quad mod(p)$
+
+**二次探测定理：**
+
+- 如果 p 是一个素数，且$0 < x < p$，则方程$x^2 \equiv 1 \quad mod(p)$的解为 1 和 p-1
+
 ### 矩阵快速幂
 
 ```cpp
@@ -455,6 +463,32 @@ inline ll Mul(ll a, ll b, ll m) {
 }
 ```
 
+### Miller Rabin 大素数判定
+
+```cpp
+// O(slogn)内判定素数
+// s为判定次数，错误率为(1/4)^s
+bool Miller_Rabin(ull n, int s) {
+    if (n == 2) return 1;
+    if (n < 2 || !(n & 1)) return 0;
+    int t = 0;
+    ull x, y, u = n - 1;
+    while ((u & 1) == 0) t++, u >>= 1;
+    for (int i = 0; i < s; i++) {
+        ull a = rand() % (n - 1) + 1;
+        ull x = Pow(a, u, n);
+        for (int j = 0; j < t; j++) {
+            // ull y = Mul(x, x, n);
+            ull y = __int128(x) * __int128(x) % n;
+            if (y == 1 && x != 1 && x != n - 1) return 0;
+            x = y;
+        }
+        if (x != 1) return 0;
+    }
+    return 1;
+}
+```
+
 ### FFT
 
 ```cpp
@@ -589,6 +623,51 @@ void init() {
             phi[i * prime[k]] = phi[i] * (prime[k] - 1);
         }
     }
+}
+```
+
+### 高斯消元
+
+```cpp
+typedef double mat[maxn][maxn];
+// A为增广矩阵，执行后A[i][n]表示第i个未知数的值
+//无解或无穷多解返回false
+bool gauss(mat &A, int n) {
+    for (int i = 0; i < n; i++) {
+        int r = i;
+        for (int j = i + 1; j < n; j++)
+            if (fabs(A[j][i]) > fabs(A[r][i])) r = j;
+        if (r != i)
+            for (int j = 0; j <= n; j++) swap(A[r][j], A[i][j]);
+        if (fabs(A[i][i]) < eps) return false;
+
+        for (int k = 0; k < n; k++)
+            if (k != i)
+                for (int j = n; k >= i; j--)
+                    A[k][j] -= A[k][i] / A[i][i] * A[i][j];
+    }
+    return true;
+}
+// 模意义下用逆元代替除法
+bool gauss(mat &A, int n) {
+    for (int i = 0; i < n; i++) {
+        int r = i;
+        for (int j = i + 1; j < n; j++)
+            if (fabs(A[j][i]) > fabs(A[r][i])) r = j;
+        if (r != i)
+            for (int j = 0; j <= n; j++) swap(A[r][j], A[i][j]);
+        if (fabs(A[i][i] - eps) < eps) return false;
+
+        ll b = Pow(A[i][i], mod - 2);
+        for (int j = i; j < n + 1; j++) A[i][j] = A[i][j] * b % mod;
+        for (int j = 0; j < n; j++)
+            if (j != i) {
+                int c = A[j][i];
+                for (int k = i; k < n + 1; k++)
+                    A[j][k] = (A[j][k] - A[i][k] * c % mod + mod) % mod;
+            }
+    }
+    return true;
 }
 ```
 
