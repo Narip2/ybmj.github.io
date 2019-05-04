@@ -309,6 +309,16 @@ void Manacher(string &s){
 
 - 如果 p 是一个素数，且$0 < x < p$，则方程$x^2 \equiv 1 \quad mod(p)$的解为 1 和 p-1
 
+**海伦公式**
+
+- 三角形的面积公式$S = \sqrt{p(p-a)(p-b)(p-c)}$，其中$p = \frac{a+b+c}{2}$
+
+**婆罗摩笈多公式**
+
+- 圆内接四边形面积公式$S = \sqrt{(p-a)(p-b)(p-c)(p-d)}$，其中$p = \frac{a+b+c+d}{2}$
+- 一般四边形面积公式$S = \sqrt{(p-a)(p-b)(p-c)(p-d) - abcd\cos^2 \theta }$，其中$\theta$为四边形一对角和的一半。
+- 对于给定的四条边长，所有组成的四边形中圆内接四边形的面积最大
+
 ### 矩阵快速幂
 
 ```cpp
@@ -668,6 +678,40 @@ bool gauss(mat &A, int n) {
             }
     }
     return true;
+}
+```
+
+### 莫比乌斯函数
+
+```cpp
+// 线性筛莫比乌斯函数
+const int maxn = 1e7;
+int prime[maxn], tot, mu[maxn];
+bool check[maxn];
+void CalMu() {
+    mu[1] = 1;
+    for (int i = 2; i < maxn; i++) {
+        if (!check[i]) prime[tot++] = i, mu[i] = -1;
+        for (int j = 0; j < tot; j++) {
+            if (i * prime[j] >= maxn) break;
+            check[i * prime[j]] = true;
+            if (i % prime[j] == 0) {
+                mu[i * prime[j]] = 0;
+                break;
+            } else
+                mu[i * prime[j]] = -mu[i];
+        }
+    }
+}
+```
+
+### 整除分块
+
+```cpp
+// O(sqrt(n))
+for (int l = 1, r; l <= n; l = r + 1) {
+    r = n / (n / i);
+    ans += (n / l) * (r - l + 1);
 }
 ```
 
