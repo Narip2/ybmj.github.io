@@ -590,7 +590,8 @@ void fft(vector<cp>& a, int n = -1) {
 
 vector<cp> fa, fb;
 
-vector<int> multiply(vector<int>& a, vector<int>& b) {
+template <class T>
+vector<T> multiply(vector<T>& a, vector<T>& b) {
     int need = a.size() + b.size() - 1;
     int nbase = 0;
     while ((1 << nbase) < need) nbase++;
@@ -598,8 +599,8 @@ vector<int> multiply(vector<int>& a, vector<int>& b) {
     int sz = 1 << nbase;
     if (sz > (int)fa.size()) fa.resize(static_cast<unsigned long>(sz));
     for (int i = 0; i < sz; i++) {
-        int x = (i < (int)a.size() ? a[i] : 0);
-        int y = (i < (int)b.size() ? b[i] : 0);
+        T x = (i < (int)a.size() ? a[i] : 0);
+        T y = (i < (int)b.size() ? b[i] : 0);
         fa[i] = cp(x, y);
     }
     fft(fa, sz);
@@ -613,10 +614,8 @@ vector<int> multiply(vector<int>& a, vector<int>& b) {
         fa[i] = z;
     }
     fft(fa, sz);
-    vector<int> res(static_cast<unsigned long>(need));
-    for (int i = 0; i < need; i++) {
-        res[i] = fa[i].x + 0.5;
-    }
+    vector<T> res(static_cast<unsigned long>(need));
+    for (int i = 0; i < need; i++) res[i] = fa[i].x + 0.5;
     return res;
 }
 };  // namespace fft
@@ -661,6 +660,29 @@ void init() {
                 break;
             }
             phi[i * prime[k]] = phi[i] * (prime[k] - 1);
+        }
+    }
+}
+```
+### 莫比乌斯函数
+```cpp
+const int maxn = 1e7 + 5;
+bool check[maxn];
+int mu[maxn];
+vector<int> prime;
+void CalMu() {
+    mu[1] = 1;
+    for (int i = 2; i < maxn; i++) {
+        if (!check[i]) prime.push_back(i), mu[i] = -1;
+        for (int j = 0; j < prime.size(); j++) {
+            ll nxt = 1ll * prime[j] * i;
+            if (nxt >= maxn) break;
+            check[nxt] = true;
+            if (i % prime[j] == 0) {
+                mu[nxt] = 0;
+                break;
+            } else
+                mu[nxt] = -mu[i];
         }
     }
 }
