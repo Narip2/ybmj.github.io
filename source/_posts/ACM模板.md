@@ -323,11 +323,15 @@ void Manacher(string &s){
 
 - 对于质数 p，对于任意整数 a，均满足$a^p \equiv a$ (mod p)
 
+**欧拉函数**
+
+- $\phi(m) = \{a: 1 \leq a \leq m, gcd(a,m) = 1 \}$
+
 **欧拉定理：**
 
-- 若正整数 a，n 互质，则$a ^ {\phi(n)} \equiv 1$ mod(n)
+- 若正整数 a，n 互质，则$a ^ {\phi(n)} \equiv 1 \quad mod(n)$
 
-**欧拉定理推论：**
+**欧拉定理推论（降幂）：**
 
 - 若正整数 a，n 互质，那么对于任意正整数 b，有$a^b \equiv a ^{b \% \phi(n)}$ mod(n)
 
@@ -407,6 +411,65 @@ bool solve(ll a, ll b, ll c, ll &x, ll &y, ll &dx, ll &dy) {
 }
 ```
 
+### 类欧几里得
+$f = \sum^n_{i=0} \lfloor \frac{ai+b}{c} \rfloor $
+$g = \sum^n_{i=0} \lfloor \frac{ai+b}{c} \rfloor ^2$
+$h = \sum^n_{i=0} i\lfloor \frac{ai+b}{c} \rfloor $
+
+```cpp
+namespace likeGcd {
+using ll = long long;
+const ll mod = 998244353;
+const ll inv2 = 499122177;
+const ll inv6 = 166374059;
+ll n, a, b, c;
+
+struct node {
+  ll f, g, h;
+};
+
+inline ll S1(ll n) { return n * (n + 1) % mod * inv2 % mod; }
+
+inline ll S2(ll n) {
+  return n * (n + 1) % mod * (2 * n + 1) % mod * inv6 % mod;
+}
+
+inline node solve(ll a, ll b, ll c, ll n) {
+  ll t1 = a / c, t2 = b / c, s1 = S1(n), s2 = S2(n), m = (a * n + b) / c;
+  node ans, now;
+  ans.f = ans.g = ans.h = 0;
+  if (!n) {
+    ans.f = t2;
+    ans.g = t2 * t2 % mod;
+    return ans;
+  }
+  if (!a) {
+    ans.f = (n + 1) * t2 % mod;
+    ans.g = (n + 1) * t2 % mod * t2 % mod;
+    ans.h = t2 * s1 % mod;
+    return ans;
+  }
+  if (a >= c || b >= c) {
+    now = solve(a % c, b % c, c, n);
+    ans.f = (now.f + t1 * s1 + (n + 1) * t2) % mod;
+    ans.g = (now.g + 2 * t1 * now.h + 2 * t2 * now.f + t1 * t1 % mod * s2 +
+             2 * t1 * t2 % mod * s1 + (n + 1) * t2 % mod * t2) %
+            mod;
+    ans.h = (now.h + t1 * s2 + t2 * s1) % mod;
+    return ans;
+  }
+  now = solve(c, c - b - 1, a, m - 1);
+  ans.f = (m * n - now.f) % mod;
+  ans.f = (ans.f + mod) % mod;
+  ans.g = (m * m % mod * n - 2 * now.h - now.f);
+  ans.g = (ans.g + mod) % mod;
+  ans.h = (m * s1 - now.g * inv2 - now.f * inv2) % mod;
+  ans.h = (ans.h + mod) % mod;
+  return ans;
+}
+
+};  // namespace likeGcd
+```
 ### CRT
 
 ```cpp
@@ -619,6 +682,65 @@ vector<T> multiply(vector<T>& a, vector<T>& b) {
     return res;
 }
 };  // namespace fft
+```
+
+### 线性筛因数个数
+```cpp
+const int maxn = 1e7 + 5;
+bool vis[maxn];
+int prime[maxn], d[maxn], num[maxn], tot;
+// d[i]: i的约数个数， num[i]: i的最小质因数的个数
+void init() {
+  memset(vis, 0, sizeof(vis));
+  d[1] = 1;
+  for (ll i = 2; i < maxn; i++) {
+    if (!vis[i]) {
+      prime[tot++] = i;
+      d[i] = 2;
+      num[i] = 1;
+    }
+    for (ll k = 0; k < tot && i * prime[k] < maxn; k++) {
+      vis[i * prime[k]] = 1;
+      if (i % prime[k] == 0) {
+        d[i * prime[k]] = d[i] / (num[i] + 1) * (num[i] + 2);
+        num[i * prime[k]] = num[i] + 1;
+        break;
+      } else {
+        d[i * prime[k]] = d[i] * d[prime[k]];
+        num[i * prime[k]] = 1;
+      }
+    }
+  }
+}
+```
+
+### 线性筛因数和
+```cpp
+const int maxn = 1e7 + 5;
+bool vis[maxn];
+int prime[maxn], sd[maxn], num[maxn], tot;
+// sd[i]: i的约数和
+void init() {
+  memset(vis, 0, sizeof(vis));
+  sd[1] = 1;
+  for (ll i = 2; i < maxn; i++) {
+    if (!vis[i]) {
+      prime[tot++] = i;
+      sd[i] = num[i] = 1 + i;
+    }
+    for (ll k = 0; k < tot && i * prime[k] < maxn; k++) {
+      vis[i * prime[k]] = 1;
+      if (i % prime[k]) {
+        sd[i * prime[k]] = sd[i] * sd[prime[k]];
+        num[i * prime[k]] = prime[k] + 1;
+      } else {
+        sd[i * prime[k]] = sd[i] / num[i] * (num[i] * prime[k] + 1);
+        num[i * prime[k]] = num[i] * prime[k] + 1;
+        break;
+      }
+    }
+  }
+}
 ```
 
 ### 欧拉函数
