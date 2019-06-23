@@ -682,7 +682,158 @@ vector<T> multiply(vector<T>& a, vector<T>& b) {
     return res;
 }
 };  // namespace fft
+
+namespace ntt {
+int Pow(int a, int b, int p) {
+  int ret = 1;
+  while (b) {
+    if (b & 1) ret = 1LL * ret * a % p;
+    a = 1LL * a * a % p;
+    b >>= 1;
+  }
+  return ret;
+}
+const int mod = 119 << 23 | 1;
+const int G = 3;
+int wn[20];
+void getwn() {  //  千万不要忘记
+  for (int i = 0; i < 20; i++) wn[i] = Pow(G, (mod - 1) / (1 << i), mod);
+}
+void change(int y[], int len) {
+  for (int i = 1, j = len / 2; i < len - 1; i++) {
+    if (i < j) swap(y[i], y[j]);
+    int k = len / 2;
+    while (j >= k) j -= k, k /= 2;
+    if (j < k) j += k;
+  }
+}
+void ntt(int y[], int len, int on) {
+  change(y, len);
+  for (int h = 2, id = 1; h <= len; h <<= 1, id++) {
+    for (int j = 0; j < len; j += h) {
+      int w = 1;
+      for (int k = j; k < j + h / 2; k++) {
+        int u = y[k] % mod;
+        int t = 1LL * w * (y[k + h / 2] % mod) % mod;
+        y[k] = (u + t) % mod, y[k + h / 2] = ((u - t) % mod + mod) % mod;
+        w = 1LL * w * wn[id] % mod;
+      }
+    }
+  }
+  if (on == -1) {
+    //  原本的除法要用逆元
+    int inv = Pow(len, mod - 2, mod);
+    for (int i = 1; i < len / 2; i++) swap(y[i], y[len - i]);
+    for (int i = 0; i < len; i++) y[i] = 1LL * y[i] * inv % mod;
+  }
+}
+/*
+void multiply(int x[], int y[], int n, int m) {
+  // n,m 表示长度 （阶数要加一）
+  int len = m + n;
+  while (len <= (m + n)) len <<= 1;
+  for (int i = 0; i < len; i++) A[i] = B[i] = 0;
+  for (int i = 0; i <= n; i++) A[i] = x[i];
+  for (int i = 0; i <= m; i++) B[i] = y[i];
+  ntt(A, len, 1);
+  ntt(B, len, 1);
+  for (int i = 0; i < len; i++) A[i] = 1LL * A[i] * B[i] % mod;
+  ntt(A, len, -1);
+}
+*/
+}  // namespace ntt
+
+namespace fft {
+const double PI = acos(-1.0);
+//复数结构体
+struct Complex {
+  double x, y;  //实部和虚部 x+yi
+  Complex(double _x = 0.0, double _y = 0.0) { x = _x, y = _y; }
+  Complex operator-(const Complex& b) const {
+    return Complex(x - b.x, y - b.y);
+  }
+  Complex operator+(const Complex& b) const {
+    return Complex(x + b.x, y + b.y);
+  }
+  Complex operator*(const Complex& b) const {
+    return Complex(x * b.x - y * b.y, x * b.y + y * b.x);
+  }
+};
+void change(Complex y[], int len) {
+  for (int i = 1, j = len / 2; i < len - 1; i++) {
+    if (i < j) swap(y[i], y[j]);
+    int k = len / 2;
+    while (j >= k) j -= k, k /= 2;
+    if (j < k) j += k;
+  }
+}
+/*
+ * len必须为2^k形式，
+ * on==1时是DFT，on==-1时是IDFT
+ */
+void fft(Complex y[], int len, int on) {
+  change(y, len);
+  for (int h = 2; h <= len; h <<= 1) {
+    Complex wn(cos(-on * 2 * PI / h), sin(-on * 2 * PI / h));
+    for (int j = 0; j < len; j += h) {
+      Complex w(1, 0);
+      for (int k = j; k < j + h / 2; k++) {
+        Complex u = y[k];
+        Complex t = w * y[k + h / 2];
+        y[k] = u + t, y[k + h / 2] = u - t;
+        w = w * wn;
+      }
+    }
+  }
+  if (on == -1)
+    for (int i = 0; i < len; i++) y[i].x /= len;
+}
+/*
+void multiply(int x[], int y[], int n, int m) {
+  // n,m 表示长度 （阶数要加一）
+  int len = m + n;
+  while (len <= (m + n)) len <<= 1;
+  for (int i = 0; i < len; i++) A[i] = B[i] = Complex(0, 0);
+  for (int i = 0; i <= n; i++) A[i] = Complex(x[i], 0);
+  for (int i = 0; i <= m; i++) B[i] = Complex(y[i], 0);
+  fft(A, len, 1);
+  fft(B, len, 1);
+  for (int i = 0; i < len; i++) A[i] = 1LL * A[i] * B[i] % mod;
+  fft(A, len, -1);
+  for (int i = 0; i < len; i++) C[i] = int(A[i].x + 0.5);
+  while (C[len] == 0 && len > 0) len--;
+}
+*/
+}  // namespace fft
+
+namespace fwt {
+void fwt(int f[], int m) {
+  int n = __builtin_ctz(m);
+  for (int i = 0; i < n; ++i)
+    for (int j = 0; j < m; ++j)
+      if (j & (1 << i)) {
+        int l = f[j ^ (1 << i)], r = f[j];
+        f[j ^ (1 << i)] = l + r, f[j] = l - r;
+        // or: f[j] += f[j ^ (1 << i)];
+        // and: f[j ^ (1 << i)] += f[j];
+      }
+}
+void ifwt(int f[], int m) {
+  int n = __builtin_ctz(m);
+  for (int i = 0; i < n; ++i)
+    for (int j = 0; j < m; ++j)
+      if (j & (1 << i)) {
+        int l = f[j ^ (1 << i)], r = f[j];
+        f[j ^ (1 << i)] = (l + r) / 2, f[j] = (l - r) / 2;
+        // 如果有取模需要使用逆元
+        // or: f[j] -= f[j ^ (1 << i)];
+        // and: f[j ^ (1 << i)] -= f[j];
+      }
+}
+}  // namespace fwt
 ```
+
+
 
 ### 线性筛因数个数
 ```cpp
@@ -884,7 +1035,7 @@ void CalMu() {
 ```cpp
 // O(sqrt(n))
 for (int l = 1, r; l <= n; l = r + 1) {
-    r = n / (n / i);
+    r = n / (n / l);
     ans += (n / l) * (r - l + 1);
 }
 ```
