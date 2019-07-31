@@ -569,26 +569,37 @@ inline ll Mul(ll a, ll b, ll m) {
 ### Miller Rabin 大素数判定
 
 ```cpp
+ll Pow(ll a, ll b, ll p) {
+  ll ret = 1;
+  while (b) {
+    if (b & 1) ret = Mul(ret, a, p);    // 快速乘
+    a = Mul(a, a, p);
+    b >>= 1;
+  }
+  return ret;
+}
+
+mt19937_64 rnd;
 // O(slogn)内判定素数
 // s为判定次数，错误率为(1/4)^s
 bool Miller_Rabin(ull n, int s) {
-    if (n == 2) return 1;
-    if (n < 2 || !(n & 1)) return 0;
-    int t = 0;
-    ull x, y, u = n - 1;
-    while ((u & 1) == 0) t++, u >>= 1;
-    for (int i = 0; i < s; i++) {
-        ull a = rand() % (n - 1) + 1;
-        ull x = Pow(a, u, n);
-        for (int j = 0; j < t; j++) {
-            // ull y = Mul(x, x, n);
-            ull y = __int128(x) * __int128(x) % n;
-            if (y == 1 && x != 1 && x != n - 1) return 0;
-            x = y;
-        }
-        if (x != 1) return 0;
+  if (n == 2) return 1;
+  if (n < 2 || !(n & 1)) return 0;
+  int t = 0;
+  ull x, y, u = n - 1;
+  while ((u & 1) == 0) t++, u >>= 1;
+  for (int i = 0; i < s; i++) {
+    ull a = rnd() % (n - 1) + 1;
+    ull x = Pow(a, u, n);
+    for (int j = 0; j < t; j++) {
+      ull y = Mul(x, x, n);
+      // ull y = __int128(x) * __int128(x) % n;
+      if (y == 1 && x != 1 && x != n - 1) return 0;
+      x = y;
     }
-    return 1;
+    if (x != 1) return 0;
+  }
+  return 1;
 }
 ```
 
