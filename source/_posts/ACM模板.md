@@ -1138,28 +1138,70 @@ void cal() {
 
 ```cpp
 struct LB {
-  int b[MAX_BASE + 1];
-  LB() { memset(b, 0, sizeof(b)); }
+  int basis[MAX_BASE + 1];
+  LB() { memset(basis, 0, sizeof(basis)); }
   int query() {
     int ret = 0;
     for (int i = MAX_BASE; i >= 0; i--) {
-      ret = max(ret, ret ^ b[i]);
+      ret = max(ret, ret ^ basis[i]);
     }
     return ret;
   }
   bool insert(int x) {
     for (int i = MAX_BASE; i >= 0 && x; --i)
       if (x >> i & 1) {
-        if (b[i])
-          x ^= b[i];
+        if (basis[i])
+          x ^= basis[i];
         else {
-          b[i] = x;
+          basis[i] = x;
           return true;
         }
       }
     return false;
   }
+  void clear() { memset(basis, 0, sizeof(basis)); }
 };
+// 线性基求交
+LB Intersect(LB A, LB B) {      
+  LB All, C, D;
+  All.clear();
+  C.clear();
+  D.clear();
+  for (int i = MAX_BASE; i >= 0; i--) {
+    All.basis[i] = A.basis[i];
+    D.basis[i] = 1ll << i;
+  }
+  for (int i = MAX_BASE; i >= 0; i--) {
+    if (B.basis[i]) {
+      int v = B.basis[i], k = 0;
+      bool can = true;
+      for (int j = MAX_BASE; j >= 0; j--) {
+        if (v & (1ll << j)) {
+          if (All.basis[j]) {
+            v ^= All.basis[j];
+            k ^= D.basis[j];
+          } else {
+            can = false;
+            All.basis[j] = v;
+            D.basis[j] = k;
+            break;
+          }
+        }
+      }
+ 
+      if (can) {
+        int v = 0;
+        for (int j = MAX_BASE; j >= 0; j--) {
+          if (k & (1ll << j)) {
+            v ^= A.basis[j];
+          }
+        }
+        C.insert(v);
+      }
+    }
+  }
+  return C;
+}
 ```
 
 
