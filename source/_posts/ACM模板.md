@@ -382,6 +382,80 @@ mat Pow(mat A, ll n) {
 }  // namespace Matrix
 ```
 
+
+### 组合数
+```cpp
+const int maxn = 1010;
+ll C[maxn][maxn];
+void CalComb() {
+  C[0][0] = 1;
+  for (int i = 1; i < maxn; i++) {
+    C[i][0] = 1;
+    for (int j = 1; j <= i; j++)
+      C[i][j] = (C[i - 1][j - 1] + C[i - 1][j]) % mod;
+  }
+}
+```
+
+### 卢卡斯
+```cpp
+// $1 \leq n, m \leq 1000000000, 1 < p < 100000$, p是素数
+const int maxp = 100010;
+ll f[maxn];
+ll inv[maxn];  // 阶乘的逆元
+void CalFact() {
+  f[0] = 1;
+  for (int i = 1; i < maxn; i++) f[i] = (f[i - 1] * i) % p;
+  inv[maxn - 1] = Pow(f[maxn - 1], p - 2, p);
+  for (int i = maxn - 2; ~i; i--) inv[i] = inv[i + 1] * (i + 1) % p;
+}
+ll Lucas(ll n, ll m, ll p) {
+  ll ret = 1;
+  while (n && m) {
+    ll a = n % p, b = m % p;
+    if (a < b) return 0;
+    ret = ret * f[a] % p * inv[b] % p * inv[a - b] % p;
+    n /= p, m /= p;
+  }
+  return ret;
+}
+```
+
+### 大组合数
+```cpp
+// $0 \leq n \leq 10^9, 0 \leq m \leq 10^4, 1 \leq k \leq 10^9+7$
+vector<int> v;
+int dp[110];
+ll Cal(int l, int r, int k, int dis) {
+  ll res = 1;
+  for (int i = l; i <= r; i++) {
+    int t = i;
+    for (int j = 0; j < v.size(); j++) {
+      int y = v[j];
+      while (t % y == 0) dp[j] += dis, t /= y;
+    }
+    res = res * (ll)t % k;
+  }
+  return res;
+}
+ll Comb(int n, int m, int k) {
+  memset(dp, 0, sizeof(dp));
+  v.clear();
+  int tmp = k;
+  for (int i = 2; i * i <= tmp; i++)
+    if (tmp % i == 0) {
+      int num = 0;
+      while (tmp % i == 0) tmp /= i, num++;
+      v.push_back(i);
+    }
+  if (tmp != 1) v.push_back(tmp);
+  ll ans = Cal(n - m + 1, n, k, 1);
+  for (int j = 0; j < v.size(); j++) ans = ans * Pow(v[j], dp[j], k) % k;
+  ans = ans * inv(Cal(2, m, k, -1), k) % k;
+  return ans;
+}
+```
+
 ### 扩展欧几里得
 
 ```cpp
@@ -1050,6 +1124,97 @@ for (int l = 1, r; l <= n; l = r + 1) {
     ans += (n / l) * (r - l + 1);
 }
 ```
+
+### 线性基
+
+```cpp
+// 高斯消元
+void cal() {
+  for (int i = 0; i < n; ++i)
+    for (int j = MAX_BASE; j >= 0; --j)
+      if (a[i] >> j & 1) {
+        if (b[j])
+          a[i] ^= b[j];
+        else {
+          b[j] = a[i];
+          for (int k = j - 1; k >= 0; --k)
+            if (b[k] && (b[j] >> k & 1)) b[j] ^= b[k];
+          for (int k = j + 1; k <= MAX_BASE; ++k)
+            if (b[k] >> j & 1) b[k] ^= b[j];
+          break;
+        }
+      }
+}
+```
+
+```cpp
+struct LB {
+  int basis[MAX_BASE + 1];
+  LB() { memset(basis, 0, sizeof(basis)); }
+  int query() {
+    int ret = 0;
+    for (int i = MAX_BASE; i >= 0; i--) {
+      ret = max(ret, ret ^ basis[i]);
+    }
+    return ret;
+  }
+  bool insert(int x) {
+    for (int i = MAX_BASE; i >= 0 && x; --i)
+      if (x >> i & 1) {
+        if (basis[i])
+          x ^= basis[i];
+        else {
+          basis[i] = x;
+          return true;
+        }
+      }
+    return false;
+  }
+  void clear() { memset(basis, 0, sizeof(basis)); }
+};
+// 线性基求交
+LB Intersect(LB A, LB B) {      
+  LB All, C, D;
+  All.clear();
+  C.clear();
+  D.clear();
+  for (int i = MAX_BASE; i >= 0; i--) {
+    All.basis[i] = A.basis[i];
+    D.basis[i] = 1ll << i;
+  }
+  for (int i = MAX_BASE; i >= 0; i--) {
+    if (B.basis[i]) {
+      int v = B.basis[i], k = 0;
+      bool can = true;
+      for (int j = MAX_BASE; j >= 0; j--) {
+        if (v & (1ll << j)) {
+          if (All.basis[j]) {
+            v ^= All.basis[j];
+            k ^= D.basis[j];
+          } else {
+            can = false;
+            All.basis[j] = v;
+            D.basis[j] = k;
+            break;
+          }
+        }
+      }
+ 
+      if (can) {
+        int v = 0;
+        for (int j = MAX_BASE; j >= 0; j--) {
+          if (k & (1ll << j)) {
+            v ^= A.basis[j];
+          }
+        }
+        C.insert(v);
+      }
+    }
+  }
+  return C;
+}
+```
+
 
 ## 图论
 
@@ -2236,4 +2401,94 @@ int size = unique(B,B+n) - B;
 for(int i=0;i<n;++){
     A[i] = lower_bound(B,B+size,A[i]) - B + 1;
 }
+```
+
+### 分数类
+```cpp
+template <class _EuclideanRingElement>
+_EuclideanRingElement lcm(_EuclideanRingElement a, _EuclideanRingElement b) {
+  _EuclideanRingElement g = __gcd(a, b);
+  if (g == 0) return a * b;
+  return a / g * b;
+}
+
+class Rational {
+ public:
+  Rational(const long long& n = 0, const long long& d = 1) {
+    numerator = d < 0 ? -n : n;
+    denominator = d < 0 ? -d : d;
+    reduce();
+  }
+
+  Rational(const long long& t) : numerator(t), denominator(1) { reduce(); }
+
+  Rational(const int& t) : numerator(t), denominator(1) { reduce(); }
+
+  Rational operator+(const Rational& a) const {
+    Rational t;
+    t.denominator = lcm(a.denominator, denominator);
+    t.numerator = a.numerator * (t.denominator / a.denominator) +
+                  (t.denominator / denominator) * numerator;
+    if (denominator != 0) t.reduce();
+    return t;
+  }
+
+  Rational operator-(const Rational& s) const {
+    Rational t;
+    t.denominator = lcm(s.denominator, denominator);
+    t.numerator = numerator * (t.denominator / denominator) -
+                  (t.denominator / s.denominator) * s.numerator;
+    if (denominator != 0) t.reduce();
+    return t;
+  }
+
+  Rational operator*(const Rational& m) const {
+    Rational t;
+    t.numerator = m.numerator * numerator;
+    t.denominator = m.denominator * denominator;
+    if (denominator != 0) t.reduce();
+    return t;
+  }
+  Rational operator/(const Rational& v) const {
+    Rational t;
+    t.numerator = v.denominator * numerator;
+    t.denominator = denominator * v.numerator;
+    if (denominator != 0) t.reduce();
+
+    return t;
+  }
+  int cmp() {
+    if (numerator == 0) return 0;
+    return numerator < 0 ? -1 : 1;
+  }
+  bool operator<(const Rational& s) const { return ((*this) - s).cmp() < 0; }
+  bool operator==(const Rational& s) { return ((*this) - s).cmp() == 0; }
+  void print() {
+    reduce();
+    if (denominator == 0) {
+      cout << endl << "DIVIDE BY ZERO ERROR!!!" << endl;
+      exit(-1);
+    } else if (numerator == 0)
+      printf("%d\n", 0);
+    else if (denominator == 1)
+      printf("%lld\n", numerator);
+    else
+      printf("%lld/%lld\n", numerator, denominator);
+  }
+
+  long long numerator;
+  long long denominator;
+
+  void reduce() {
+    if (denominator < 0) denominator = -denominator, numerator = -numerator;
+    long long n = numerator < 0 ? -numerator : numerator;
+    long long d = denominator;
+    long long gcd = __gcd(n, d);
+
+    if (gcd != 0) {
+      numerator /= gcd;
+      denominator /= gcd;
+    }
+  }
+};
 ```
