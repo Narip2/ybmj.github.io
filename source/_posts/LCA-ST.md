@@ -12,22 +12,22 @@ tags:
 
 # ST
 
-这是一种在线计算 LCA 的算法，时间复杂度为： 预处理 nlogn, 查询 logn
+这是一种在线计算 $LCA$ 的算法，时间复杂度为： 预处理 $O(n \log n)$, 查询 $O(\log n)$
 
 ## 思想
 
-将树型转化为区间形式，然后再 RMQ 所查区间内深度最小的点，即为 lca
+将树型转化为区间形式，然后再 $RMQ$ 所查区间内深度最小的点，即为 $lca$
 
-这种遍历方式需要两倍的存储空间
 
-![](http://ozrmo3j0k.bkt.clouddn.com/st1.jpg)
+![](https://ybmj-blog-1256173108.cos.ap-shanghai.myqcloud.com/blog-picture/QQ%E5%9B%BE%E7%89%8720190731223849.jpg)
 
-![](http://ozrmo3j0k.bkt.clouddn.com/st2.jpg)
+
+查询 $2$ 与 $3$ 的 $lca$ 时，会查询其 $dfs$ 序上区间 $dfn$ 的最小值。
 
 ## 模板
 
 ```cpp
-const int maxn = 1000000;
+const int maxn = 1e6+5;
 struct LCA {
     vector<int> G[maxn], sp;
     int dep[maxn], dfn[maxn];

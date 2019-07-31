@@ -1221,6 +1221,7 @@ LB Intersect(LB A, LB B) {
 ### DFS 序
 
 ```cpp
+// 将子树转化为一个连续的区间
 // u 的子树区间 [in[u], out[u]]
 // 下标从1开始
 const int maxn = 100;
@@ -2091,7 +2092,7 @@ void build(int &k, int l, int r) {
     pushup(k);
 }
 
-void newnode(int old, int k) {
+inline void newnode(int old, int k) {
     lch[k] = lch[old];
     rch[k] = rch[old];
     sum[k] = sum[old];
@@ -2109,8 +2110,8 @@ void update(int old, int &k, int l, int r, int p, int x) {
     pushup(k);
 }
 
-int query(int k, int l, int r, int L, int R) {
-    if (L <= l && R >= r) return sum[k];
+int query(int k1, int k2, int l, int r, int L, int R) {
+    if (L <= l && R >= r) return sum[k2] - sum[k1];
     int m = l + r >> 1;
     int ret = 0;
     if(m >= L) ret += query(lch[k],l,m,L,R);
