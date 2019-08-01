@@ -1150,7 +1150,8 @@ void cal() {
 ```cpp
 struct LB {
   int basis[MAX_BASE + 1];
-  LB() { memset(basis, 0, sizeof(basis)); }
+  LB() { clear(); }
+  void clear() { memset(basis, 0, sizeof(basis)); }
   int query() {
     int ret = 0;
     for (int i = MAX_BASE; i >= 0; i--) {
@@ -1170,7 +1171,13 @@ struct LB {
       }
     return false;
   }
-  void clear() { memset(basis, 0, sizeof(basis)); }
+  LB operator+(const LB& b) const {
+    LB ret;
+    for (int i = 0; i <= MAX_BASE; i++) ret.basis[i] = this->basis[i];
+    for (int i = MAX_BASE; i >= 0; i--)
+      if (b.basis[i]) ret.insert(b.basis[i]);
+    return ret;
+  }
 };
 // 线性基求交
 LB Intersect(LB A, LB B) {      
@@ -1534,6 +1541,40 @@ int Prim(int n) {
 ```
 
 ### 最近公共祖先 LCA
+
+#### 倍增
+
+```cpp
+const int BASE = 20;
+int dep[maxn];  // 深度
+int par[maxn][BASE + 1];
+void dfs(int u, int fa) {
+  dep[u] = dep[fa] + 1;
+  par[u][0] = fa;
+  for (auto& v : G[u]) {
+    if (v == fa) continue;
+    dfs(v, u);
+  }
+}
+void init(int n) {
+  for (int j = 1; j <= BASE; j++)
+    for (int i = 1; i <= n; i++) {
+      int v = par[i][j - 1];
+      par[i][j] = par[v][j - 1];
+    }
+}
+
+int lca(int u, int v) {
+  if (dep[u] > dep[v]) swap(u, v);
+  for (int i = BASE; i >= 0; i--)
+    if (dep[par[v][i]] >= dep[u]) v = par[v][i];  // 先跳到同一高度
+
+  if (u == v) return u;
+  for (int i = BASE; i >= 0; i--)
+    if (par[u][i] != par[v][i]) u = par[u][i], v = par[v][i];  // 一起向上跳
+  return par[u][0];
+}
+```
 
 #### ST
 
