@@ -1335,7 +1335,7 @@ int dfs(int u) {
     if (fa < 0 && child == 1) iscut[u] = 0;
     return lowu;
 }
-//割顶的bccno无意义
+//割点的bccno无意义
 void solve(int n) {
     //调用结束后stack保证为空，所以不用清空
     memset(iscut, 0, sizeof(iscut));
@@ -1426,6 +1426,87 @@ void solve(int n) {
     }
 }
 ```
+
+### 支配树
+```cpp
+// dom[i]：（支配树）编号为i的点所支配的最近节点
+// idom[i]：编号为i的点的最近必经节点
+// semi[i]：编号为i的点的半必经节点
+// id[i]：dfn为i的点的编号
+// best[i]：编号为i的点的祖先中dfn最小的点的编号
+// pre[i]：编号为i的点的前驱
+// suc[i]：编号为i的点的后继
+// son[i]：编号为i的点的儿子
+struct DomiTree {
+  int dfs_clock;
+  int dfn[maxn], id[maxn], fa[maxn];
+  int semi[maxn], best[maxn], idom[maxn];
+  vector<int> pre[maxn], dom[maxn], suc[maxn], son[maxn];
+
+  void init(int n) {
+    for (int i = 0; i <= n; i++) {
+      pre[i].clear(), dom[i].clear(), suc[i].clear(), son[i].clear();
+      fa[i] = best[i] = idom[i] = semi[i] = i, dfn[i] = 0;
+    }
+    dfs_clock = 0;
+  }
+  void addedge(int u, int v) {
+    // u -> v
+    pre[v].push_back(u);
+    suc[u].push_back(v);
+  }
+  void build(int s) {
+    dfs(s);
+    tarjan();
+  }
+  void dfs(int u) {
+    dfn[u] = ++dfs_clock;
+    id[dfs_clock] = u;
+    for (auto &v : suc[u]) {
+      if (dfn[v]) continue;
+      dfs(v);
+      son[u].push_back(v);
+    }
+  }
+  inline int Min(int x, int y) { return dfn[semi[x]] < dfn[semi[y]] ? x : y; }
+
+  int find(int u) {
+    if (u == fa[u]) return u;
+    int v = find(fa[u]);
+    best[u] = Min(best[fa[u]], best[u]);
+    return fa[u] = v;
+  }
+  void tarjan() {
+    for (int i = dfs_clock; i > 0; i--) {
+      int k = id[i];
+      for (auto v : pre[k]) {
+        if (dfn[v] == 0) continue;
+        if (dfn[v] < dfn[k] && dfn[v] < dfn[semi[k]]) semi[k] = v;
+        if (dfn[v] >= dfn[k]) {
+          find(v);
+          semi[k] = semi[Min(best[v], k)];
+        }
+      }
+      if (k != semi[k]) dom[semi[k]].push_back(k);
+      for (auto &v : dom[k]) {
+        find(v);
+        if (semi[best[v]] == k)
+          idom[v] = k;
+        else
+          idom[v] = best[v];
+      }
+      dom[k].clear();
+      for (auto &v : son[k]) fa[v] = k;
+    }
+    for (int i = 2; i <= dfs_clock; i++) {
+      int k = id[i];
+      if (idom[k] != semi[k]) idom[k] = idom[idom[k]];
+      if (k != idom[k]) dom[idom[k]].push_back(k);
+    }
+  }
+} dt;
+```
+
 
 ### 单源最短路
 
