@@ -555,7 +555,7 @@ void crt(ll r[], ll m[], ll n, ll &re, ll &M) {
     for (int i = 0; i < n; i++) M *= m[i];
     for (int i = 0; i < n; i++) {
         ll x, y,  tm = M / m[i];
-        ll d = exgcd(tm, m[i], x, y);
+        ll d = ex_gcd(tm, m[i], x, y);
         re = (re + tm * x * r[i]) % M;
     }
     re = (re + M) % M;
@@ -572,7 +572,7 @@ bool excrt(ll r[], ll m[], ll n, ll &re, ll &M) {
     ll x, y;
     M = m[0], re = r[0];
     for (int i = 1; i < n; i++) {
-        ll d = exgcd(M, m[i],  x, y);
+        ll d = ex_gcd(M, m[i],  x, y);
         if ((r[i] - re) % d != 0) return 0;
         x = (r[i] - re) / d * x % (m[i] / d);
         re += x * M;
@@ -1904,12 +1904,13 @@ struct Dinic {
     for (int i = 0; i <= n; i++) G[i].clear();
     edges.clear();
   }
-  void AddEdge(int from, int to, int cap) {
+  int AddEdge(int from, int to, int cap) {
     edges.emplace_back(from, to, cap, 0);
     edges.emplace_back(to, from, 0, 0);
     m = edges.size();
     G[from].push_back(m - 2);
     G[to].push_back(m - 1);
+    return m - 2;
   }
   bool BFS() {
     for (int i = 0; i <= n; ++i) vis[i] = false, d[i] = 0;
@@ -1956,6 +1957,32 @@ struct Dinic {
       flow += DFS(s, INF);
     }
     return flow;
+  }
+  
+  int edge_id[maxn];  // 每条边的编号
+  vector<int> cut;    // 割边的编号
+  void findCut(int m) {
+    cut.clear();
+    for (int i = 0; i <= n; i++) vis[i] = 0;
+    queue<int> q;
+    q.push(s);
+    vis[s] = 1;
+    while (!q.empty()) {
+      int u = q.front();
+      q.pop();
+      for (auto &id : G[u]) {
+        auto &e = edges[id];
+        if (!vis[e.v] && e.cap > e.flow) {
+          vis[e.v] = 1;
+          q.push(e.v);
+        }
+      }
+    }
+    for (int i = 0; i < m; i++) {
+      auto &e = edges[edge_id[i]];
+      if (vis[e.u] == vis[e.v]) continue;
+      if (e.cap == e.flow) cut.push_back(i + 1);  // 1-index
+    }
   }
 };
 ```
