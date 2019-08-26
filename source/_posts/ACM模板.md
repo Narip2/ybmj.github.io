@@ -918,6 +918,30 @@ void ifwt(int f[], int m) {
 }  // namespace fwt
 ```
 
+### 区间筛
+```cpp
+// 对区间$[a,b)$内的整数执行筛法
+// 函数返回区间内素数个数
+// \texttt{is\_prime[i-a]=true}表示$i$是素数
+// $1<a<b \le 10^{12}, b-a \le 10^6$
+const int maxn = 1e6 + 6;
+bool is_prime_small[maxn], is_prime[maxn];
+ll prime[maxn];
+int segment_sieve(ll a, ll b) {
+  int tot = 0;
+  for (ll i = 0; i * i < b; ++i) is_prime_small[i] = true;
+  for (ll i = 0; i < b - a; ++i) is_prime[i] = true;
+  for (ll i = 2; i * i < b; ++i)
+    if (is_prime_small[i]) {
+      for (ll j = 2 * i; j * j < b; j += i) is_prime_small[j] = false;
+      for (ll j = max(2LL, (a + i - 1) / i) * i; j < b; j += i)
+        is_prime[j - a] = false;
+    }
+  for (ll i = 0; i < b - a; ++i)
+    if (is_prime[i]) prime[tot++] = i + a;
+  return tot;
+}
+```
 
 
 ### 线性筛因数个数
@@ -2157,6 +2181,55 @@ struct MCMF{
         return flow;
     }
 };
+```
+### 无向图全局最小割
+```cpp
+// O(n^3)  1-index
+struct StoerWagner {
+  int n;
+  int mask[maxn];  // 因为有删点的操作，所以用mask[i]来表示第i个位置是几号点
+  int G[maxn][maxn];  // 邻接矩阵
+  int d[maxn];        // 表示集合到各个点的距离
+  bool vis[maxn];     // 该点是否加入了集合
+  void init(int n) {
+    this->n = n;
+    for (int i = 1; i <= n; i++)
+      for (int j = 1; j <= n; j++) G[i][j] = 0;
+  }
+  void addedge(int u, int v, int c) {
+    G[u][v] += c;
+    G[v][u] += c;
+  }
+  int solve() {
+    int res = INF;
+    for (int i = 1; i <= n; i++) mask[i] = i;
+    while (n > 1) {
+      int k, pre = 1;  // 默认1号点是集合的第一个点
+      for (int i = 1; i <= n; i++) vis[mask[i]] = 0, d[mask[i]] = 0;
+      vis[mask[pre]] = true;
+      for (int i = 2; i <= n; i++) {
+        k = -1;
+        for (int j = 1; j <= n; j++) {  // 寻找距离最远的点加入集合
+          if (!vis[mask[j]]) {
+            d[mask[j]] += G[mask[pre]][mask[j]];
+            if (k == -1 || d[mask[k]] < d[mask[j]]) k = j;
+          }
+        }
+        vis[mask[k]] = true;  // 加入集合
+        if (i == n) {         // 只剩一个点
+          res = min(res, d[mask[k]]);
+          for (int j = 1; j <= n; j++) {  // 修改边权
+            G[mask[pre]][mask[j]] += G[mask[j]][mask[k]];
+            G[mask[j]][mask[pre]] += G[mask[j]][mask[k]];
+          }
+          mask[k] = mask[n--];  // 去掉最后加入的点
+        }
+        pre = k;
+      }
+    }
+    return res;
+  }
+} sw;
 ```
 
 ## 数据结构
