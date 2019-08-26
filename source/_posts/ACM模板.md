@@ -17,6 +17,8 @@ using namespace std;
 #define rson (rt << 1 | 1)
 #define lson_len (len - (len >> 1))
 #define rson_len (len >> 1)
+#define Lson l, m, lson
+#define Rson m+1, r, rson
 #define pb(x) push_back(x)
 #define clr(a, x) memset(a, x, sizeof(a))
 #define mp(x, y) make_pair(x, y)
@@ -1901,7 +1903,7 @@ struct EdmonsKarp{          //时间复杂度O(v*E*E)
         }
         return flow;
     }
-};
+} ek;
 ```
 
 #### Dinic
@@ -2008,7 +2010,7 @@ struct Dinic {
       if (e.cap == e.flow) cut.push_back(i + 1);  // 1-index
     }
   }
-};
+} dinic;
 ```
 
 #### ISAP
@@ -2112,7 +2114,7 @@ struct ISAP {
     }
     return flow;
   }
-};
+} isap;
 ```
 
 #### 最小费用最大流
@@ -2180,11 +2182,12 @@ struct MCMF{
         while(BellmanFord(s,t,flow,cost));
         return flow;
     }
-};
+} mcmf;
 ```
 ### 无向图全局最小割
 ```cpp
 // O(n^3)  1-index
+// 不能有负权边 （可以改成加偏移的，不过有点烦
 struct StoerWagner {
   int n;
   int mask[maxn];  // 因为有删点的操作，所以用mask[i]来表示第i个位置是几号点
@@ -2380,7 +2383,7 @@ void pushup(int rt,int len){
 int L[maxn], R[maxn];
 int a[maxn];
 
-// 找到左边第一个大于它的元素位置l，和右边第一个大于它的元素位置r
+// 找到左边第一个大于它的元素位置l-1，和右边第一个大于它的元素位置r+1
 // [l,r]
 void init(int n) {
     stack<int> st;
