@@ -1,11 +1,36 @@
 ---
-title: C++学习
-date: 2019-03-20 20:28:47
+title: C++的小记事本
+date: 2019-08-27 00:46:59
 categories:
 - C++
 tags:
 - C++
 ---
+
+### NULL 与 nullptr 的区别
+
+```cpp
+int *a = nullptr;
+int *b = 0;
+int *c = NULL;
+```
+这三种生成空指针的方法是等价的。
+
+`nullptr` 是一种特殊类型 `nullptr_t` 的字面值，它可以被转换成任意其他的指针类型。
+
+在新标准下，最好使用 `nullptr` ，同时尽量避免使用 `NULL`。因为 `NULL` 和 `0` 存在二义性，它们既可以当作空指针（指针类型），又可以当做整型。
+
+```cpp
+void test(int *a, int *b) { cerr << "1" << endl; }
+void test(int *a, int b) { cerr << "2" << endl; }
+int main() {
+  test(nullptr, 0);     // 2
+  test(nullptr, NULL);  // 2        NULL 是 long long 类型
+  test(nullptr, nullptr);   // 1
+}
+```
+
+
 
 ### const *p 与 * const p 的区别
 `int const *p` 表示`*p`是常量，即不能修改`*p`的内容，但是可以修改`p`的指向。
@@ -36,12 +61,12 @@ malloc是库函数，单纯分配一块内存，需要进行类型转换。
 `mutable int i;` 表示`i`是永远可变的，即使`i`是某个`const`对象的数据成员。
 
 ### 友元关系的特点
+
 - 友元关系是非传递的，例如类B是类A的友元类，类C是类B的友元类，在类C和类A之间并无友元关系。
 - 友元关系是单向的，例如类B是类A的友元类，但是类A的成员函数不能访问类B的私有和保护数据。
 - 友元关系不能继承。
 
 ### 类模板和模板类
-![](https://ybmj-blog-1256173108.cos.ap-shanghai.myqcloud.com/blog-picture/FAC1A1AE-30FF-4058-95F0-B7CBED1B4653.jpeg?q-sign-algorithm=sha1&q-ak=AKIDMdujyB3ilczYc2qEljxvrDUUfV9jzJbv&q-sign-time=1553097040;1553098840&q-key-time=1553097040;1553098840&q-header-list=&q-url-param-list=&q-signature=65d644a245c3b1faaadb8487d2f1d72370e1d534&x-cos-security-token=09ec0b6cac6af646b33b5bf4d04b52848289a46610001)
 
 函数模板与类模板的区别：
 函数模板的实例化是由编译程序在处理函数调用时自动完成的，而类模板的实例化必须由程序员在程序中显式地指定。
