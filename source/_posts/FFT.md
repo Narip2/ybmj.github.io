@@ -28,6 +28,8 @@ $h(n) = C[n]$
 
 ## 变式
 
+### 1
+
 $h(n) = \sum_{i=k}^{n}f(i)g(n-i)$
 
 | A[0]   | A[1]     | A[2]     | ... | A[n-k] |
@@ -42,7 +44,9 @@ $h(n) = C[n-k]$
 
 ---
 
-$\sum_{i=0}^{n}f(i)g(i+a)$
+### 2
+
+$h(n) = \sum_{i=0}^{n}f(i)g(i+a)$
 
 设$z(n-i) = f(i)$
 
@@ -60,7 +64,9 @@ $h(n+a) = C[n]$
 
 ---
 
-$\sum_{i=k}^{n}f(i)g(i+a)$
+### 3
+
+$h(n) = \sum_{i=k}^{n}f(i)g(i+a)$
 
 设$z(n-i) = f(i)$
 
@@ -77,6 +83,17 @@ $\sum_{i=k}^{n}f(i)g(i+a)$
 $h(n+a) = C[n-k]$
 
 ---
+
+### 4
+$h(n) = \sum_{i=1}^{n}\sum_{j=1}^{n}x^{ij}$ 其中 $x$ 为常数。
+
+$$\begin{aligned}
+h(n) &= \sum_{i=1}^{n}\sum_{j=1}^{n}x^{ij} \\\\
+&= \sum_{i=1}^{n}\sum_{j=1}^{n}x^{\frac{1}{2}\times (i^2 + j^2 - (i-j)^2)} \\\\
+&= \sum_{i=1}^{n}x^{\frac{1}{2} \times i^2}\sum_{j=1}^{n}x^{\frac{1}{2} \times j^2} x^{-\frac{1}{2} \times (i-j)^2} \\\\
+&= \sum_{i=1}^{n}x^{\frac{1}{2} \times i^2}\sum_{j=1}^{n}f_jg_{i-j}
+\end{aligned} 
+$$
 
 ## 模板
 

@@ -18,6 +18,21 @@ $$f(x) = \begin{cases}
         {x_2 = x_{2,0} - \frac{a_1}{(a_1,a_2)}\times t}
         \end{cases}$$
 ```
+
+## 公式推导
+$$\begin{aligned}
+a &= b \\\\
+&= c
+\end{aligned}$$
+
+```
+$$\begin{aligned}
+a &= b \\\\
+&= c
+\end{aligned}$$
+```
+其中 `&` 为对齐位置的标记。
+
 ## 颜色
 
 $\color{black}{Hello World!}$	

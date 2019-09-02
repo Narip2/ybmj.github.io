@@ -812,9 +812,10 @@ void ntt(int y[], int len, int on) {
   }
 }
 /*
+int A[maxn], B[maxn];
 void multiply(int x[], int y[], int n, int m) {
   // n,m 表示长度 （阶数要加一）
-  int len = m + n;
+  int len = 1;
   while (len <= (m + n)) len <<= 1;
   for (int i = 0; i < len; i++) A[i] = B[i] = 0;
   for (int i = 0; i <= n; i++) A[i] = x[i];
