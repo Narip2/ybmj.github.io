@@ -333,9 +333,6 @@ void Manacher(string &s){
 
 - 若正整数 a，n 互质，则$a ^ {\phi(n)} \equiv 1 \quad mod(n)$
 
-**欧拉定理推论（降幂）：**
-
-- 若正整数 a，n 互质，那么对于任意正整数 b，有$a^b \equiv a ^{b \% \phi(n)}$ mod(n)
 
 **威尔逊定理：**
 
@@ -1028,8 +1025,8 @@ ll eular(ll n) {
 const int maxn = 1e7 + 5;
 bool vis[maxn];
 int prime[maxn], phi[maxn];
-void init() {
-    clr(vis, 0);
+void CalPhi() {
+    memset(vis, 0, sizeof(vis));
     phi[1] = 1;
     int tot = 0;
     for (int i = 2; i < maxn; i++) {
@@ -1046,6 +1043,88 @@ void init() {
             phi[i * prime[k]] = phi[i] * (prime[k] - 1);
         }
     }
+}
+```
+
+### 欧拉降幂
+
+在模 $p$ 意义下：
+
+$$a^b \equiv \begin{cases}
+        a ^{b \% \phi(p)} \quad gcd(a,p) = 1\\\\
+        a^b     \quad   gcd(a,p) \neq 1, b < \phi(p) \\\\
+        a ^{b \% \phi(p) + \phi(p)} \quad gcd(a,p) \neq 1, b \geq \phi(p)
+        \end{cases}
+        $$
+
+对于 $b$ 和 $\phi(p)$ 的相对大小，可以在快速幂的过程中判断。
+
+```cpp
+/*
+计算 $a^{a^{a^{...}}} \% m $ 的值， 一共有 $b$ 个 $a$。
+*/
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+const int maxn = 1e7 + 5;
+bool vis[maxn];
+int prime[maxn], phi[maxn];
+void CalPhi() {
+  memset(vis, 0, sizeof(vis));
+  phi[1] = 1;
+  int tot = 0;
+  for (int i = 2; i < maxn; i++) {
+    if (!vis[i]) {
+      prime[tot++] = i;
+      phi[i] = i - 1;
+    }
+    for (int k = 0; k < tot && 1LL * i * prime[k] < maxn; k++) {
+      vis[i * prime[k]] = 1;
+      if (i % prime[k] == 0) {
+        phi[i * prime[k]] = phi[i] * prime[k];
+        break;
+      }
+      phi[i * prime[k]] = phi[i] * (prime[k] - 1);
+    }
+  }
+}
+
+/*
+ 快速幂的时候更改取模方式。
+ 保证在 a^b < p 的时候返回 a^b；在 a^b >=p，返回 a^b % p + p。
+*/
+#define Mod(x, p) (x < p ? x : x % p + p);
+ll Pow(ll a, ll b, ll p) {
+  ll ret = 1;
+  bool ok = false;
+  while (b) {
+    if (b & 1) ret = Mod(ret * a, p);
+    a = Mod(a * a, p);
+    b >>= 1;
+  }
+  return Mod(ret, p);
+}
+
+// --------------------------------------------------------
+ll cal(int a, int b, int p) {
+  if (b == 1 || p == 1) return a < p ? a : a % p + p;
+  return Pow(a, cal(a, b - 1, phi[p]), p);
+}
+int main() {
+  CalPhi();
+  int T;
+  scanf("%d", &T);
+  while (T--) {
+    int a, b, m;
+    scanf("%d%d%d", &a, &b, &m);
+    if (!b) {
+      printf("%d\n", 1 % m);
+      continue;
+    }
+    ll ans = cal(a, b, m) % m;
+    printf("%lld\n", ans);
+  }
 }
 ```
 ### 莫比乌斯函数
@@ -1644,7 +1723,7 @@ int cost[maxn][maxn];  //初始化为正无穷
 
 int Prim(int n) {
     int ans = 0;
-    clr(vis, 0);
+    memset(vis, 0, sizeof(vis));
     vis[0] = 1;
     for (int i = 1; i < n; i++) lowc[i] = cost[0][i];
     for (int i = 1; i < n; i++) {
@@ -2806,7 +2885,6 @@ void init(int n) {
 ### 离散化
 
 ```cpp
-// c++11
 vector<int> a,b;
 for(int i=0;i<n;i++){
     cin >> a[i];
