@@ -37,7 +37,7 @@ $h(i) = max(h(i+1), g(i))$：表示 $g$ 的后缀最大值。
 
 如果有 $t_p + (n - p + 1) \times x > t_p + y$，那么极值点一定在 $p$ 的左边。
 
-那么我们可以算出第一个满足 $t_p + (n - p + 1) \times x \leq t_p + y$ 的位置 $p$。
+那么我们可以算出满足 $t_p + (n - p + 1) \times x \leq t_p + y$ 的位置 $p$。
 
 $p = n + 1 - \frac{y}{x}$
 
