@@ -918,6 +918,59 @@ void ifwt(int f[], int m) {
 }  // namespace fwt
 ```
 
+### 扩展埃氏筛
+
+```cpp
+const int maxn = 1e6 + 6;
+ll f1[maxn], f2[maxn];
+// [1,n] 内素数个数。 n < 1e12
+// f1[i]: [1,i] 内素数个数
+// f2[i]: [1,n/i] 内素数个数
+ll CalPrime(ll n) {
+  ll sn = sqrt(n);
+  for (int i = 1; i <= sn; i++) f1[i] = i - 1, f2[i] = n / i - 1;
+  for (ll i = 2; i <= sn; i++) {
+    if (f1[i] == f1[i - 1]) continue;
+    for (int j = 1; j <= sn / i; j++) f2[j] -= f2[j * i] - f1[i - 1];
+    for (int j = sn / i + 1; j <= n / (i * i) && j <= sn; j++)
+      f2[j] -= f1[n / (j * i)] - f1[i - 1];
+    for (int j = sn; j >= i * i; j--) f1[j] -= f1[j / i] - f1[i - 1];
+  }
+  return f2[1];
+}
+```
+
+```cpp
+const int maxn = 1e6 + 6;
+const int mod;
+const ll inv2;
+ll f1[maxn], f2[maxn];
+inline ll presum(const ll& x) { return (1 + x) * x % mod * inv2 % mod; }
+// [1,n] 内素数和 + 1。 n < 1e12
+// f1[i]: [1,i] 内素数和 + 1
+// f2[i]: [1,n/i] 内素数和 + 1
+ll CalPrime(ll n) {
+  if (!n) return 0;
+  ll sn = sqrt(n);
+  for (int i = 1; i <= sn; i++) f1[i] = presum(i), f2[i] = presum(n / i);
+  for (ll i = 2; i <= sn; i++) {
+    if (f1[i] == f1[i - 1]) continue;
+    for (int j = 1; j <= sn / i; j++)
+      f2[j] =
+          (f2[j] - (f2[j * i] - f1[i - 1] + mod) % mod * i % mod + mod) % mod;
+    for (int j = sn / i + 1; j <= n / (i * i) && j <= sn; j++)
+      f2[j] =
+          (f2[j] - (f1[n / (j * i)] - f1[i - 1] + mod) % mod * i % mod + mod) %
+          mod;
+    for (int j = sn; j >= i * i; j--)
+      f1[j] =
+          (f1[j] - (f1[j / i] - f1[i - 1] + mod) % mod * i % mod + mod) % mod;
+  }
+  return f2[1];
+}
+```
+
+
 ### 区间筛
 ```cpp
 // 对区间$[a,b)$内的整数执行筛法
