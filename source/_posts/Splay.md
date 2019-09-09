@@ -16,19 +16,50 @@ tags:
 
 ```cpp
 struct Splay {
-  int sz[maxn], ch[maxn][2], fa[maxn];
-  int key[maxn], cnt[maxn];
-  int rt, top, tot;
-  int stk[maxn];  // 模拟内存
+  int sz[maxn];  // sz[u]: 以u为根的子树的节点个数（不包括根）
+  int ch[maxn][2];  // ch[u][0]: u的左儿子
+  int fa[maxn];     // fa[u]: u的父亲
+  int key[maxn];    // key[u]: u点所代表的权值
+  int cnt[maxn];    // cnt[u]: u点的个数（multiset）
+  int stk[maxn];    // 模拟内存
+  int top;          // 栈顶
+  int rt;           // 根
+  int tot;          // 节点数量
 
-  // 判断x是其父亲的哪个节点
-  inline int son(int x) { return x == ch[fa[x]][1]; }
+  /*
+  fa[u] = 0 表示u为根节点
+  ch[u][0/1] = 0 表示没有相应的孩子
+  任何时候都不应该访问到 0 这个节点
+  */
   void init() {
     rt = top = tot = 0;
     ch[rt][0] = ch[rt][1] = 0;
     cnt[rt] = sz[rt] = fa[rt] = 0;
   }
 
+  /*
+  p: 父亲, k: 权值
+  p = 0 表示当前是根节点
+  */
+  int newnode(int p = 0, int k = 0) {
+    int x = top ? stk[top--] : ++tot;
+    if (p) ch[p][key[p] < k] = x;  // !
+    fa[x] = p, sz[x] = 1, key[x] = k, cnt[x] = 1;
+    ch[x][0] = ch[x][1] = 0;
+    return x;
+  }
+  void pushup(int x) {
+    if (!x) return;
+    sz[x] = cnt[x];
+    if (ch[x][0]) sz[x] += sz[ch[x][0]];
+    if (ch[x][1]) sz[x] += sz[ch[x][1]];
+  }
+
+  // 判断x是其父亲的哪个节点
+  // 单独使用请判父亲是否为 0
+  int son(int x) { return x == ch[fa[x]][1]; }
+
+  // 单独使用请判父亲是否为 0
   void rotate(int x) {
     int y = fa[x], z = fa[y], chk = son(x);
     ch[y][chk] = ch[x][chk ^ 1];
@@ -59,45 +90,33 @@ struct Splay {
     if (!goal) rt = x;
   }
 
-  int newnode(int p = 0, int k = 0) {
-    int x = top ? stk[top--] : ++tot;
-    if (p) ch[p][key[p] < k] = x;  // !
-    fa[x] = p, sz[x] = 1, key[x] = k, cnt[x] = 1;
-    ch[x][0] = ch[x][1] = 0;
-    return x;
-  }
-  void pushup(int x) {
-    if (!x) return;
-    sz[x] = cnt[x];
-    if (ch[x][0]) sz[x] += sz[ch[x][0]];
-    if (ch[x][1]) sz[x] += sz[ch[x][1]];
-  }
-
   // 查询第k小的节点。 1-index
   int kth(int k) {
-    for (int p = rt;;) {
+    for (int p = rt; p;) {
       if (ch[p][0] && k <= sz[ch[p][0]])
         p = ch[p][0];
       else {
-        k -= cnt[p] + sz[ch[p][0]];
+        k -= cnt[p];
+        if (ch[p][0]) k -= sz[ch[p][0]];
         if (k <= 0) {
-          // 外部单独调用需要splay，其它情况如果不想改变树的形状就不要splay。
-          splay(p);   
+          // 如果不想改变树的形状就不要splay。
+          splay(p);
           return p;
         }
         p = ch[p][1];
       }
     }
+    return -1;
   }
 
   // 查询值为val的节点是第几小的。 1-index
   int rank(int val) {
     int ret = 0;
-    for (int p = rt;;) {
+    for (int p = rt; p;) {
       if (val < key[p])
         p = ch[p][0];
       else {
-        ret += sz[ch[p][0]];
+        if (ch[p][0]) ret += sz[ch[p][0]];
         if (val == key[p]) {
           splay(p);
           return ret + 1;
@@ -106,6 +125,7 @@ struct Splay {
         p = ch[p][1];
       }
     }
+    return -1;
   }
 
   // 插入值为val的节点
@@ -143,13 +163,13 @@ struct Splay {
 
   // 删除值为val的节点
   void remove(int val) {
-    rank(val);
+    rank(val);  // 将val旋转到根
     if (cnt[rt] > 1) {
       cnt[rt]--;
       pushup(rt);
       return;
     }
-    stk[++top] = rt;
+    stk[++top] = rt;  // 内存回收
     if (!ch[rt][0] && !ch[rt][1]) {
       rt = 0;
       return;
@@ -170,27 +190,61 @@ struct Splay {
     ch[x][1] = ch[p][1];
     pushup(rt);
   }
-  
-  // 求大于（小于）val的值：先将val插入后，查询根的后继（前驱），最后删除 val 即可。
+
+  /*
+  求大于（小于）val的值：先将val插入后，查询根的后继（前驱），最后删除 val
+  即可。
+  */
+
 } splay;
 ```
 
 
 # Splay 维护区间
 
-平衡树每个节点的权值表示区间的下标。
+根据区间顺序进行建树，树型决定了偏序关系。与区间内元素的取值无关。
 
 那么如果我们要处理区间 $[l,r]$ 的信息。我们可以通过先将 $l-1$ 旋转到根，再将 $r+1$ 旋转到根的儿子。这样 $r+1$ 左边这棵树就是区间 $[l,r]$。 为了不特判边界情况，我们可以在首尾各插入一个哨兵节点。 
+
 ## 代码
 ```cpp
 #define key_value ch[ch[root][1]][0]
-// 维护区间，平衡树维护下标
 struct Splay {
-  int a[maxn];
+  int a[maxn];  // a[i]: 区间i位置所对应的值
   int sz[maxn], ch[maxn][2], fa[maxn];
-  int key[maxn], rev[maxn];
+  int key[maxn];
   int root, tot;
   int stk[maxn], top;
+  int rev[maxn];  // 区间翻转标记
+
+  // 1-index
+  void init(int n) {
+    tot = top = 0;
+    for (int i = 1; i <= n; i++) a[i] = i;
+    // 首尾插入两个元素！！！
+    root = newnode(0, -1);
+    ch[root][1] = newnode(root, -1);
+    key_value = build(1, n, ch[root][1]);
+    pushup(ch[root][1]), pushup(root);
+  }
+
+  int build(int l, int r, int p) {
+    if (l > r) return 0;
+    int m = l + r >> 1;
+    int x = newnode(p, a[m]);  // a[i]
+    ch[x][0] = build(l, m - 1, x);
+    ch[x][1] = build(m + 1, r, x);
+    pushup(x);
+    return x;
+  }
+
+  int newnode(int p = 0, int k = 0) {
+    int x = top ? stk[top--] : ++tot;
+    fa[x] = p, sz[x] = 1, key[x] = k;
+    ch[x][0] = ch[x][1] = 0;
+    rev[x] = 0;  // 清空反转标记
+    return x;
+  }
 
   // d = 0 左旋
   void rotate(int x, int d) {
@@ -233,11 +287,12 @@ struct Splay {
     return t > k ? kth(ch[r][0], k) : kth(ch[r][1], k - t);
   }
 
+  // 选择区间[l,r]
   void select(int l, int r) {
     splay(kth(root, l), 0);
     splay(kth(ch[root][1], r - l + 2), root);
-    // splay(kth(root, r + 2), root);  // 首部有个哨兵
-    rev[key_value] ^= 1;
+
+    rev[key_value] ^= 1;  // 反转区间
   }
 
   void pushup(int x) {
@@ -255,33 +310,5 @@ struct Splay {
     rev[x] = 0;
   }
 
-  int build(int l, int r, int p) {
-    if (l > r) return 0;
-    int m = l + r >> 1;
-    int x = newnode(p, a[m]);  // a[i]
-    ch[x][0] = build(l, m - 1, x);
-    ch[x][1] = build(m + 1, r, x);
-    pushup(x);
-    return x;
-  }
-
-  int newnode(int p = 0, int k = 0) {
-    int x = top ? stk[top--] : ++tot;
-    fa[x] = p, sz[x] = 1, key[x] = k;
-    ch[x][0] = ch[x][1] = 0;
-    rev[x] = 0;
-    return x;
-  }
-
-  // 1-index
-  void init(int n) {
-    tot = top = 0;
-    for (int i = 1; i <= n; i++) a[i] = i;
-    // 首尾插入两个元素！！！
-    root = newnode(0, -1);
-    ch[root][1] = newnode(root, -1);
-    key_value = build(1, n, ch[root][1]);
-    pushup(ch[root][1]), pushup(root);
-  }
 } splay;
 ```
