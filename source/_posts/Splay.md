@@ -12,6 +12,10 @@ tags:
 
 每次访问一个节点后，将该节点旋转到根。均摊下来每次操作的复杂度是 $O(\log(n))$。
 
+理解是关键，因为很多操作都需要自己实现。
+
+比如注意哨兵节点，注意 $pushdown$ 和 $pushup$，注意修改的时候别忘了修改父亲。
+
 ## 代码
 
 ```cpp
@@ -68,7 +72,7 @@ struct Splay {
     fa[y] = x;
     fa[x] = z;
     if (z) ch[z][y == ch[z][1]] = x;  // !
-    pushup(y), pushup(x);
+    pushup(y), pushup(x);   // 对于splay操作来说，pushup(x)是多余的
   }
 
   // 旋到 goal 的下面
@@ -208,12 +212,12 @@ struct Splay {
 
 ## 代码
 ```cpp
-#define key_value ch[ch[root][1]][0]
+#define key_value ch[ch[rt][1]][0]
 struct Splay {
   int a[maxn];  // a[i]: 区间i位置所对应的值
   int sz[maxn], ch[maxn][2], fa[maxn];
   int key[maxn];
-  int root, tot;
+  int rt, tot;
   int stk[maxn], top;
   int rev[maxn];  // 区间翻转标记
 
@@ -222,10 +226,10 @@ struct Splay {
     tot = top = 0;
     for (int i = 1; i <= n; i++) a[i] = i;
     // 首尾插入两个元素！！！
-    root = newnode(0, -1);
-    ch[root][1] = newnode(root, -1);
-    key_value = build(1, n, ch[root][1]);
-    pushup(ch[root][1]), pushup(root);
+    rt = newnode(0, -1);
+    ch[rt][1] = newnode(rt, -1);
+    key_value = build(1, n, ch[rt][1]);
+    pushup(ch[rt][1]), pushup(rt);
   }
 
   int build(int l, int r, int p) {
@@ -276,10 +280,10 @@ struct Splay {
       }
     }
     pushup(x);
-    if (!goal) root = x;
+    if (!goal) rt = x;
   }
 
-  // 返回第k小的节点
+  // 返回第 k+1 小的节点 （有哨兵!）
   int kth(int r, int k) {
     pushdown(r);
     int t = sz[ch[r][0]] + 1;
@@ -287,12 +291,10 @@ struct Splay {
     return t > k ? kth(ch[r][0], k) : kth(ch[r][1], k - t);
   }
 
-  // 选择区间[l,r]
+  // 选择区间 [l,r], key_value 为区间 [l,r] 的根节点
   void select(int l, int r) {
-    splay(kth(root, l), 0);
-    splay(kth(ch[root][1], r - l + 2), root);
-
-    rev[key_value] ^= 1;  // 反转区间
+    splay(kth(rt, l), 0);
+    splay(kth(ch[rt][1], r - l + 2), rt);
   }
 
   void pushup(int x) {
@@ -301,7 +303,6 @@ struct Splay {
     if (ch[x][1]) sz[x] += sz[ch[x][1]];
   }
 
-  // 区间反转
   void pushdown(int x) {
     if (!rev[x]) return;
     swap(ch[x][0], ch[x][1]);
@@ -310,5 +311,39 @@ struct Splay {
     rev[x] = 0;
   }
 
+  // 后继节点
+  int nxt() {
+    pushdown(rt);  // 记得 pushdown!
+    int p = ch[rt][1];
+    pushdown(p);
+    while (ch[p][0]) {
+      p = ch[p][0];
+      pushdown(p);
+    }
+    return p;
+  }
+
+  // 反转区间 [l,r]
+  void reverse(int l, int r) {
+    select(l, r);
+    rev[key_value] ^= 1;
+  }
+  // 将区间[l,r]切下，移动到p后面。
+  void cut(int l, int r, int p) {
+    select(l, r);
+    int tmp = key_value;
+    fa[tmp] = 0;
+    key_value = 0;
+
+    pushup(ch[rt][1]), pushup(rt);
+    splay(kth(rt, p + 1));
+    int succ = nxt();
+    ch[succ][0] = tmp;
+    fa[tmp] = succ;
+    pushup(succ);
+    splay(succ);
+  }
+
+  // 输出树的时候记得 pushdown!
 } splay;
 ```
