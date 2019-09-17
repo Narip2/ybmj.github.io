@@ -1724,6 +1724,39 @@ void dijkstra(int s, int n) {
 
 #### Bellman-Ford
 
+```cpp
+struct Edge{
+    int u,v,w;
+    Edge(int u,int v,int w):u(u),v(v),w(w) {}
+};
+vector<Edge> edges;
+
+inline void addedge(int u,int v,int w){
+    edges.push_back(Edge(u,v,w));
+    // edges.push_back(Edge(v,u,w));
+}
+bool bellman_ford(int s,int n){
+    for(int i=0;i<n;i++) d[i] = INF;
+    d[s] = 0;
+    int cnt = 0;
+    while(true){
+        if(cnt > n-1) return false;     // exist negative circle
+        cnt++;
+        bool update = false;
+        for(int i=0;i<edges.size();i++){
+            int from = edges[i].from;
+            int to = edges[i].to;
+            if(d[to] > d[from] + edges[i].w){
+                d[to] = d[from] + edges[i].w;
+                // par[to] = from;         // record path
+                update = true;
+            }
+        }
+        if(update == false) break;
+    }
+    return true;
+}
+```
 ### 最小生成树
 
 #### Kruskal
