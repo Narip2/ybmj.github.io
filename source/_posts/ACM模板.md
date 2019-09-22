@@ -473,11 +473,11 @@ ll ex_gcd(ll a, ll b, ll &x, ll &y) {
 // X = x + dx * t, Y = y - dy * t
 // x是最小非负整数解
 bool solve(ll a, ll b, ll c, ll &x, ll &y, ll &dx, ll &dy) {
-    ll x0, y0, d;
+    ll d;
     d = ex_gcd(a, b, x, y);
     if (d == -1 || c % d) return false;  //无解
     dx = b / d, dy = a / d;
-    x = x0 * c / d;
+    x = x * c / d;
     x = (x % dx + dx) % dx;
     y = (c - a * x) / b;
     return true;
