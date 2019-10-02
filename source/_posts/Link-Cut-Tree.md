@@ -8,11 +8,13 @@ tags:
 - LCT
 ---
 
+[参考博客](https://www.cnblogs.com/flashhu/p/8324551.html)
+
 LCT 维护了一个Splay森林。
 
 每个Splay维护的是一条深度递增的路径。
 
-可以维护树链的信息。
+可以维护树链的信息，支持换根，增删边。
 
 ```cpp
 
