@@ -65,7 +65,7 @@ struct LCT {
     // 父亲不认儿子，但儿子认父亲
     for (int y = 0; x; y = x, x = fa[x]) splay(x), ch[x][1] = y, pushup(x);
   }
-  // 让x成为原树的根
+  // 让x成为原树的根，x为深度最低的点，其左子树为空
   void makeroot(int x) { access(x), splay(x), reverse(x); }
 
   // 找x所在原树的根。主要用来判联通性，如果find(x) = find(y)
@@ -76,7 +76,7 @@ struct LCT {
     splay(x);
     return x;
   }
-  // 加边（x 连到 y）
+  // 加边，y为深度最低的点（顺序无所谓）
   void link(int x, int y) {
     makeroot(x);
     // if(find(y) != x) fa[x] = y; // 存在不合法加边
