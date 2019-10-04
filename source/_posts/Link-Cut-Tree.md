@@ -16,17 +16,20 @@ LCT 维护了一个Splay森林。
 
 可以维护树链的信息，支持换根，增删边。
 
+边权模型：对每个边建立一个点，该点的点权就是边权。
+
 ```cpp
 
-const int maxn = "Edit";
+// 1-index
 struct LCT {
   int val[maxn], sum[maxn];  // 基于点权
   int rev[maxn], ch[maxn][2], fa[maxn];
   int stk[maxn];
-  inline void init(int n) {  // 初始化点权
+  inline void init(int n) {  // 初始化点权（一般不需要）
     for (int i = 1; i <= n; i++) scanf("%d", val + i);
     for (int i = 1; i <= n; i++) fa[i] = ch[i][0] = ch[i][1] = rev[i] = 0;
   }
+
   inline bool isroot(int x) { return ch[fa[x]][0] != x && ch[fa[x]][1] != x; }
   inline bool get(int x) { return ch[fa[x]][1] == x; }
   inline void reverse(int x) {
@@ -39,6 +42,8 @@ struct LCT {
     if (ch[x][1]) reverse(ch[x][1]);
     rev[x] ^= 1;
   }
+
+  // 因为儿子可能会改变，因此每次必须重新计算
   inline void pushup(int x) { sum[x] = val[x] + sum[ch[x][0]] + sum[ch[x][1]]; }
 
   // 避免单独使用：不能直接旋转根
@@ -97,6 +102,17 @@ struct LCT {
   // 将x到y的路径拉到一棵Splay中，y为Splay的根
   void split(int x, int y) { makeroot(x), access(y), splay(y); }
 
-  void update(int x, int v) { val[x] = v, access(x), splay(x); }
-};
+  // 单点修改
+  void update(int x, int v) {
+    access(x), splay(x);
+    val[x] = v;
+    pushup(x);
+  }
+
+  // 区间修改
+  void update_seg(int u, int v) {
+    split(u, v);
+    tag(v); // 打对应标记
+  }
+} lct;
 ```
