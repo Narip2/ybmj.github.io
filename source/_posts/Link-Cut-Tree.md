@@ -13,7 +13,11 @@ tags:
 # LCT
 $LCT$ 通过维护一个 $Splay$ 森林，以起到维护一棵树的信息的作用。
 
+能够动态地维护（加边删边）应该是它最大的特点了（毕竟名字就是 $Link-Cut$。
+
 在 $LCT$ 中，一棵树的边被分为实边（偏爱边）和虚边，每个实边连接的连通块（子树）用一个 $Splay$ 来维护。这个 $Splay$ 中的信息仅仅是这个由实边组成的子树的信息，不会包含子树外的点。
+
+注意：原树中的边并不会因为LCT的旋转或者换根等操作而发生改变（只会影响边的虚实）。
 
 ## 实边和虚边的定义
 
@@ -98,7 +102,48 @@ $LCT$ 通过维护一个 $Splay$ 森林，以起到维护一棵树的信息的�
 
 对于每条边建一个点，这个点的权值即为边权。
 
+## 维护连通块信息
 
+一个点的连通块信息由一个实边组成的 $Splay$ 和多个虚边连接的 $Splay$ 的构成。
+
+所以对于每个点，我们只要再维护一个所有虚边连接的 $Splay$ 的信息之和。
+
+```cpp
+int si[maxn]; 所有虚子树信息
+
+inline void pushup(int x) {
+  sum[x] = val[x] + sum[ch[x][0]] + sum[ch[x][1]] + si[x];
+}
+void access(int x) {
+  for (int y = 0; x; y = x, x = fa[x]) {
+    splay(x);
+    si[x] += sum[ch[x][1]];
+    ch[x][1] = y;
+    si[x] -= sum[y];
+    pushup(x);
+  }
+}
+
+
+// 因为 sum[x] 会影响到 y 的祖先，所以先把 y 转到根
+// 保证连边合法
+inline void link(int x, int y) {
+  split(x, y);
+  si[fa[x] = y] += sum[x];
+  pushup(y);
+}
+// 不保证
+inline bool link(int x, int y) {
+  makeroot(x);
+  if (findroot(y) == x) return 0;
+  si[fa[x] = y] += sum[x];
+  pushup(y);
+  return 1;
+}
+
+```
+
+## 模板
 ```cpp
 
 // 1-index
