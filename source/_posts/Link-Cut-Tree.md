@@ -87,7 +87,7 @@ $LCT$ 通过维护一个 $Splay$ 森林，以起到维护一棵树的信息的�
 ## LCT的作用：
 
 1. 维护树链的信息
-2. 维护树的连通性：因为LCT本质是个Splay森林，所以可能存在不连通的情况。可以通过找各自原树的根是否相同来判断是否连通。
+2. 动态维护树的连通性：因为LCT本质是个Splay森林，所以可能存在不连通的情况。可以通过找各自原树的根是否相同来判断是否连通。（有些卡常题目可以用并查集来替代 $find$ 判联通性）
 
 ## 时间复杂度：
 
@@ -118,10 +118,11 @@ struct LCT {
     rev[x] ^= 1;
   }
   inline void pushdown(int x) {
-    if (!rev[x]) return;
-    if (ch[x][0]) reverse(ch[x][0]);
-    if (ch[x][1]) reverse(ch[x][1]);
-    rev[x] ^= 1;
+    if (rev[x]) {
+      if (ch[x][0]) reverse(ch[x][0]);
+      if (ch[x][1]) reverse(ch[x][1]);
+      rev[x] ^= 1;
+    }
   }
 
   // 因为儿子可能会改变，因此每次必须重新计算
@@ -192,7 +193,7 @@ struct LCT {
   // 区间修改
   void update_seg(int u, int v) {
     split(u, v);
-    tag(v); // 打对应标记
+    // tag(v); 打对应标记，记得更改对sum的影响
   }
 } lct;
 ```
