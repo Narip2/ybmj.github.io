@@ -2762,6 +2762,14 @@ int query(int k, int l, int r, int L, int R, int x) {
 }
 ```
 
+### Todo
+
+动态开点线段树
+Splay
+LCT
+珂朵莉
+
+
 ## 动态规划
 
 ### RMQ
