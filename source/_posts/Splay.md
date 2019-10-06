@@ -347,3 +347,199 @@ struct Splay {
   // 输出树的时候记得 pushdown!
 } splay;
 ```
+
+# 修改
+
+```cpp
+struct Splay {
+  int fa[maxn], ch[maxn][2], stk[maxn];
+  int sz[maxn], key[maxn], cnt[maxn];
+  int rt, top, tot;
+
+  void init() {
+    rt = top = tot = 0;
+    ch[rt][0] = ch[rt][1] = 0;
+    cnt[rt] = sz[rt] = fa[rt] = 0;
+  }
+
+  int newnode(int p = 0, int k = 0) {
+    int x = top ? stk[top--] : ++tot;
+    if (p) ch[p][key[p] < k] = x;
+    fa[x] = p, sz[x] = 1, key[x] = k, cnt[x] = 1;
+    ch[x][0] = ch[x][1] = 0;
+    return x;
+  }
+
+  void pushup(int x) {
+    if (!x) return;
+    sz[x] = cnt[x];
+    if (ch[x][0]) sz[x] += sz[ch[x][0]];
+    if (ch[x][1]) sz[x] += sz[ch[x][1]];
+  }
+
+  int get(int x) { return x == ch[fa[x]][1]; }
+
+  void rotate(int x) {
+    int y = fa[x], z = fa[y], d = get(x);
+    if (z) ch[z][get(y)] = x;
+    fa[x] = z, fa[y] = x;
+    ch[y][d] = ch[x][d ^ 1], fa[ch[y][d]] = y;
+    ch[x][d ^ 1] = y;
+    pushup(y), pushup(x);
+  }
+
+  // 旋到 goal 的下面
+  void splay(int x, int goal = 0) {
+    for (int f; fa[x] != goal; rotate(x)) {
+      f = fa[x];
+      if (f != goal) rotate(get(x) == get(f) ? f : x);
+    }
+    if (!goal) rt = x;
+  }
+
+  // 查询第k小的节点。 1-index
+  // [1,2,2,3] kth(3) = 2
+  int kth(int k) {
+    for (int p = rt; p;) {
+      if (k <= sz[ch[p][0]])
+        p = ch[p][0];
+      else {
+        k -= sz[ch[p][0]] + cnt[p];
+        if (k <= 0) {
+          splay(p);
+          return p;
+        }
+        p = ch[p][1];
+      }
+    }
+    // k > 树的大小，或者 k < 1
+    return 0;
+  }
+
+  // 查询值小于val的结点数量。 1-index
+  // val不一定存在于Splay中
+  int rank(int val) {
+    int ret = 0;
+    for (int p = rt; p;) {
+      if (val < key[p])
+        p = ch[p][0];
+      else {
+        ret += sz[ch[p][0]];
+        if (val == key[p]) {
+          splay(p);
+          return ret;
+        }
+        ret += cnt[p];
+        p = ch[p][1];
+      }
+    }
+    return ret;
+  }
+
+  // 插入值为val的节点
+  void insert(int val) {
+    for (int p = rt, f = 0;; f = p, p = ch[p][key[p] < val]) {
+      if (!p) {
+        int x = newnode(f, val);
+        pushup(x), pushup(f), splay(x);
+        break;
+      }
+      if (key[p] == val) {
+        cnt[p]++;
+        pushup(p), pushup(f), splay(p);
+        break;
+      }
+    }
+  }
+
+  // 前驱节点，若返回0，则表示无前驱
+  int pre() {
+    int p = ch[rt][0];
+    while (ch[p][1]) p = ch[p][1];
+    return p;
+  }
+  // 后继节点，若返回0，则表示无后继
+  int nxt() {
+    int p = ch[rt][1];
+    while (ch[p][0]) p = ch[p][0];
+    return p;
+  }
+
+  bool find(int val) {
+    for (int p = rt; p;) {
+      if (key[p] == val) {
+        splay(p);
+        return true;
+      }
+      if (val < key[p])
+        p = ch[p][0];
+      else
+        p = ch[p][1];
+    }
+    return false;
+  }
+
+  // 删除值为val的节点
+  void remove(int val) {
+    if (!find(val)) return;  // 若找到则将其旋转到根
+    if (cnt[rt] > 1) {
+      --cnt[rt], pushup(rt);
+      return;
+    }
+    stk[++top] = rt;  // 内存回收
+    if (!ch[rt][0] && !ch[rt][1]) {
+      rt = 0;
+      return;
+    }
+    if (!ch[rt][0]) {
+      rt = ch[rt][1];
+      fa[rt] = 0;
+      return;
+    }
+    if (!ch[rt][1]) {
+      rt = ch[rt][0];
+      fa[rt] = 0;
+      return;
+    }
+    int x = pre(), p = rt;
+    splay(x);
+    fa[ch[p][1]] = x;
+    ch[x][1] = ch[p][1];
+    pushup(rt);
+  }
+} splay;
+```
+
+int sz[u]: 以u为根的子树的大小
+int ch[u][0/1]: u的左/右儿子，值为0时表示没有该儿子。
+int fa[u]: u的父亲
+int key[u]: u点所代表的权值
+int cnt[u]: u点的数量
+int top: 栈顶（用于内存回收）
+int rt: 根结点
+int tot: 树的大小
+
+
+注意：
+fa[u] = 0 表示u为根结点
+ch[u][0/1] = 0 表示没有相应的孩子
+任何时候都不应该修改 0 这个结点的值
+
+
+
+newnode(父亲结点，新结点的值)：（private）
+用于建立一个新结点，返回该结点的编号
+内存回收：把删除的结点放到栈中，建立新节点的使用可以利用已经删除结点的编号
+p: 父亲, k: 权值
+p = 0 表示当前是根节点
+
+son：(private)
+判断x是其父亲的哪个节点
+单独使用请判父亲是否为 0
+
+rotate:(private)
+单独使用请判父亲是否为 0
+对于splay操作来说，pushup(x)是多余的
+
+其他操作：
+求大于（小于）val的值：先将val插入后，查询根的后继（前驱），最后删除 val 即可。
