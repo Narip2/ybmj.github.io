@@ -8,6 +8,83 @@ tags:
 - ICPC
 ---
 
+[比赛链接](https://vjudge.net/contest/332052#overview)
+
+# A - Largest Triangle
+
+## 题意
+二维平面上有 $n$ 个点，从中选择三个点，问最大的三角形面积。
+
+$1 \leq n \leq 5000$
+
+## 分析
+
+旋转卡壳快乐旋转
+
+## 代码
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+struct Point {
+  int x, y;
+  bool operator<(const Point &rhs) const {
+    if (x == rhs.x) return y < rhs.y;
+    return x < rhs.x;
+  }
+};
+Point operator-(Point a, Point b) { return Point{a.x - b.x, a.y - b.y}; }
+ll Cross(Point A, Point B) { return 1LL * A.x * B.y - 1LL * A.y * B.x; }
+ll Cross(Point A, Point B, Point C) { return Cross(B - A, C - A); }
+double area(Point A, Point B, Point C) { return Cross(A, B, C) * 0.5; }
+
+vector<Point> ConvexHull(vector<Point> ps) {
+  int n = ps.size(), k = 0;
+  if (n <= 1) return ps;
+  sort(ps.begin(), ps.end());
+  vector<Point> ret(n * 2);
+  for (int i = 0; i < n; ret[k++] = ps[i++])
+    while (k > 1 && Cross(ret[k - 2], ret[k - 1], ps[i]) <= 0) --k;
+  for (int i = n - 2, t = k; ~i; ret[k++] = ps[i--])
+    while (k > t && Cross(ret[k - 2], ret[k - 1], ps[i]) <= 0) --k;
+  ret.resize(k - 1);
+  return ret;
+}
+
+double work(vector<Point> ps) {
+  if (ps.size() <= 2) return 0;
+  ps.push_back(ps[0]);
+  int n = ps.size();
+  double ret = 0;
+  for (int i = 0; i < n - 1; i++) {
+    int p = i;
+    for (int j = i + 1; j < n - 1; j++) {
+      while (abs(Cross(ps[i], ps[j], ps[p])) <=
+             abs(Cross(ps[i], ps[j], ps[p + 1])))
+        (++p) %= (n - 1);
+      ret = max(ret, area(ps[i], ps[j], ps[p]));
+    }
+  }
+  return ret;
+}
+
+int main() {
+  int n;
+  // while (~scanf("%d", &n)) {
+  scanf("%d", &n);
+  vector<Point> ps;
+  for (int i = 0, x, y; i < n; i++) {
+    scanf("%d%d", &x, &y);
+    ps.push_back({x, y});
+  }
+  auto ch = ConvexHull(ps);
+  double ans = work(ch);
+  printf("%.5f\n", ans);
+  // }
+}
+```
+
 # F - Wi Know 
 
 
