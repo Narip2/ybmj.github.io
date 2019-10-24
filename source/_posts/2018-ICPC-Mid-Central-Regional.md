@@ -8,6 +8,7 @@ tags:
 - ICPC
 ---
 
+
 # I - Random Manhattan Distance
 
 ## 题意
@@ -168,5 +169,131 @@ int main() {
   ret += solve(a);
   printf("%.10f\n", ret);
   return 0;
+}
+```
+
+# J - Mobilization
+
+## 题意
+给定 $n$ 种物品，每种物品都有两个属性$h_i,p_i$和一个价格$c_i$，每种物品都有无限个。你现在拥有 $b$ 元钱。
+定义最终的价值为所购买所有物品 $h$ 的总和乘以 $p$ 的总和。 求最大价值。
+每种物品可以买分数个。
+
+$1 \leq n \leq 30000, 1 \leq b \leq 100000$
+
+## 分析
+
+先求出对于每种物品，每花一元钱可以获得的 $(h,p)$。这可以看成二维平面上的若干点。
+
+这些点的任意组合：$f = k_1 \times (h_1,p_1) + k_2 \times (h_2,p_2) + k_3 \times (h_3,p_3)... $。
+
+因为有限制 $k_1 + k_2 + ... + k_n = 1$。所以 $f$ 一定在这些点组成的凸包内。
+
+
+而我们最终的价值实际上可以看作是 $f$ 与原点围成的矩形面积，因此得到答案必在凸包的边界上。
+
+然后我们只要枚举凸包的边界，计算最值即可。
+
+## 代码
+
+```cpp
+#include <bits/stdc++.h>
+
+using db = long double;
+
+struct Point {
+    db x, y;
+    Point(db x = 0, db y = 0) : x(x), y(y) {}
+};
+
+typedef Point Vector;
+
+bool operator<(const Point& a, const Point& b) {
+    return a.x < b.x || (a.x == b.x && a.y < b.y);
+}
+Vector operator+(Vector A, Vector B) { return Vector(A.x + B.x, A.y + B.y); }
+Vector operator-(Point A, Point B) { return Vector(A.x - B.x, A.y - B.y); }
+Vector operator*(Point A, db p) { return Vector(A.x * p, A.y * p); }
+
+const db eps = 1e-12;
+
+db dcmp(db x) {
+    if (fabs(x) < eps) {
+        return 0;
+    }
+    return x < 0 ? -1 : 1;
+}
+
+bool operator==(const Point& a, const Point& b) {
+    return dcmp(a.x - b.x) == 0 && dcmp(a.y - b.y) == 0;
+}
+
+db Cross(Vector A, Vector B) { return A.x * B.y - A.y * B.x; }
+
+typedef std::vector<Point> Polygon;
+
+Polygon ConvexHull(std::vector<Point> p) {
+    std::sort(p.begin(), p.end());
+    p.erase(std::unique(p.begin(), p.end()), p.end());
+
+    int n = p.size(), m = 0;
+
+    Polygon res(n + 1);
+    for (int i = 0; i < n; i++) {
+        while (m > 1 && Cross(res[m - 1] - res[m - 2], p[i] - res[m - 2]) <= 0)
+            m--;
+        res[m++] = p[i];
+    }
+    int k = m;
+    for (int i = n - 2; i >= 0; i--) {
+        while (m > k && Cross(res[m - 1] - res[m - 2], p[i] - res[m - 2]) <= 0)
+            m--;
+        res[m++] = p[i];
+    }
+    m -= n > 1;
+    res.resize(m);
+    return res;
+}
+
+Point GetLineInterSection(Point P, Vector v, Point Q, Vector w) {
+    Vector u = P - Q;
+    db t = Cross(w, u) / Cross(v, w);
+    return P + v * t;
+}
+
+bool checkLL(Vector v, Vector w) { return dcmp(Cross(v, w)) == 0; }
+
+
+db cal(Point x){
+    return x.x * x.y;
+}
+
+int main() {
+    int n, b;
+    scanf("%d%d", &n, &b);
+    db x, y;
+    std::vector<Point> points;
+    for (int i = 0, c; i < n; i++) {
+        scanf("%d%Lf%Lf", &c, &x, &y);
+        points.emplace_back(x * b / c, y * b / c);
+    }
+    auto poly = ConvexHull(points);
+    db ans = -1;
+    int sz = poly.size();
+
+    for(int i=0;i<sz;i++){
+        auto p1 = poly[i];
+        auto p2 = poly[(i + 1) % sz];
+        ans = std::max(ans, cal(p1));
+        ans = std::max(ans, cal(p2));
+        if(dcmp(p1.x - p2.x) != 0 && dcmp(p1.y - p2.y) != 0) {
+            db tmpx = p1.x / 2 - p1.y * (p2.x - p1.x) / (2 * (p2.y - p1.y));
+            db tmpy = p1.y / 2 - p1.x * (p2.y - p1.y) / (2 * (p2.x - p1.x));
+            if(tmpx >= std::min(p1.x,p2.x) && tmpx <= std::max(p1.x, p2.x)){
+                ans = std::max(ans, tmpx * tmpy);
+            }
+        }          
+    }
+    printf("%.10Lf\n", ans);
 }
 ```
