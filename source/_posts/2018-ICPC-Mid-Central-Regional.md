@@ -27,7 +27,7 @@ $3 \leq n \leq 100000$
 
 因为这个概率密度函数 $weight(x)$ 是个分段函数，每一段对应一个梯形（扫描线从左到右扫过去）。因此我们将答案分为两部分来算，第一部分是当前梯形所对应的区间内任选两点的贡献；第二部分是当前梯形所对应的区间内选一点，之前计算过的区间内选一点，这两个点的贡献。
 
-第一部分的答案就是 $2\times \int_{x=0}^{w} \int_{y=0}^{x} weight(x) * weight(y) * (x - y) dy\ dx$
+第一部分的答案就是 $2\times \int_{x=0}^{w} \int_{y=0}^{x} weight(x) \times weight(y) \times (x - y) dydx$
 
 > 积分全靠 $wolframalpha$...
 
