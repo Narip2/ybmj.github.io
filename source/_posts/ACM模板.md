@@ -2919,17 +2919,22 @@ int getSG(int n, int foo) {
 #### 整数三分
 
 ```cpp
-// 求极大值
+// 求极大值 [l,r]
 int find(int l, int r) {
-    while (l < r - 1) {
-        int m1 = l + r >> 1;
-        int m2 = m1 + r >> 1;
-        if (work(m1) > work(m2))
-            r = m2;
-        else
-            l = m1;
-    }
-    return work(l) > work(r) ? l : r;
+  int m1, m2, val = 0, ret;
+  while (r - l >= 3) {
+    m1 = l + (r - l) / 3;
+    m2 = r - (r - l) / 3;
+    if (work(m1) > work(m2))
+      r = m2;
+    else
+      l = m1;
+  }
+  for (int i = l; i <= r; i++) {
+    int res = work(i);
+    if (val < res) val = res, ret = i;
+  }
+  return ret;
 }
 ```
 
