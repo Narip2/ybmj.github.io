@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<script>
+    (function () {
+        if ('') {
+            if (prompt('请输入文章密码') !== '') {
+                alert('密码错误！');
+                if (history.length === 1) {
+                    location.replace("http://xxxxxxx.xxx"); // 这里替换成你的首页
+                } else {
+                    history.back();
+                }
+            }
+        }
+    })();
+</script>
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/favicon.png?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "fd3ae03f"
+    });
+  daovoice('update');
+  </script>
+
+
+  <meta name="description" content="结束啦结束啦~~~~ CF1149-B题意：给你一个长度为$n \leq 1e6$的只包含小写字母的模式串，有 3 个初始长度为 0 的串，有$q \leq 1000$次操作，每次操作可以选择一个串在其尾部增加一个字母或去掉一个字母，回答是否这三个串同时满足是模式串的不重合子序列。每个串的长度不超过 250. 解：一开始光想着贪心选择最靠后的满足条件的字母。但是发现有点问题，只能 dp 了。 dp">
+<meta name="keywords" content="做题记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="做题记录2019.4">
+<meta property="og:url" content="http://yoursite.com/2019/04/10/做题记录2019-4/index.html">
+<meta property="og:site_name" content="YBMJ">
+<meta property="og:description" content="结束啦结束啦~~~~ CF1149-B题意：给你一个长度为$n \leq 1e6$的只包含小写字母的模式串，有 3 个初始长度为 0 的串，有$q \leq 1000$次操作，每次操作可以选择一个串在其尾部增加一个字母或去掉一个字母，回答是否这三个串同时满足是模式串的不重合子序列。每个串的长度不超过 250. 解：一开始光想着贪心选择最靠后的满足条件的字母。但是发现有点问题，只能 dp 了。 dp">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-11-27T16:32:43.727Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="做题记录2019.4">
+<meta name="twitter:description" content="结束啦结束啦~~~~ CF1149-B题意：给你一个长度为$n \leq 1e6$的只包含小写字母的模式串，有 3 个初始长度为 0 的串，有$q \leq 1000$次操作，每次操作可以选择一个串在其尾部增加一个字母或去掉一个字母，回答是否这三个串同时满足是模式串的不重合子序列。每个串的长度不超过 250. 解：一开始光想着贪心选择最靠后的满足条件的字母。但是发现有点问题，只能 dp 了。 dp">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/10/做题记录2019-4/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>做题记录2019.4 | YBMJ</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7ef548798a5d4d7cd4cc669aab269784";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YBMJ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+  
+
+  
+
+  <a href="https://github.com/ybmj" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" style="fill: #222; color: #fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/10/做题记录2019-4/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ybmj">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YBMJ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">做题记录2019.4<a href="https://github.com/ybmj/ybmj.github.io/tree/hexo/source/_posts/做题记录2019-4.md" class="post-edit-link" title="Edit this post" rel="noopener" target="_blank"><i class="fa fa-pencil"></i></a>
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-10 10:44:22" itemprop="dateCreated datePublished" datetime="2019-04-10T10:44:22+08:00">2019-04-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-11-28 00:32:43" itemprop="dateModified" datetime="2019-11-28T00:32:43+08:00">2019-11-28</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/ACM/做题记录/" itemprop="url" rel="index"><span itemprop="name">做题记录</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/2019/04/10/做题记录2019-4/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">Comments: </span> <span class="post-comments-count valine-comment-count" data-xid="/2019/04/10/做题记录2019-4/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2019/04/10/做题记录2019-4/" class="leancloud_visitors" data-flag-title="做题记录2019.4">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">5.6k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">5 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>结束啦结束啦~~~~</p>
+<h3 id="CF1149-B"><a href="#CF1149-B" class="headerlink" title="CF1149-B"></a>CF1149-B</h3><p>题意：给你一个长度为$n \leq 1e6$的只包含小写字母的模式串，有 3 个初始长度为 0 的串，有$q \leq 1000$次操作，每次操作可以选择一个串在其尾部增加一个字母或去掉一个字母，回答是否这三个串同时满足是模式串的不重合子序列。每个串的长度不超过 250.</p>
+<p>解：一开始光想着贪心选择最靠后的满足条件的字母。但是发现有点问题，只能 dp 了。 dp[i][j][k] 表示第一个串的前 i 个和第二个串的前 j 个和第三个串的前 k 个满足条件的最小模式串长度。由于每次只在最后添加或删除字母，因此只要更新剩下的两维即可，复杂度是 250*250 的。（还是太年轻</p>
+<h3 id="同济校赛"><a href="#同济校赛" class="headerlink" title="同济校赛"></a>同济校赛</h3><h4 id="H-菜哭武的-01-串"><a href="#H-菜哭武的-01-串" class="headerlink" title="H-菜哭武的 01 串"></a>H-菜哭武的 01 串</h4><p>题意：给你一个长度为$n \leq 1e6$的 01 串，问这个串所有子序列可以表示的最大的连续正整数。</p>
+<p>解：序列自动机上 bfs 第一个不能表示的正整数，然后减一。需要记忆化，为什么能够记忆化呢？假设当前点 i 是从之前很多状态转移过来的，因为每次转移都是贪心走字典序最小的，所以只要记录第一次访问 i 的状态即可。</p>
+<p>到现在已经用序列自动机解决了两种题目了</p>
+<ul>
+<li>判断一个串是否是另一个串的子序列</li>
+<li>判断一个串中所有子序列可以表示的最大连续正整数</li>
+<li>本质不同子序列个数（感觉 dp 一下当前结点出去的子序列个数，然后求个和</li>
+</ul>
+<h3 id="Comet-OJ-Contest-2"><a href="#Comet-OJ-Contest-2" class="headerlink" title="Comet OJ - Contest #2"></a>Comet OJ - Contest #2</h3><p><a href="https://www.cometoj.com/contest/37" target="_blank" rel="noopener">比赛网址</a></p>
+<h4 id="B"><a href="#B" class="headerlink" title="B"></a>B</h4><p>解：一个小技巧记录一下，就是在精度要求不高的时候比如 1e-4 这种，可以将数据乘 1e4 之后枚举计算，最后结果再除回去就可以。</p>
+<h4 id="D"><a href="#D" class="headerlink" title="D"></a>D</h4><p>题意：记$dist(i,j)$为树上 i 到 j 路径上的边数，设$f(S)=max{dist(x,y) | x,y \in S, x \neq y}$，$S$为点集。对每个 i 求满足$f(S) = i$的点集个数。 $n \leq 2000$</p>
+<p>解：首先我们注意到$f(S)$实际上是点集的直径。对于一个点集，其中所有的直径的中点是一样的（有可能是边，有可能是点）。那么我们可以通过枚举中点（边）和半径来做。由于边不好枚举，因此我们将一条边的中点拿出来，即(u-&gt;v)拆成(u-&gt;m-&gt;v)。这样只要枚举点即可。因为枚举的是半径，那么要求有至少有两个子树中的点被选到。</p>
+<h4 id="E"><a href="#E" class="headerlink" title="E"></a>E</h4><p>题意：有 n 个人在睡觉，第 i 个人有$p_i$的概率自己醒来。第 i 个人向第$to_i$个人中出卖了自己的自由，也就是说当第 i 个人没有睡着时，他会有$s_i$的概率去把第$to_i$个人叫醒。求最终每个人醒来的概率。$2 \leq n \leq 10^5$</p>
+<p>解：不难发现这是一个基环森林。如果不考虑环的存在，那么每个人醒来的概率简单 dp 即可算出。对于有环的情况，我们先用前面的 dp 把当前的基环树缩成一个环。即环上的每个点醒来的概率都是 dp[i]。那么环上的概率怎么算呢？$ans[i] = dp[i] + (1 - dp[i])(dp[i-1]s[i-1]) + (1-dp[i])(1-dp[i-1])(dp[i-2]s[i-2]s[i-1])…$ 意思是：i 点本身醒着的概率+i 点没醒，i-1 点醒了且叫醒了 i 点的概率 + i 和 i-1 点都没醒，i-2 醒了且叫醒了 i-1，i-1 又叫醒了 i 的概率 + …</p>
+<p>需要注意的是：为什么不能用$ans[i-1]$去更新$ans[i]$呢？因为$ans[i-1]$表示 i-1 点最终醒来的概率，它是考虑了$i$的影响的。而计算$i$最终醒来的概率是不能考虑$i$对其它人的影响的。</p>
+<h3 id="南昌网络赛"><a href="#南昌网络赛" class="headerlink" title="南昌网络赛"></a>南昌网络赛</h3><p><a href="https://www.jisuanke.com/contest/2290?view=challenges" target="_blank" rel="noopener">比赛网址</a></p>
+<h4 id="B-1"><a href="#B-1" class="headerlink" title="B"></a>B</h4><p>题意：</p>
+<p>给定$n$个食物，每个食物有个能量$a[i]$。每次查询一个区间$[l,r]$，表示从第$l$个食物开始顺序吃到第$r$个食物得到的能量。<br>要求：</p>
+<ul>
+<li>要吃就全部吃完</li>
+<li>当前吃的食物的能量只能比上一次吃的食物的能量低</li>
+<li>当前食物能吃就吃，不能吃就跳过（原题意中没有这句话，但是没有这句话会理解错题意，导致这题的难度会上升）</li>
+</ul>
+<p>一共有$q$个查询，每次给定$l,r,p,c$，分别表示查询吃$[l,r]$区间能获得的能量，吃完之后修改第$p$个食物的值为$c$。</p>
+<p>解：</p>
+<p>$f[rt]$表示线段树中当前结点代表的区间的答案，那么它的转移有两种：</p>
+<ul>
+<li>如果$rt$结点的最小值在左子树$lson$中取得，那么$f[rt] = f[lson]$</li>
+<li>不然的话$f[rt] = f[lson] + x$，$x$表示在右子树$rson$中能够获得的能量</li>
+</ul>
+<p>接下来考虑如何计算$x$</p>
+<p>设$dfs(x,u)$表示初始值小于$x$，在$u$结点所代表的区间内可获得的能量。</p>
+<p>那么上面第二个转移中的转移可以写为$f[rt] = f[lson] + dfs(lson_min, rson)$</p>
+<p>接下来考虑$dfs(x,u)$的状态转移。设$lu$为$u$的左子树，$ru$为$u$的右子树。</p>
+<ul>
+<li>如果$x \leq lu_min$，那么$dfs(x,u) = dfs(x, ru)$</li>
+<li>不然$dfs(x,u) = dfs(x,lu) + f[u] - f[lu]$</li>
+</ul>
+<p>这样我更新一个结点的复杂度是$O(\log n)$</p>
+<p>接下来是查询：</p>
+<p>首先把要查询区间所包含的所有结点找到，按左端点排序，顺序调用上面的$dfs$加一加就可以了。</p>
+<p>更新的话就正常线段树单点更新。</p>
+<h4 id="D-1"><a href="#D-1" class="headerlink" title="D"></a>D</h4><p>题意：</p>
+<p>给一个长度为$n(\leq 100)$的表达式，只包含数字和加减运算符。每个数字和运算符都是由若干个火柴拼接而成。问在不改变原始表达式的结构（数字的个数，运算符的个数和每个数字的位数）的条件下，通过移动火柴使得新的表达式的值最大。</p>
+<p>解：</p>
+<p>$dp[i][tot][0/1]$表示到第$i$个位置，还剩下$tot$个火柴，上一个运算符是加或减，所能得到的最大值。转移的状态只有十种，注意一下前导零。</p>
+<h4 id="I"><a href="#I" class="headerlink" title="I"></a>I</h4><p>题意：</p>
+<p>设一个区间的$val$为这个区间的和乘以这个区间的最小值。给定一个 n 个整数的数组，求它所有子区间中最大的$val$。（有负数）</p>
+<p>解:</p>
+<p>单调栈搞一下每个数最为最小值的范围，然后线段树维护一下前缀和的最值和后缀和的最值。</p>
+<h4 id="M"><a href="#M" class="headerlink" title="M"></a>M</h4><p>题意：</p>
+<p>给一个字符串$S(\leq 100000)$，再给 $n(\leq 100000)$ 个字符串$t_i(\leq 1000)$，判断每个$t_i$是不是$S$的子序列。</p>
+<p>解：</p>
+<p>卡的有 1 丶丶紧，必须要纯正的$O(nt)$的做法，维护一下$next[i][ch]$从$i$位开始，字符$ch$的下一个出现位置，搞一搞。</p>
+<p>原来这就是序列自动机啊（cslnb</p>
+<h3 id="2050-大厦-hdu6496"><a href="#2050-大厦-hdu6496" class="headerlink" title="2050 大厦 hdu6496"></a>2050 大厦 hdu6496</h3><p>题意：</p>
+<p>在二维平面上匡一个矩形，给定若干条斜率为 pi/4 和 3pi/4 的直线，问这些直线组成的矩形有多少个在大矩形框内。</p>
+<p>解：</p>
+<p>将直线分为两个集合$S_1,S_2$，对$S_1$中的每条直线暴力出与$S_2$中每条直线的交点（在大矩形框内。</p>
+<p>从$S_1$中任选两条直线，它们合法交点的交集就是这两条直线对答案的贡献</p>
+<p><a href="http://acm.hdu.edu.cn/showproblem.php?pid=6496" target="_blank" rel="noopener">http://acm.hdu.edu.cn/showproblem.php?pid=6496</a></p>
+<hr>
+<h3 id="codeforce-1155-D"><a href="#codeforce-1155-D" class="headerlink" title="codeforce 1155 D"></a>codeforce 1155 D</h3><p>题意：</p>
+<p>给一个数组，求其最大的连续子序列和</p>
+<p>解：</p>
+<p>dp[i][0/1/2]分别表示到第 i 个，还没选/正在选/选完了的状态。<br><a href="http://codeforces.com/contest/1155/problem/D" target="_blank" rel="noopener">http://codeforces.com/contest/1155/problem/D</a></p>
+<hr>
+<h3 id="gcj-qualification-D-交互"><a href="#gcj-qualification-D-交互" class="headerlink" title="gcj qualification D 交互"></a>gcj qualification D 交互</h3><p>题意：有 1024 台机器，其中有 15 台坏了，要你猜五次，把这些坏的机器猜出来。每一次猜，可以输入一个只有 0 和 1 的字符串，第 i 位表示发送给第 i 台机器的数字。若机器没坏则它会把原始数据返回给你。</p>
+<p>解：如果可以猜十次，那么我可以把[0,1023]遍历一遍。缺少的数字就是坏掉的机器。猜五次的话就要利用只有 15 台坏掉的条件，我们按 16 台一组进行分组，这样不会有一组同时被吞掉。组内枚举[0,15]即可。</p>
+<hr>
+<h3 id="夺宝奇兵-秦皇岛-Day1"><a href="#夺宝奇兵-秦皇岛-Day1" class="headerlink" title="夺宝奇兵 秦皇岛 Day1"></a>夺宝奇兵 秦皇岛 Day1</h3><p>题意：有 n 个人，m 个宝贝，每个宝贝有个价值 w[i]，这 m 个宝贝都在这 n 个人手里。如果想获得某个宝贝，必须从这个人手里花费 w[i]买过来。现在你手上没有宝贝，问至少需要多少钱才可是使得你成为拥有宝物最多（严格大于所有人）的人。</p>
+<p>解:</p>
+<p>两种策略：</p>
+<ul>
+<li>去买那些价值小的宝物</li>
+<li>从拥有宝物多的人那里买</li>
+</ul>
+<p>显然只考虑一种是不够的，那我们需要同时兼顾这两种策略。</p>
+<p>枚举当前人民最多拥有的宝物数，对于那些拥有宝物多的人，要优先购买他们手中价格低的宝物。如果最后拥有的宝物数没有满足条件，则再从所有未购买的宝物中购买价值最低的那些宝物。</p>
+<p>用权值线段树去维护宝物的价值。最后均摊复杂度$O(n\log n)$。</p>
+<h3 id="树上博弈"><a href="#树上博弈" class="headerlink" title="树上博弈"></a>树上博弈</h3><p>题意：在基环树上有若干终点，A 先手，A B 轮流移动，A 不能移动到 B 经过过的点上，当 A 到达若干个终点之一时即可获胜。</p>
+<p>解：首先如果存在某个终点到 A 的距离比 B 近，那么 A 一定可以赢。不然 A 只能借助环来赢。那么 A 什么情况会赢呢？首先应该是 B 先到环，然后 B 会懵逼，不知道往哪里走，他会随机挑一个方向走。这时候 A 到环上，只要选择另一条路走，这时候 B 再回头可能就晚了，于是 A 就可以赢了。</p>
+<hr>
+<h3 id="ccpc-final：Balance-of-the-Force-二分-优先队列-贪心"><a href="#ccpc-final：Balance-of-the-Force-二分-优先队列-贪心" class="headerlink" title="ccpc final：Balance of the Force 二分+优先队列 贪心"></a>ccpc final：Balance of the Force 二分+优先队列 贪心</h3><p>题意：有 n 个人，每个人可以选择属性值加$l_i$或者$d_i$，有 k 个限制，每个限制是两个人不能选择一样的（比如都选$l_i$）。现在想要所有人中属性值最大的和最小的的差值尽可能小，求出这个差值。</p>
+<p>解：每个限制抽象成一条无向边，那么原图就会形成若干个连通分量。对于一个连通分量他会有两种值，因为一个联通分量里，一个人确定，那么整个联通分量的最大和最小值就确定了。现在我们把每个联通分量的两种取值情况都拿出来$(l_1,r_1)和(l_2,r_2)$。然后我们二分答案，答案确定后，我们将所有的 pair 按最大值($r$)排序，知道最大值后减去答案就是最小值。用个优先队列，队列中按最小值($l$)排序。当队列中 pair 的数量大于一半的时候说明当前答案是可以满足的。</p>
+<hr>
+<h3 id="2050-热身"><a href="#2050-热身" class="headerlink" title="2050 热身"></a>2050 热身</h3><h4 id="赶火车-期望的递归定义"><a href="#赶火车-期望的递归定义" class="headerlink" title="赶火车 期望的递归定义"></a>赶火车 期望的递归定义</h4><p>题意：一共有 n+m 条路，n 条路正确，走正确的路则 a[i]分钟后会到达终点。走错误的路会浪费 b[i]分钟。走过的路可能会重复走。问期望走到终点的时间？</p>
+<p>解: 用递归的定义写出期望的表达式，然后就可以解出期望。$EX = \frac{\sum a[i]}{n + m} + \frac{\sum b[i] + mEX}{n+m} $</p>
+<hr>
+<h4 id="定理证明-递归解题"><a href="#定理证明-递归解题" class="headerlink" title="定理证明 递归解题"></a>定理证明 递归解题</h4><p>题意: 有 n 个定理，现在要<strong>顺序</strong>写出一些推理关系，使得最终这个 n 个定理相互可达。怎么写可以写出最多的推理关系？比如 3 个定理：可以写成 4 条(1-&gt;2,2-&gt;3,3-&gt;2,2-&gt;1)，也可以写成 5 条(1-&gt;3,2-&gt;3,1-&gt;2,2-&gt;1,3-&gt;2)</p>
+<p>解：1 先向 3 到 n 连边，然后 2 向 3 到 n 连边，再将 1 和 2 相连，这样 1 和 2 就可以缩成一个点。这样规模就变成了 n-1.</p>
+<hr>
+<h3 id="kickstar2019-round-B"><a href="#kickstar2019-round-B" class="headerlink" title="kickstar2019 round B"></a>kickstar2019 round B</h3><h4 id="b"><a href="#b" class="headerlink" title="b"></a>b</h4><p>题意：有 n 个能量棒，每个能量棒有 s，e，l 三个属性。s 表示吃掉这根能量棒所需要的时间，e 表示吃掉这个能量棒能获得的能量，l 表示每秒钟能量棒的能力会衰减的值。现在要使得所获得的能量最多，问最多是多少？ n 为 100</p>
+<p>解：对于能量棒 i 和 j，如果不存在能量棒衰减为 0 的情况，那么如果$s_i \times l_j &lt; s_j \times l_i$ 那么就应该先吃 j 再吃 i。按这个顺序排序之后，贪心选就可以了。</p>
+<p>但是如果某个能量棒会衰减为 0，那么就不能这么贪心。但这些会衰减为 0 的能量棒并不影响选择的顺序。因此可以 01 背包做一下。</p>
+<p>简单证明一下：假设按照排序结果先吃 i 再吃 j 或者只吃 j 不吃 i 。我们需要证明的是先吃 j 再吃 i 不会更优。</p>
+<ul>
+<li>第一种情况是 i 和 j 都不会衰减到 0。这时候一定是先吃 i 再吃 j；</li>
+<li>第二种情况是 i 会衰减到 0，j 不会。这时候吃完 j，i 已经衰减到 0 了，我们绝对不会再去选择 i</li>
+<li>第三种情况是 j 会衰减到 0，i 不会。$e_i - l_i \times t \geq e_j - l_j \times t + e_i - l_i \times(t + s_j)$ 又因为$e_j - l_j(t + s_i) \leq 0$ 并且$s_i \times l_j &gt; s_j \times l_i$。所以先吃 i 的的收益更大。</li>
+<li>第四种情况是 i 和 j 都会衰减到 0。这种情况要么吃 i 要么吃 j，不会出现先吃 j 又把 i 吃了的情况。</li>
+</ul>
+<h4 id="c"><a href="#c" class="headerlink" title="c"></a>c</h4><p>题意：给一个有 n 数字的数组 a[]和一个 s。 定义$(l,r)$表示区间[l,r]内，所有合法元素的数量。合法的定义为该种类的数字重复出现的次数小于等于 s。若出现次数大于 s，那么该元素就不算了。比如 s=2，那么对于 a=[1,1,1]，那么$(1,2) = 2, (1,3) = 0$。</p>
+<p>解：我们将数组内的元素用 [+1, +1, -2]这种形式来表示，那么对于一个固定的左端点，只要求一个前缀和最大值即可。那么移动左端点的话，只需要更改几个点。所以我们就可以用线段树来维护一个前缀和最大值。</p>
+
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>ybmj</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://yoursite.com/2019/04/10/做题记录2019-4/" title="做题记录2019.4">http://yoursite.com/2019/04/10/做题记录2019-4/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/做题记录/" rel="tag"> <i class="fa fa-tag"></i> 做题记录</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/09/后缀数组/" rel="next" title="后缀数组">
+                <i class="fa fa-chevron-left"></i> 后缀数组
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/14/图论基础/" rel="prev" title="图论基础">
+                图论基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/me.jpg" alt="ybmj">
+            
+              <p class="site-author-name" itemprop="name">ybmj</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">212</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">77</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ybmj" title="GitHub &rarr; https://github.com/ybmj" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:mwhybmj@gmail.com" title="E-Mail &rarr; mailto:mwhybmj@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cubercsl.cn/" title="https://cubercsl.cn/" rel="noopener" target="_blank">CSL</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://dengtesla.com/" title="http://dengtesla.com/" rel="noopener" target="_blank">D-Tesla</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CF1149-B"><span class="nav-number">1.</span> <span class="nav-text">CF1149-B</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同济校赛"><span class="nav-number">2.</span> <span class="nav-text">同济校赛</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#H-菜哭武的-01-串"><span class="nav-number">2.1.</span> <span class="nav-text">H-菜哭武的 01 串</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Comet-OJ-Contest-2"><span class="nav-number">3.</span> <span class="nav-text">Comet OJ - Contest #2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#B"><span class="nav-number">3.1.</span> <span class="nav-text">B</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#D"><span class="nav-number">3.2.</span> <span class="nav-text">D</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#E"><span class="nav-number">3.3.</span> <span class="nav-text">E</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#南昌网络赛"><span class="nav-number">4.</span> <span class="nav-text">南昌网络赛</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#B-1"><span class="nav-number">4.1.</span> <span class="nav-text">B</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#D-1"><span class="nav-number">4.2.</span> <span class="nav-text">D</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#I"><span class="nav-number">4.3.</span> <span class="nav-text">I</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#M"><span class="nav-number">4.4.</span> <span class="nav-text">M</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2050-大厦-hdu6496"><span class="nav-number">5.</span> <span class="nav-text">2050 大厦 hdu6496</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#codeforce-1155-D"><span class="nav-number">6.</span> <span class="nav-text">codeforce 1155 D</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gcj-qualification-D-交互"><span class="nav-number">7.</span> <span class="nav-text">gcj qualification D 交互</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#夺宝奇兵-秦皇岛-Day1"><span class="nav-number">8.</span> <span class="nav-text">夺宝奇兵 秦皇岛 Day1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#树上博弈"><span class="nav-number">9.</span> <span class="nav-text">树上博弈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ccpc-final：Balance-of-the-Force-二分-优先队列-贪心"><span class="nav-number">10.</span> <span class="nav-text">ccpc final：Balance of the Force 二分+优先队列 贪心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2050-热身"><span class="nav-number">11.</span> <span class="nav-text">2050 热身</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#赶火车-期望的递归定义"><span class="nav-number">11.1.</span> <span class="nav-text">赶火车 期望的递归定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定理证明-递归解题"><span class="nav-number">11.2.</span> <span class="nav-text">定理证明 递归解题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kickstar2019-round-B"><span class="nav-number">12.</span> <span class="nav-text">kickstar2019 round B</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#b"><span class="nav-number">12.1.</span> <span class="nav-text">b</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c"><span class="nav-number">12.2.</span> <span class="nav-text">c</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ybmj</span>
+  
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">727k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">11:01</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: true,
+    notify: true,
+    appId: 'uNA0DvdpgdBobRBt1UA5EaWj-gzGzoHsz',
+    appKey: 'wbsXRXRUnp6ENNaKNzUnGBNm',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var range = document.createRange(); //For Chrome
+        var sel = window.getSelection(); //For Chrome
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; //Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.value = code;
+        ta.textContent = code; //For FireFox
+        ta.contentEditable = true;
+        ta.readOnly = false;
+        document.body.appendChild(ta);
+        range.selectNode(ta);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        ta.setSelectionRange(0, code.length);
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('Copied');
+          else $(this).text('Copy failed');
+        
+        ta.blur(); //For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('Copy');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+  
+  
+
+  
+  
+
+  
+
+
+</body>
+</html>

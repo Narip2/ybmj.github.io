@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<script>
+    (function () {
+        if ('') {
+            if (prompt('请输入文章密码') !== '') {
+                alert('密码错误！');
+                if (history.length === 1) {
+                    location.replace("http://xxxxxxx.xxx"); // 这里替换成你的首页
+                } else {
+                    history.back();
+                }
+            }
+        }
+    })();
+</script>
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/favicon.png?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "fd3ae03f"
+    });
+  daovoice('update');
+  </script>
+
+
+  <meta name="description" content="无向图的连通性一些定义在无向连通图 $G$ 上进行如下定义： 割点：若删掉某点 $P$ 后，$G$ 分裂成两个或两个以上的子图，则称 $P$ 为 $G$ 的割点。 割点集合：如果有一个顶点集合，删除这个顶点集合以及与该点集中的顶点相关联的边以后，原图分成多于一个连通块，则称这个点集为 $G$ 的割点集合。 点连通度：最小割点集合的大小称为无向图 $G$ 的点连通度。 割边（桥）：若删掉某条边 $e">
+<meta name="keywords" content="图论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图论基础">
+<meta property="og:url" content="http://yoursite.com/2019/04/14/图论基础/index.html">
+<meta property="og:site_name" content="YBMJ">
+<meta property="og:description" content="无向图的连通性一些定义在无向连通图 $G$ 上进行如下定义： 割点：若删掉某点 $P$ 后，$G$ 分裂成两个或两个以上的子图，则称 $P$ 为 $G$ 的割点。 割点集合：如果有一个顶点集合，删除这个顶点集合以及与该点集中的顶点相关联的边以后，原图分成多于一个连通块，则称这个点集为 $G$ 的割点集合。 点连通度：最小割点集合的大小称为无向图 $G$ 的点连通度。 割边（桥）：若删掉某条边 $e">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-11-27T16:32:43.727Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图论基础">
+<meta name="twitter:description" content="无向图的连通性一些定义在无向连通图 $G$ 上进行如下定义： 割点：若删掉某点 $P$ 后，$G$ 分裂成两个或两个以上的子图，则称 $P$ 为 $G$ 的割点。 割点集合：如果有一个顶点集合，删除这个顶点集合以及与该点集中的顶点相关联的边以后，原图分成多于一个连通块，则称这个点集为 $G$ 的割点集合。 点连通度：最小割点集合的大小称为无向图 $G$ 的点连通度。 割边（桥）：若删掉某条边 $e">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/14/图论基础/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>图论基础 | YBMJ</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7ef548798a5d4d7cd4cc669aab269784";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YBMJ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+  
+
+  
+
+  <a href="https://github.com/ybmj" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" style="fill: #222; color: #fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/14/图论基础/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ybmj">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YBMJ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">图论基础<a href="https://github.com/ybmj/ybmj.github.io/tree/hexo/source/_posts/图论基础.md" class="post-edit-link" title="Edit this post" rel="noopener" target="_blank"><i class="fa fa-pencil"></i></a>
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-14 13:38:43" itemprop="dateCreated datePublished" datetime="2019-04-14T13:38:43+08:00">2019-04-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-11-28 00:32:43" itemprop="dateModified" datetime="2019-11-28T00:32:43+08:00">2019-11-28</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/ACM/图论/" itemprop="url" rel="index"><span itemprop="name">图论</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/2019/04/14/图论基础/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">Comments: </span> <span class="post-comments-count valine-comment-count" data-xid="/2019/04/14/图论基础/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2019/04/14/图论基础/" class="leancloud_visitors" data-flag-title="图论基础">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">11k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">10 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="无向图的连通性"><a href="#无向图的连通性" class="headerlink" title="无向图的连通性"></a>无向图的连通性</h1><h2 id="一些定义"><a href="#一些定义" class="headerlink" title="一些定义"></a>一些定义</h2><p>在无向连通图 $G$ 上进行如下定义：</p>
+<p><strong>割点</strong>：若删掉某点 $P$ 后，$G$ 分裂成两个或两个以上的子图，则称 $P$ 为 $G$ 的割点。</p>
+<p><strong>割点集合</strong>：如果有一个顶点集合，删除这个顶点集合以及与该点集中的顶点相关联的边以后，原图分成多于一个连通块，则称这个点集为 $G$ 的割点集合。</p>
+<p><strong>点连通度</strong>：最小割点集合的大小称为无向图 $G$ 的点连通度。</p>
+<p><strong>割边（桥）</strong>：若删掉某条边 $e$ 后，$G$ 分裂成两个或两个以上的子图，则称 $e$ 为 $G$ 的割边（桥）。</p>
+<p><strong>割边集合</strong>：如果有一个边集合，删除这个边集后，原图分成多于一个连通块，则称这个边集为割边集合。</p>
+<p><strong>边连通度</strong>：最小割边集合的大小称为无向图 $G$ 的边连通度。</p>
+<p><strong>点双连通图</strong>：点连通度大于 $1$ 的图称为点双连通图（没有割点）。</p>
+<p><strong>边双连通图</strong>：边连通度大于 $1$ 的图称为边双连通图（没有割边）。</p>
+<p><strong>（点/边）双连通分量</strong>：无向图的极大（点/边）双连通子图称为（点/边）双连通分量。</p>
+<hr>
+<h2 id="Tarjan-算法"><a href="#Tarjan-算法" class="headerlink" title="Tarjan 算法"></a>Tarjan 算法</h2><p>Tarjan 基于对图的深度优先搜索，对每个节点引入了两个值：</p>
+<p>$dfn[u]$：节点 $u$ 的时间戳，记录点 $u$ 是 $DFS$ 过程中第几个访问的节点。</p>
+<p>$low[u]:$ 记录节点 $u$ 或 $u$ 的子树 不经过搜索树上的边能够到达的时间戳最小的节点。</p>
+<h3 id="维护方法"><a href="#维护方法" class="headerlink" title="维护方法"></a>维护方法</h3><p>对于每一条与 $u$ 相连的边 $(u,v)$</p>
+<p>若在搜索树上 $v$ 是 $u$ 的子节点，则更新 $low[u] = min ( low[u], low[v] )$</p>
+<p>若 $(u,v)$ 不是搜索树上的边，则更新 $low[u] = min(low[u], dfn[v])$</p>
+<h3 id="求割点"><a href="#求割点" class="headerlink" title="求割点"></a>求割点</h3><p>对于搜索树上的一条边 $(u,v)$，其中 $u$ 是 $v$ 的父节点，若 $low[v] &gt;= dfn[u]$，则 $u$ 为割点。</p>
+<p>$low[v] &gt;= dfn[u]$ 说明从 $v$ 及 $v$ 的子树的点 到以 $u$ 为根的子树之外的点必须要经过点 $u$，因此 $u$ 是割点。</p>
+<p><strong>注意</strong>： 如果根只有一个孩子，那么它不是割点。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[maxn];</span><br><span class="line"><span class="keyword">int</span> dfs_clock, dfn[maxn];</span><br><span class="line"><span class="keyword">bool</span> iscut[maxn];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> fa)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> lowu = dfn[u] = ++dfs_clock;</span><br><span class="line">    <span class="keyword">int</span> child = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!dfn[v]) &#123;</span><br><span class="line">            child++;</span><br><span class="line">            <span class="keyword">int</span> lowv = dfs(v, u);</span><br><span class="line">            lowu = min(lowu, lowv);</span><br><span class="line">            <span class="keyword">if</span> (lowv &gt;= dfn[u]) iscut[u] = <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dfn[v] &lt; dfn[u] &amp;&amp; v != fa)</span><br><span class="line">            lowu = min(lowu, dfn[v]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (fa &lt; <span class="number">0</span> &amp;&amp; child == <span class="number">1</span>) iscut[u] = <span class="literal">false</span>;  <span class="comment">// root</span></span><br><span class="line">    <span class="keyword">return</span> lowu;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="点双联通分量"><a href="#点双联通分量" class="headerlink" title="点双联通分量"></a>点双联通分量</h3><p><strong>其他定义</strong>：对于一个无向连通图，如果任意两点至少存在两条点不重复路径，则称这个图为点双连通的。</p>
+<p>可以在求割点的过程中维护一个栈，从而求出每个点双连通分量。</p>
+<p>建立一个栈，存储 DFS 过程中访问的节点， 初次访问一个点时把该点入栈。</p>
+<p>如果边 $(u,v)$ 满足 $low[v] &gt;= dfn[u]$，即满足了 $u$ 是割点的判断条件，那么把点从栈顶依次取出，直至取出了点 $v$，取出的这些点和点 $u$ 一起组成了一个点双连通分量。</p>
+<p><strong>割点可能属于多个点双连通分量</strong>，其余点和每条边属于且仅属于一个点双连通分量。因此在从栈中取出节点时，要把 $u$ 留在占中。</p>
+<p>整个 $DFS$ 结束后，栈中还剩余的节点构成一个点双联通分量。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[maxn], bcc[maxn];</span><br><span class="line"><span class="keyword">int</span> bcc_cnt, dfs_clock;</span><br><span class="line"><span class="keyword">int</span> dfn[maxn], iscut[maxn], bccno[maxn];</span><br><span class="line"><span class="built_in">stack</span>&lt;pii&gt; stk;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> lowu = dfn[u] = ++dfs_clock;</span><br><span class="line">    <span class="keyword">int</span> child = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">        pii e = &#123;u, v&#125;;</span><br><span class="line">        <span class="keyword">if</span> (!dfn[v]) &#123;</span><br><span class="line">            stk.push(e);</span><br><span class="line">            child++;</span><br><span class="line">            <span class="keyword">int</span> lowv = dfs(v, u);</span><br><span class="line">            lowu = min(lowu, lowv);</span><br><span class="line">            <span class="keyword">if</span> (lowv &gt;= dfn[u]) &#123;  <span class="comment">// u为割点</span></span><br><span class="line">                iscut[u] = <span class="literal">true</span>;</span><br><span class="line">                bcc_cnt++;</span><br><span class="line">                bcc[bcc_cnt].clear();  <span class="comment">//注意！bcc从1开始编号</span></span><br><span class="line">                <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">                    pii x = stk.top();</span><br><span class="line">                    stk.pop();</span><br><span class="line">                    <span class="keyword">if</span> (bccno[x.first] != bcc_cnt)</span><br><span class="line">                        bcc[bcc_cnt].push_back(x.first), bcc[x.first] = bcc_cnt;</span><br><span class="line">                    <span class="keyword">if</span> (bccno[x.second] != bcc_cnt)</span><br><span class="line">                        bcc[bcc_cnt].push_back(x.second),</span><br><span class="line">                            bcc[x.second] = bcc_cnt;</span><br><span class="line">                    <span class="keyword">if</span> (x.first == u &amp;&amp; x.second == v) <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dfn[v] &lt; dfn[u] &amp;&amp; v != fa) &#123;</span><br><span class="line">            stk.push(e);</span><br><span class="line">            lowu = min(lowu, dfn[v]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (fa &lt; <span class="number">0</span> &amp;&amp; child == <span class="number">1</span>) iscut[u] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> lowu;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//割点的bccno无意义</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//调用结束后stack保证为空，所以不用清空</span></span><br><span class="line">    <span class="built_in">memset</span>(iscut, <span class="number">0</span>, <span class="keyword">sizeof</span>(iscut));</span><br><span class="line">    <span class="built_in">memset</span>(bccno, <span class="number">0</span>, <span class="keyword">sizeof</span>(bccno));</span><br><span class="line">    <span class="built_in">memset</span>(dfn, <span class="number">0</span>, <span class="keyword">sizeof</span>(dfn));</span><br><span class="line">    dfs_clock = bcc_cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        <span class="keyword">if</span> (!dfn[i]) dfs(i, <span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>注意对每个割点或者割边来说，判定定理可能不止一次成立，所以不要边判定边输出。</p>
+<h3 id="割边"><a href="#割边" class="headerlink" title="割边"></a>割边</h3><p>对于一条搜索树上的边 $(u,v)$，其中 $u$ 是 $v$ 的父节点，若 $low[v] &gt; dfn[u]$，则 $(u,v)$ 是桥。</p>
+<p>$low[v]$ 表示 $v$ 和 $v$ 的子树不经过搜索树上的边能够到达的时间戳的最小的节点。</p>
+<p>$low[v] &gt; dfn[u]$ 说明从以 $v$ 为根的子树到子树之外的必须要经过边 $(u,v)$，因此 $(u,v)$ 是桥。</p>
+<p>可以像求割点一样，当 $v$ 回溯至 $u$ 后，判断上述不等式是否成立。</p>
+<p>另一种判断方法：当递归 $v$ 结束时，如果 $low[v] == dfn[v]$ 说明 $v$ 和 $v$ 的父节点之间的边是桥。</p>
+<p><strong>注意</strong>：在有重边的图上求桥，需要对重边加以区分。需要记录 $(u,fa)$ 的数量，若大于 $1$ 说明有重边，则要设置 $low[u] = dfn[fa]$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;pii&gt; G[maxn];  <span class="comment">// first: 下一个点， second: 该边的编号</span></span><br><span class="line"><span class="keyword">int</span> dfs_clock, dfn[maxn];</span><br><span class="line"><span class="keyword">bool</span> iscut[N];  <span class="comment">// N: 边数</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> fa)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> lowu = dfn[u] = ++dfs_clock;</span><br><span class="line">    <span class="comment">// int father = 0;</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;V : G[u]) &#123;</span><br><span class="line">        <span class="keyword">int</span> v = V.first;</span><br><span class="line">        <span class="keyword">int</span> id = V.second;  <span class="comment">// 边的编号</span></span><br><span class="line">        <span class="comment">// if(v == fa) father++;</span></span><br><span class="line">        <span class="keyword">if</span> (!dfn[v]) &#123;</span><br><span class="line">            <span class="keyword">int</span> lowv = dfs(v, u);</span><br><span class="line">            lowu = min(lowv, lowu);</span><br><span class="line">            <span class="keyword">if</span> (lowv &gt; dfn[u]) iscut[id] = <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dfn[v] &lt; dfn[u] &amp;&amp; v != fa)</span><br><span class="line">            lowu = min(lowu, dfn[v]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// if(father &gt; 1) return dfn[fa];</span></span><br><span class="line">    <span class="keyword">return</span> lowu;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="边双联通分量"><a href="#边双联通分量" class="headerlink" title="边双联通分量"></a>边双联通分量</h3><p><strong>其他定义</strong>：对于一个无向连通图，如果任意两点至少存在两条边不重复路径，则称该图为边双连通的。</p>
+<p>边双连通分量的求法非常简单，只需在求出所有的桥后，把桥删除。</p>
+<p>此时原图分成了若干个连通块，每个连通块就是一个边双连通分量。</p>
+<p><strong>桥不属于任何一个边双连通分量</strong>。</p>
+<p>其余的边和每个顶点都属于且仅属于一个边双连通分量。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[maxn];</span><br><span class="line"><span class="keyword">int</span> bcc_cnt, dfs_clock;</span><br><span class="line"><span class="keyword">int</span> dfn[maxn], bccno[maxn];</span><br><span class="line"><span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; stk;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> fa)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> lowu = dfn[u] = ++dfs_clock;</span><br><span class="line">    stk.push(u);</span><br><span class="line">    <span class="keyword">bool</span> flag = <span class="literal">false</span>;  <span class="comment">// 有重边</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (v == fa &amp;&amp; !flag) &#123;</span><br><span class="line">            flag = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!dfn[v]) &#123;</span><br><span class="line">            <span class="keyword">int</span> lowv = dfs(v, u);</span><br><span class="line">            lowu = min(lowu, lowv);</span><br><span class="line">        &#125; <span class="keyword">else</span></span><br><span class="line">            lowu = min(lowu, dfn[v]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (lowu == dfn[u]) &#123;</span><br><span class="line">        bcc_cnt++;  <span class="comment">// 编号从1开始</span></span><br><span class="line">        <span class="keyword">while</span> (!stk.empty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> v = stk.top();</span><br><span class="line">            bccno[v] = bcc_cnt;</span><br><span class="line">            <span class="keyword">if</span> (u == v) <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="边双连通分量的构造"><a href="#边双连通分量的构造" class="headerlink" title="边双连通分量的构造"></a>边双连通分量的构造</h4><p><strong>任意给定一个无向连通图，最少添加多少条边可以把它变为双连通图？</strong></p>
+<p>求出所有的桥和边双连通分量，把每个双连通分量缩成一个点。</p>
+<p>此时的图只包含缩点后的双连通分量 和 桥边，是一棵无根树。</p>
+<p>统计树中度数为 $1$ 的节点的个数 $cnt$ 。把树变为边双连通图，至少需要添加 $\lceil \frac{cnt}{2} \rceil$ 条边。</p>
+<p><strong>构造方法</strong>：</p>
+<p>设缩点后的叶子为 $v_1, v_2, … , v_n$，让 $v_i$ 与 $v_{i + \lfloor \frac{n}{2} \rfloor}$ 连边即可。</p>
+<p>如果相连的两个节点的 $LCA$ 不是根的话，必然会留下一些桥（根到 $LCA$ 的路径上都是桥）。</p>
+<h1 id="有向图连通性"><a href="#有向图连通性" class="headerlink" title="有向图连通性"></a>有向图连通性</h1><h2 id="强连通分量"><a href="#强连通分量" class="headerlink" title="强连通分量"></a>强连通分量</h2><p>若在一张有向图中，各个点互相可达，则称此图强连通。</p>
+<p>最大强连通子图又称强连通分量。</p>
+<p>实际问题中，强连通分量往往会被看成一个点来处理(缩点)。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[maxn];</span><br><span class="line"><span class="keyword">int</span> scc, dfs_clock, top;  <span class="comment">// scc: 强连通分量的数量</span></span><br><span class="line"><span class="keyword">bool</span> instack[maxn];</span><br><span class="line"><span class="keyword">int</span> dfn[maxn], low[maxn], belong[maxn], Stack[maxn];</span><br><span class="line"><span class="comment">// int num[maxn];      // 每个强连通分量的数量。 1 ~ scc</span></span><br><span class="line"><span class="comment">// int maps[maxn];      //缩点之后 每个点对应的新点的标号</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Tarjan</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    dfn[u] = low[u] = ++dfs_clock;</span><br><span class="line">    instack[u] = <span class="literal">true</span>;</span><br><span class="line">    Stack[top++] = u;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!dfn[v]) &#123;</span><br><span class="line">            Tarjan(v);</span><br><span class="line">            low[u] = min(low[u], low[v]);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (instack[v])</span><br><span class="line">            low[u] = min(low[u], dfn[v]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (dfn[u] == low[u]) &#123;</span><br><span class="line">        ++scc;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> now;</span><br><span class="line">        <span class="keyword">while</span> (top &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            now = Stack[--top];</span><br><span class="line">            instack[now] = <span class="literal">false</span>;</span><br><span class="line">            belong[now] = u;</span><br><span class="line">            ++cnt;</span><br><span class="line">            <span class="keyword">if</span> (now == u) &#123;</span><br><span class="line">                <span class="comment">// num[scc] = cnt;</span></span><br><span class="line">                <span class="comment">// maps[u] = scc;</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(instack, <span class="number">0</span>, <span class="keyword">sizeof</span>(instack));</span><br><span class="line">    <span class="built_in">memset</span>(dfn, <span class="number">0</span>, <span class="keyword">sizeof</span>(dfn));</span><br><span class="line">    scc = dfs_clock = top = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;  <span class="comment">// 点的标号从1开始</span></span><br><span class="line">        <span class="keyword">if</span> (!dfn[i]) Tarjan(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="有向图的必经结点（割点）（支配树）"><a href="#有向图的必经结点（割点）（支配树）" class="headerlink" title="有向图的必经结点（割点）（支配树）"></a>有向图的必经结点（割点）（支配树）</h2><p>给定有向图 $G$（可能有环）和图中的一个点 $s$，对于 $G$ 中的任意一个点 $t$，求从 $s$ 到 $t$ 的路径上（可能有很多条）必须经过的点集。</p>
+<p><strong>支配树</strong>：$(G,s)$ 的支配树是一棵根为 $s$ 的有向树，从 $s$ 出发可以到达 $G$ 中的所有点。<br>$x$ 的必经节点集合 $dom(x)$ 就是支配树上 根 $s$ 到 $x$ 路径上的点集。</p>
+<h3 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h3><p><strong>必经点(dom)（割点）</strong>：</p>
+<p>若从 $s$ 到 $t$ 的路径一定经过点 $x$，则称 $x$ 是从 $s$ 到 $t$ 的必经点（割点），记为 $x\quad dom\quad t$。</p>
+<p>从 $s$ 出发到达 $t$ 的所有必经点集合为 $dom(t)$，即 $dom(t) = {x | x\quad dom\quad y}$.</p>
+<p><strong>最近必经点(idom)</strong>：</p>
+<p>节点 $t$ 的必经点集合 $dom(t)$ 中 $dfn$ 值最大的点 $x$ 是距离 $t$ 最近的必经点，称 $x$ 为 $t$ 的最近必经节点。</p>
+<p>最近必经点是唯一的，因此可以记 $x = idom(t)$。</p>
+<p><strong>半必经点(semi)</strong>：</p>
+<p>在搜索树 $T$ 上，点 $t$ 的祖先中通过非树边可以到达 $t$ 的且 $dfn$ 最小的祖先 $x$，称为 $t$ 的半必经点。半必经点也是唯一的，因此可以记为 $x = semi(t)$。</p>
+<p><strong>半必经点定理</strong>：</p>
+<p>对于 $G$ 中的一点 $t$，考虑所有 $x \in pre(t)$（前驱），定义一个临时变量 $tmp = INF$。</p>
+<p>若 $dfn[x] &lt; dfn[t]$，则 $(x,t)$ 为树边或前向边，此时 $tmp = min(tmp, dfn[x])$。</p>
+<p>若 $dfn[x] &gt; dfn[t]$，则 $(x,t)$ 为横叉边或后向边，此时 $x$ 的祖先中所有满足 $dfn[z] &gt; dfn[t]$ 的，有 $tmp = min(tmp, dfn[semi[z]])$。</p>
+<p>$semi[t] = id[tmp]$，即在上述所有可能情况中取 $dfn$ 值最小的一种，就是 $t$ 的半必经点。</p>
+<p><strong>必经点定理</strong>：</p>
+<p>对于 $G$ 中的一点 $x$，考虑搜索树 $T$ 中 $semi(x)$ 到 $x$ 的路径上除端点之外的点构成的集合 $path$。</p>
+<p>设 $y$ 为 $path$ 中半必经点的时间戳最小的节点。</p>
+<p>若 $semi(x) = semi(y)$，则 $idom(x) = semi(x)$。</p>
+<p>若 $semi(x) \neq semi(y)$，则 $idom(x) = idom(y)$</p>
+<h3 id="Lengauer-Tarjan-算法："><a href="#Lengauer-Tarjan-算法：" class="headerlink" title="Lengauer-Tarjan 算法："></a>Lengauer-Tarjan 算法：</h3><p>通过DFS构建搜索树，并计算出每个节点的时间戳。</p>
+<p>根据半必经点定理，按照时间戳从大到小的顺序计算每个节点的半必经节点。</p>
+<p>根据必经点定理，按照时间戳从小到大的顺序，把半必经节点 $\neq$ 必经节点的点进行修正。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dom[i]：（支配树）编号为i的点所支配的最近节点</span></span><br><span class="line"><span class="comment">// idom[i]：编号为i的点的最近必经节点</span></span><br><span class="line"><span class="comment">// semi[i]：编号为i的点的半必经节点</span></span><br><span class="line"><span class="comment">// id[i]：dfn为i的点的编号</span></span><br><span class="line"><span class="comment">// best[i]：编号为i的点的祖先中dfn最小的点的编号</span></span><br><span class="line"><span class="comment">// pre[i]：编号为i的点的前驱</span></span><br><span class="line"><span class="comment">// suc[i]：编号为i的点的后继</span></span><br><span class="line"><span class="comment">// son[i]：编号为i的点的儿子</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DomiTree</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> dfs_clock;</span><br><span class="line">  <span class="keyword">int</span> dfn[maxn], id[maxn], fa[maxn];</span><br><span class="line">  <span class="keyword">int</span> semi[maxn], best[maxn], idom[maxn];</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; pre[maxn], dom[maxn], suc[maxn], son[maxn];</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++) &#123;</span><br><span class="line">      pre[i].clear(), dom[i].clear(), suc[i].clear(), son[i].clear();</span><br><span class="line">      fa[i] = best[i] = idom[i] = semi[i] = i, dfn[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    dfs_clock = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">addedge</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// u -&gt; v</span></span><br><span class="line">    pre[v].push_back(u);</span><br><span class="line">    suc[u].push_back(v);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">    dfs(s);</span><br><span class="line">    tarjan();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    dfn[u] = ++dfs_clock;</span><br><span class="line">    id[dfs_clock] = u;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : suc[u]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (dfn[v]) <span class="keyword">continue</span>;</span><br><span class="line">      dfs(v);</span><br><span class="line">      son[u].push_back(v);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">Min</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123; <span class="keyword">return</span> dfn[semi[x]] &lt; dfn[semi[y]] ? x : y; &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (u == fa[u]) <span class="keyword">return</span> u;</span><br><span class="line">    <span class="keyword">int</span> v = find(fa[u]);</span><br><span class="line">    best[u] = Min(best[fa[u]], best[u]);</span><br><span class="line">    <span class="keyword">return</span> fa[u] = v;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">tarjan</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = dfs_clock; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">      <span class="keyword">int</span> k = id[i];</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">auto</span> v : pre[k]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (dfn[v] == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">if</span> (dfn[v] &lt; dfn[k] &amp;&amp; dfn[v] &lt; dfn[semi[k]]) semi[k] = v;</span><br><span class="line">        <span class="keyword">if</span> (dfn[v] &gt;= dfn[k]) &#123;</span><br><span class="line">          find(v);</span><br><span class="line">          semi[k] = semi[Min(best[v], k)];</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (k != semi[k]) dom[semi[k]].push_back(k);</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : dom[k]) &#123;</span><br><span class="line">        find(v);</span><br><span class="line">        <span class="keyword">if</span> (semi[best[v]] == k)</span><br><span class="line">          idom[v] = k;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">          idom[v] = best[v];</span><br><span class="line">      &#125;</span><br><span class="line">      dom[k].clear();</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : son[k]) fa[v] = k;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= dfs_clock; i++) &#123;</span><br><span class="line">      <span class="keyword">int</span> k = id[i];</span><br><span class="line">      <span class="keyword">if</span> (idom[k] != semi[k]) idom[k] = idom[idom[k]];</span><br><span class="line">      <span class="keyword">if</span> (k != idom[k]) dom[idom[k]].push_back(k);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; dt;</span><br></pre></td></tr></table></figure>
+<h2 id="有向图的必经边（割边）"><a href="#有向图的必经边（割边）" class="headerlink" title="有向图的必经边（割边）"></a>有向图的必经边（割边）</h2><p>给定有向图 $G$（可能有环）和图中的一个点 $s$，对于 $G$ 中的任意一个点 $t$，求 $s$ 到 $t$ 路径上（可能有多条）的必经边的集合。</p>
+<h3 id="无环图做法"><a href="#无环图做法" class="headerlink" title="无环图做法"></a>无环图做法</h3><p>求 $s$ 到每个点的路径数 $Scnt$，$t$ 到每个点的路径数 $Tcnt$。</p>
+<p>若边 $(u,v)$ 满足 $Scnt[u] \times Tcnt[v] = Scnt[t]$，那么 $(u,v)$ 是从 $s$ 到 $t$ 的必经边。</p>
+<p>可以对几个大质数取模做上述计算。</p>
+<h3 id="有环图做法"><a href="#有环图做法" class="headerlink" title="有环图做法"></a>有环图做法</h3><p>在 $(u,v)$ 中间加一个点 $w$，然后利用 $Lengauer-Tarjan$ 算法求有向图割点，若 $w$ 是割点，那么 $(u,v)$ 是割边。</p>
+
+      
+    </div>
+
+    
+      
+
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2018/03/09/Dijkstra/" rel="bookmark">Dijkstra</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2018/10/18/GYM101667E/" rel="bookmark">GYM101667E</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2018/03/09/Kruskal/" rel="bookmark">Kruskal</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2018/04/04/Prim/" rel="bookmark">Prim</a></div>
+      
+    </li>
+  
+    <li class="popular-posts-item">
+      
+      
+      <div class="popular-posts-title"><a href="/2018/06/22/SPFA/" rel="bookmark">SPFA</a></div>
+      
+    </li>
+  
+  </ul>
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>ybmj</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://yoursite.com/2019/04/14/图论基础/" title="图论基础">http://yoursite.com/2019/04/14/图论基础/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/图论/" rel="tag"> <i class="fa fa-tag"></i> 图论</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/10/做题记录2019-4/" rel="next" title="做题记录2019.4">
+                <i class="fa fa-chevron-left"></i> 做题记录2019.4
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/24/CRT/" rel="prev" title="CRT">
+                CRT <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/me.jpg" alt="ybmj">
+            
+              <p class="site-author-name" itemprop="name">ybmj</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">212</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">77</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ybmj" title="GitHub &rarr; https://github.com/ybmj" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:mwhybmj@gmail.com" title="E-Mail &rarr; mailto:mwhybmj@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cubercsl.cn/" title="https://cubercsl.cn/" rel="noopener" target="_blank">CSL</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://dengtesla.com/" title="http://dengtesla.com/" rel="noopener" target="_blank">D-Tesla</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#无向图的连通性"><span class="nav-number">1.</span> <span class="nav-text">无向图的连通性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些定义"><span class="nav-number">1.1.</span> <span class="nav-text">一些定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tarjan-算法"><span class="nav-number">1.2.</span> <span class="nav-text">Tarjan 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#维护方法"><span class="nav-number">1.2.1.</span> <span class="nav-text">维护方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#求割点"><span class="nav-number">1.2.2.</span> <span class="nav-text">求割点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点双联通分量"><span class="nav-number">1.2.3.</span> <span class="nav-text">点双联通分量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#割边"><span class="nav-number">1.2.4.</span> <span class="nav-text">割边</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#边双联通分量"><span class="nav-number">1.2.5.</span> <span class="nav-text">边双联通分量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#边双连通分量的构造"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">边双连通分量的构造</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#有向图连通性"><span class="nav-number">2.</span> <span class="nav-text">有向图连通性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#强连通分量"><span class="nav-number">2.1.</span> <span class="nav-text">强连通分量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有向图的必经结点（割点）（支配树）"><span class="nav-number">2.2.</span> <span class="nav-text">有向图的必经结点（割点）（支配树）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一些概念"><span class="nav-number">2.2.1.</span> <span class="nav-text">一些概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lengauer-Tarjan-算法："><span class="nav-number">2.2.2.</span> <span class="nav-text">Lengauer-Tarjan 算法：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有向图的必经边（割边）"><span class="nav-number">2.3.</span> <span class="nav-text">有向图的必经边（割边）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无环图做法"><span class="nav-number">2.3.1.</span> <span class="nav-text">无环图做法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有环图做法"><span class="nav-number">2.3.2.</span> <span class="nav-text">有环图做法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ybmj</span>
+  
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">727k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">11:01</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: true,
+    notify: true,
+    appId: 'uNA0DvdpgdBobRBt1UA5EaWj-gzGzoHsz',
+    appKey: 'wbsXRXRUnp6ENNaKNzUnGBNm',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var range = document.createRange(); //For Chrome
+        var sel = window.getSelection(); //For Chrome
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; //Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.value = code;
+        ta.textContent = code; //For FireFox
+        ta.contentEditable = true;
+        ta.readOnly = false;
+        document.body.appendChild(ta);
+        range.selectNode(ta);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        ta.setSelectionRange(0, code.length);
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('Copied');
+          else $(this).text('Copy failed');
+        
+        ta.blur(); //For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('Copy');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+  
+  
+
+  
+  
+
+  
+
+
+</body>
+</html>

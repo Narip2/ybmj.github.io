@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<script>
+    (function () {
+        if ('') {
+            if (prompt('请输入文章密码') !== '') {
+                alert('密码错误！');
+                if (history.length === 1) {
+                    location.replace("http://xxxxxxx.xxx"); // 这里替换成你的首页
+                } else {
+                    history.back();
+                }
+            }
+        }
+    })();
+</script>
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/favicon.png?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "fd3ae03f"
+    });
+  daovoice('update');
+  </script>
+
+
+  <meta name="description" content="参考文献：IOI国家集训队2015年论文——《浅谈图的匹配算法及其应用》。 增广路设 $P$ 为图中一条简单路径，如果满足：  $P$ 的起点和重点都是未盖点 $P$ 中的边中匹配边和非匹配边交错出现。  则称 $P$ 是一条增广路。 特别地，我们把满足条件 $2$ 的简单路径称为交替路。 增广：增广路上非匹配边数量比匹配边数量多 $1$，如果把这条路径取反，则当前匹配大小会增加 $1$。这个过程">
+<meta name="keywords" content="图的匹配算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图的匹配算法">
+<meta property="og:url" content="http://yoursite.com/2019/10/27/图的匹配算法/index.html">
+<meta property="og:site_name" content="YBMJ">
+<meta property="og:description" content="参考文献：IOI国家集训队2015年论文——《浅谈图的匹配算法及其应用》。 增广路设 $P$ 为图中一条简单路径，如果满足：  $P$ 的起点和重点都是未盖点 $P$ 中的边中匹配边和非匹配边交错出现。  则称 $P$ 是一条增广路。 特别地，我们把满足条件 $2$ 的简单路径称为交替路。 增广：增广路上非匹配边数量比匹配边数量多 $1$，如果把这条路径取反，则当前匹配大小会增加 $1$。这个过程">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ybmj-blog-1256173108.cos.ap-shanghai.myqcloud.com/blog-picture/%E5%B8%A6%E8%8A%B1%E6%A0%911.png">
+<meta property="og:updated_time" content="2019-11-27T16:32:43.727Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图的匹配算法">
+<meta name="twitter:description" content="参考文献：IOI国家集训队2015年论文——《浅谈图的匹配算法及其应用》。 增广路设 $P$ 为图中一条简单路径，如果满足：  $P$ 的起点和重点都是未盖点 $P$ 中的边中匹配边和非匹配边交错出现。  则称 $P$ 是一条增广路。 特别地，我们把满足条件 $2$ 的简单路径称为交替路。 增广：增广路上非匹配边数量比匹配边数量多 $1$，如果把这条路径取反，则当前匹配大小会增加 $1$。这个过程">
+<meta name="twitter:image" content="https://ybmj-blog-1256173108.cos.ap-shanghai.myqcloud.com/blog-picture/%E5%B8%A6%E8%8A%B1%E6%A0%911.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/27/图的匹配算法/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>图的匹配算法 | YBMJ</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7ef548798a5d4d7cd4cc669aab269784";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">YBMJ</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+  
+  
+
+  
+
+  <a href="https://github.com/ybmj" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" style="fill: #222; color: #fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/27/图的匹配算法/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ybmj">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YBMJ">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">图的匹配算法<a href="https://github.com/ybmj/ybmj.github.io/tree/hexo/source/_posts/图的匹配算法.md" class="post-edit-link" title="Edit this post" rel="noopener" target="_blank"><i class="fa fa-pencil"></i></a>
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-10-27 12:29:07" itemprop="dateCreated datePublished" datetime="2019-10-27T12:29:07+08:00">2019-10-27</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-11-28 00:32:43" itemprop="dateModified" datetime="2019-11-28T00:32:43+08:00">2019-11-28</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/ACM/图论/" itemprop="url" rel="index"><span itemprop="name">图论</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/2019/10/27/图的匹配算法/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">Comments: </span> <span class="post-comments-count valine-comment-count" data-xid="/2019/10/27/图的匹配算法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2019/10/27/图的匹配算法/" class="leancloud_visitors" data-flag-title="图的匹配算法">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">11k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">10 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>参考文献：IOI国家集训队2015年论文——《浅谈图的匹配算法及其应用》。</p>
+<h1 id="增广路"><a href="#增广路" class="headerlink" title="增广路"></a>增广路</h1><p>设 $P$ 为图中一条简单路径，如果满足：</p>
+<ol>
+<li>$P$ 的起点和重点都是未盖点</li>
+<li>$P$ 中的边中匹配边和非匹配边交错出现。</li>
+</ol>
+<p>则称 $P$ 是一条<strong>增广路</strong>。</p>
+<p>特别地，我们把满足条件 $2$ 的简单路径称为<strong>交替路</strong>。</p>
+<p><strong>增广</strong>：增广路上非匹配边数量比匹配边数量多 $1$，如果把这条路径取反，则当前匹配大小会增加 $1$。这个过程称为增广。</p>
+<blockquote>
+<p>定理：一个匹配 $M$ 是图 $G$ 的最大匹配，充要条件是 $G$ 中不存在增广路。</p>
+</blockquote>
+<h1 id="二分图最大匹配"><a href="#二分图最大匹配" class="headerlink" title="二分图最大匹配"></a>二分图最大匹配</h1><h2 id="Dinic"><a href="#Dinic" class="headerlink" title="Dinic"></a>Dinic</h2><p>你肯定会的</p>
+<p>时间复杂度 $O(E \sqrt{V})$</p>
+<h2 id="增广路算法（匈牙利）"><a href="#增广路算法（匈牙利）" class="headerlink" title="增广路算法（匈牙利）"></a>增广路算法（匈牙利）</h2><p>因为增广路的长度为奇数，所以路径的起点和终点一定分居在二分图左右两侧，不妨从左边的每个未盖点找增广路。</p>
+<p>注意到增广路上第奇数次走的是非匹配边，第偶数次走的是匹配边。这说明从左到右走的都是非匹配边，从右到左走的都是匹配边。</p>
+<p>枚举左边每一个未盖点 $u$ ，从 $u$ 开始 $DFS$，每个点记录一个访问标记，以保证至多访问一次，当找到右侧某个未盖点时结束遍历。</p>
+<p>找一次增广路的复杂度为 $O(E)$，枚举未盖点的复杂度是 $O(V)$，因此总复杂度为 $O(VE)$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// O(VE)</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MaxMatch</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> n, clk;</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[maxn];</span><br><span class="line">  <span class="keyword">int</span> vis[maxn], ls[maxn], rs[maxn];</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;n = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) G[i].clear();</span><br><span class="line">    <span class="built_in">memset</span>(rs, <span class="number">-1</span>, <span class="keyword">sizeof</span>(rs));</span><br><span class="line">    <span class="built_in">memset</span>(ls, <span class="number">-1</span>, <span class="keyword">sizeof</span>(ls));</span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">-1</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">addEdge</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>&#123; G[u].push_back(v); &#125;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (vis[v] == clk) <span class="keyword">continue</span>;</span><br><span class="line">      vis[v] = clk;</span><br><span class="line">      <span class="keyword">if</span> (rs[v] == <span class="number">-1</span> || dfs(rs[v])) &#123;</span><br><span class="line">        ls[u] = v;</span><br><span class="line">        rs[v] = u;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">match</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (clk = <span class="number">0</span>; clk &lt; n; clk++)</span><br><span class="line">      <span class="keyword">if</span> (dfs(clk)) ++ret;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="二分图最大匹配关键点"><a href="#二分图最大匹配关键点" class="headerlink" title="二分图最大匹配关键点"></a>二分图最大匹配关键点</h1><p><strong>关键点</strong>：一定在最大匹配中的点。</p>
+<p>先求任意一个最大匹配 $M$，要找的关键点此时一定都是匹配点。考虑 $M$ 中的一个匹配点 $p$，设 $M’$ 为某个不包含 $p$ 的最大匹配。设对称差 $D = M \bigoplus M’$ ，则 $D$ 中一定存在一条以 $p$ 为端点的<strong>偶交替链</strong>，且这条链的另一端不在 $M$ 中。</p>
+<p>所以我们给二分图定向：匹配边从右到左，非匹配边从左到右。从左侧每个未盖点出发 $DFS$，给所到达的左侧点打上标记。最终左侧每个没有标记的匹配点即为关键点。</p>
+<p>因为每个点最多访问一次，因此复杂度为 $O(V + E)$</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MaxMatch</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> n, m, clk;</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[maxn], rG[maxn];</span><br><span class="line">  <span class="keyword">int</span> vis[maxn], ls[maxn], rs[maxn];</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;n = n, <span class="keyword">this</span>-&gt;m = m;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) G[i].clear();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) rG[i].clear();</span><br><span class="line">    <span class="built_in">memset</span>(rs, <span class="number">-1</span>, <span class="keyword">sizeof</span>(rs));</span><br><span class="line">    <span class="built_in">memset</span>(ls, <span class="number">-1</span>, <span class="keyword">sizeof</span>(ls));</span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">-1</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">addEdge</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    G[u].push_back(v);</span><br><span class="line">    rG[v].push_back(u);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (vis[v] == clk) <span class="keyword">continue</span>;</span><br><span class="line">      vis[v] = clk;</span><br><span class="line">      <span class="keyword">if</span> (rs[v] == <span class="number">-1</span> || dfs(rs[v])) &#123;</span><br><span class="line">        ls[u] = v;</span><br><span class="line">        rs[v] = u;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">match</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (clk = <span class="number">0</span>; clk &lt; n; clk++)</span><br><span class="line">      <span class="keyword">if</span> (dfs(clk)) ++ret;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ---------------------------------------</span></span><br><span class="line">  <span class="keyword">bool</span> lskp[maxn], rskp[maxn];</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">dfs_kp_ls</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    vis[u] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (rs[v] == <span class="number">-1</span> || vis[rs[v]]) <span class="keyword">continue</span>;</span><br><span class="line">      dfs_kp_ls(rs[v]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">dfs_kp_rs</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    vis[u] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : rG[u]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (ls[v] == <span class="number">-1</span> || vis[ls[v]]) <span class="keyword">continue</span>;</span><br><span class="line">      dfs_kp_rs(ls[v]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">findKeyPoint</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// match();</span></span><br><span class="line">    <span class="built_in">memset</span>(lskp, <span class="number">0</span>, <span class="keyword">sizeof</span>(lskp));</span><br><span class="line">    <span class="built_in">memset</span>(rskp, <span class="number">0</span>, <span class="keyword">sizeof</span>(rskp));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">      <span class="keyword">if</span> (ls[i] == <span class="number">-1</span>) dfs_kp_ls(i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">      <span class="keyword">if</span> (!vis[i]) lskp[i] = <span class="number">1</span>, ret++;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">      <span class="keyword">if</span> (rs[i] == <span class="number">-1</span>) dfs_kp_rs(i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">      <span class="keyword">if</span> (!vis[i]) rskp[i] = <span class="number">1</span>, ret++;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="二分图最大匹配关键边"><a href="#二分图最大匹配关键边" class="headerlink" title="二分图最大匹配关键边"></a>二分图最大匹配关键边</h1><p><strong>关键边</strong>：一定在最大匹配中的边</p>
+<p>先求任意一个最大匹配 $M$，要找的关键边此时一定都是匹配边。考虑 $M$ 中的一个匹配边 $e$，设 $M’$ 为某个不包含 $e$ 的最大匹配。设对称差 $D = M \bigoplus M’$ ，则 $e$ 在 $D$ 中一定属于一个<strong>偶交替链</strong>或<strong>偶交替环</strong>。</p>
+<p>对于 $e$ 属于一个偶交替链的情况：<br>那么这条链的某一端一定是未盖点。说明 $e$ 的某个端点能通过交替路走到未盖点，即某个端点是非关键点。因此只需判断 $e$ 的两个端点是否存在非关键点。若存在，则 $e$ 为非关键边。</p>
+<p>对于 $e$ 属于一个偶交替环的情况：<br>我们给二分图定向：匹配边从左到右，非匹配边从右到左，再检测 $e$ 是否存在于某个环中（二分图不存在奇环）。这用 $Tarjan$ 求强连通分量即可。</p>
+<p>所以时间复杂度为 $O(V + E)$</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Tarjan</span> &#123;</span></span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[maxn];</span><br><span class="line">  <span class="keyword">int</span> scc, dfs_clock, top;  <span class="comment">// scc: 强连通分量的数量</span></span><br><span class="line">  <span class="keyword">bool</span> instack[maxn];</span><br><span class="line">  <span class="keyword">int</span> dfn[maxn], low[maxn], belong[maxn], Stack[maxn];</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">tarjan</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    dfn[u] = low[u] = ++dfs_clock;</span><br><span class="line">    instack[u] = <span class="literal">true</span>;</span><br><span class="line">    Stack[top++] = u;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!dfn[v]) &#123;</span><br><span class="line">        tarjan(v);</span><br><span class="line">        low[u] = min(low[u], low[v]);</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (instack[v])</span><br><span class="line">        low[u] = min(low[u], dfn[v]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (dfn[u] == low[u]) &#123;</span><br><span class="line">      ++scc;</span><br><span class="line">      <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">int</span> now;</span><br><span class="line">      <span class="keyword">while</span> (top &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        now = Stack[--top];</span><br><span class="line">        instack[now] = <span class="literal">false</span>;</span><br><span class="line">        belong[now] = u;</span><br><span class="line">        ++cnt;</span><br><span class="line">        <span class="keyword">if</span> (now == u) <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(instack, <span class="number">0</span>, <span class="keyword">sizeof</span>(instack));</span><br><span class="line">    <span class="built_in">memset</span>(dfn, <span class="number">0</span>, <span class="keyword">sizeof</span>(dfn));</span><br><span class="line">    scc = dfs_clock = top = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!dfn[i]) tarjan(i);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; tarjan;</span><br><span class="line"></span><br><span class="line"><span class="comment">// n+m</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MaxMatch</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> n, m, clk;</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[maxn], rG[maxn];</span><br><span class="line">  <span class="keyword">int</span> vis[maxn], ls[maxn], rs[maxn];</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;n = n, <span class="keyword">this</span>-&gt;m = m;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) G[i].clear();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) rG[i].clear();</span><br><span class="line">    <span class="built_in">memset</span>(rs, <span class="number">-1</span>, <span class="keyword">sizeof</span>(rs));</span><br><span class="line">    <span class="built_in">memset</span>(ls, <span class="number">-1</span>, <span class="keyword">sizeof</span>(ls));</span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">-1</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">    edges.clear();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">addEdge</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    G[u].push_back(v);</span><br><span class="line">    rG[v].push_back(u);</span><br><span class="line">    edges.push_back(&#123;u, v&#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (vis[v] == clk) <span class="keyword">continue</span>;</span><br><span class="line">      vis[v] = clk;</span><br><span class="line">      <span class="keyword">if</span> (rs[v] == <span class="number">-1</span> || dfs(rs[v])) &#123;</span><br><span class="line">        ls[u] = v;</span><br><span class="line">        rs[v] = u;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">match</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (clk = <span class="number">0</span>; clk &lt; n; clk++)</span><br><span class="line">      <span class="keyword">if</span> (dfs(clk)) ++ret;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ---------------------------------------</span></span><br><span class="line">  <span class="keyword">bool</span> lskp[maxn], rskp[maxn];</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">dfs_kp_ls</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    vis[u] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (rs[v] == <span class="number">-1</span> || vis[rs[v]]) <span class="keyword">continue</span>;</span><br><span class="line">      dfs_kp_ls(rs[v]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">dfs_kp_rs</span><span class="params">(<span class="keyword">int</span> u)</span> </span>&#123;</span><br><span class="line">    vis[u] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : rG[u]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (ls[v] == <span class="number">-1</span> || vis[ls[v]]) <span class="keyword">continue</span>;</span><br><span class="line">      dfs_kp_rs(ls[v]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// O(n+m)</span></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">findKeyPoint</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// match();</span></span><br><span class="line">    <span class="built_in">memset</span>(lskp, <span class="number">0</span>, <span class="keyword">sizeof</span>(lskp));</span><br><span class="line">    <span class="built_in">memset</span>(rskp, <span class="number">0</span>, <span class="keyword">sizeof</span>(rskp));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">      <span class="keyword">if</span> (ls[i] == <span class="number">-1</span>) dfs_kp_ls(i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">      <span class="keyword">if</span> (!vis[i]) lskp[i] = <span class="number">1</span>, ret++;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">      <span class="keyword">if</span> (rs[i] == <span class="number">-1</span>) dfs_kp_rs(i);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++)</span><br><span class="line">      <span class="keyword">if</span> (!vis[i]) rskp[i] = <span class="number">1</span>, ret++;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// -----------------------------------------</span></span><br><span class="line">  <span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; edges;</span><br><span class="line">  <span class="keyword">bool</span> ke[maxn];</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">findKeyEdge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    findKeyPoint();</span><br><span class="line">    <span class="built_in">memset</span>(ke, <span class="number">0</span>, <span class="keyword">sizeof</span>(ke));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n + m; i++) tarjan.G[i].clear();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;e : edges) &#123;</span><br><span class="line">      <span class="keyword">if</span> (ls[e.first] == e.second) &#123;</span><br><span class="line">        tarjan.G[e.first].push_back(e.second + n);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        tarjan.G[e.second + n].push_back(e.first);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    tarjan.solve(n + m);</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; edges.size(); i++) &#123;</span><br><span class="line">      <span class="keyword">auto</span> e = edges[i];</span><br><span class="line">      <span class="keyword">if</span> (ls[e.first] != e.second) <span class="keyword">continue</span>;</span><br><span class="line">      <span class="keyword">if</span> (!lskp[e.first] || !rskp[e.second]) <span class="keyword">continue</span>;</span><br><span class="line">      <span class="keyword">if</span> (tarjan.belong[e.first] != tarjan.belong[e.second + n]) &#123;</span><br><span class="line">        ke[i] = <span class="number">1</span>;</span><br><span class="line">        ret++;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="二分图最大独立集"><a href="#二分图最大独立集" class="headerlink" title="二分图最大独立集"></a>二分图最大独立集</h1><p><strong>独立集</strong>：</p>
+<p>给定图 $G=(V,E)$，$V’$ 是 $V$ 的一个非空子集。若 $V’$ 的任何两个顶点 $u,v$ 都不是同一条边的两个端点，则称 $V’$ 是 $G$ 的一个空子图。设 $V’$ 是 $G$ 的空子图，若 $V’$ 任意增加一个 $G$ 中不在 $V’$ 中的点后都不是空子图，则称 $V’$ 是 $G$ 的独立集。$G$ 中所含顶点数最多的独立集 $V’$ 称为 $G$ 的最大独立集。</p>
+<p><strong>做法</strong>：</p>
+<p>设最大独立集为 $V’$。</p>
+<p>首先求一个图的最大匹配 $M$，那么所有的未盖点必定都在 $V’$ 中（不然匹配数就会增加）。</p>
+<p>然后考虑从每个匹配边中选一个点放到 $V’$ 中，这样 $V’$ 中的点数就是 $|V| - |M|$。</p>
+<p>做法很显然：就是从每一个未盖点出发，依次决定路上点是否可以放到 $V’$ 中。</p>
+<p>但是这么做可能会遇到矛盾，就是一条边的两个点中一个是未盖点一个是匹配点，但经过上述做法后，这两个点可能都被放入 $V’$ 中。实际上这是不可能的，因为我们发现如果有这种情况存在，那么必定存在一条奇数长度增广路，使得当前匹配并不是最大匹配，这与 $M$ 是最大匹配矛盾。</p>
+<p>因此 $|V’| = |V| - |M|$。</p>
+<p>若要输出方案，则从每个未盖点出发，依次决定路上每个点是否可以放入 $V’$ 即可。复杂度 $O(|V| + |E|)$</p>
+<h1 id="二分图最小点覆盖"><a href="#二分图最小点覆盖" class="headerlink" title="二分图最小点覆盖"></a>二分图最小点覆盖</h1><p>最小点覆盖是说：选最少的点，满足每条边都至少有一个端点被选。</p>
+<p>任意点覆盖的补集都是独立集，任意独立集的补集都是点覆盖。</p>
+<p>最小点覆盖 = $V$ - 最大独立集 = 最大匹配 $M$</p>
+<h1 id="一般图最大匹配"><a href="#一般图最大匹配" class="headerlink" title="一般图最大匹配"></a>一般图最大匹配</h1><h2 id="带花树算法"><a href="#带花树算法" class="headerlink" title="带花树算法"></a>带花树算法</h2><p>一般图和二分图的唯一区别在于可能存在奇环，这就导致如果我们对奇环进行增广，就会出现某个点同时在两条匹配边上的情况。</p>
+<p><img src="https://ybmj-blog-1256173108.cos.ap-shanghai.myqcloud.com/blog-picture/%E5%B8%A6%E8%8A%B1%E6%A0%911.png" alt=""></p>
+<p>观察发现，可以通过把奇环缩点，所得到的新图 $G’$。<br>则 $G$ 中存在增广路 $\Leftrightarrow$ $G’$ 中存在增广路。</p>
+<p>所以还是运用增广路算法，在找到奇环时只要进行缩点即可。</p>
+<p>时间复杂度 $O(V^3)$</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MaxMatch</span> &#123;</span></span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[maxn];</span><br><span class="line">  <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; Q;</span><br><span class="line">  <span class="keyword">int</span> n, clk;</span><br><span class="line">  <span class="keyword">int</span> match[maxn], par[maxn];</span><br><span class="line">  <span class="keyword">int</span> Type[maxn], pre[maxn], vis[maxn];</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;n = n;</span><br><span class="line">    clk = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) G[i].clear(), vis[i] = <span class="number">0</span>, match[i] = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">addEdge</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    G[u].push_back(v);</span><br><span class="line">    G[v].push_back(u);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">LCA</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    clk++;</span><br><span class="line">    x = par[x], y = par[y];</span><br><span class="line">    <span class="keyword">while</span> (vis[x] != clk) &#123;</span><br><span class="line">      <span class="keyword">if</span> (x) &#123;</span><br><span class="line">        vis[x] = clk;</span><br><span class="line">        x = par[pre[match[x]]];</span><br><span class="line">      &#125;</span><br><span class="line">      swap(x, y);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">blossom</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> lca)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (par[x] != lca) &#123;</span><br><span class="line">      pre[x] = y;</span><br><span class="line">      y = match[x];</span><br><span class="line">      <span class="keyword">if</span> (Type[y] == <span class="number">1</span>) &#123;</span><br><span class="line">        Type[y] = <span class="number">0</span>;</span><br><span class="line">        Q.push(y);</span><br><span class="line">      &#125;</span><br><span class="line">      par[x] = par[y] = par[lca];</span><br><span class="line">      x = pre[y];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">Augument</span><span class="params">(<span class="keyword">int</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) par[i] = i, Type[i] = <span class="number">-1</span>;</span><br><span class="line">    Q = <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line">    Type[s] = <span class="number">0</span>;</span><br><span class="line">    Q.push(s);</span><br><span class="line">    <span class="keyword">while</span> (!Q.empty()) &#123;</span><br><span class="line">      <span class="keyword">int</span> u = Q.front();</span><br><span class="line">      Q.pop();</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v : G[u]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (Type[v] == <span class="number">-1</span>) &#123;</span><br><span class="line">          pre[v] = u;</span><br><span class="line">          Type[v] = <span class="number">1</span>;</span><br><span class="line">          <span class="keyword">if</span> (!match[v]) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> to = v, from = u; to; from = pre[to]) &#123;</span><br><span class="line">              match[to] = from;</span><br><span class="line">              swap(match[from], to);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          Type[match[v]] = <span class="number">0</span>;</span><br><span class="line">          Q.push(match[v]);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Type[v] == <span class="number">0</span> &amp;&amp; par[u] != par[v]) &#123;</span><br><span class="line">          <span class="keyword">int</span> lca = LCA(u, v);</span><br><span class="line">          blossom(u, v, lca);</span><br><span class="line">          blossom(v, u, lca);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++)  <span class="comment">// 注意匹配顺序</span></span><br><span class="line">      <span class="keyword">if</span> (!match[i]) ans += Augument(i);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; match;</span><br></pre></td></tr></table></figure>
+<h2 id="匹配顺序"><a href="#匹配顺序" class="headerlink" title="匹配顺序"></a>匹配顺序</h2><p>带花树在匹配数不增加时不会丢弃之前已经匹配的边。因此对于某些题目在匹配时要注意匹配顺序。</p>
+<h2 id="建图技巧"><a href="#建图技巧" class="headerlink" title="建图技巧"></a>建图技巧</h2><p>一般图匹配最大的特点在于存在奇环。且奇环中未匹配的边数一定比匹配的边数大 $1$。</p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p>奇环性质<br><a href="http://uoj.ac/problem/171" target="_blank" rel="noopener">挑战NPC</a></p>
+<p>棋盘模型（交替路的理解）<br><a href="https://zoj.pintia.cn/problem-sets/91827364500/problems/91827368225" target="_blank" rel="noopener">zoj3316</a><br><a href="http://acm.hdu.edu.cn/showproblem.php?pid=3446" target="_blank" rel="noopener">hdu3446</a></p>
+<p>生成指定度数的子图<br><a href="http://acm.hdu.edu.cn/showproblem.php?pid=3551" target="_blank" rel="noopener">hdu3551</a></p>
+<h1 id="二分图最大权匹配"><a href="#二分图最大权匹配" class="headerlink" title="二分图最大权匹配"></a>二分图最大权匹配</h1><h1 id="一般图最大权匹配"><a href="#一般图最大权匹配" class="headerlink" title="一般图最大权匹配"></a>一般图最大权匹配</h1>
+      
+    </div>
+
+    
+      
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>ybmj</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="http://yoursite.com/2019/10/27/图的匹配算法/" title="图的匹配算法">http://yoursite.com/2019/10/27/图的匹配算法/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/图的匹配算法/" rel="tag"> <i class="fa fa-tag"></i> 图的匹配算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/25/图的绝对中心/" rel="next" title="图的绝对中心">
+                <i class="fa fa-chevron-left"></i> 图的绝对中心
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/28/2019ICPC南京网络赛/" rel="prev" title="2019ICPC南京网络赛">
+                2019ICPC南京网络赛 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/me.jpg" alt="ybmj">
+            
+              <p class="site-author-name" itemprop="name">ybmj</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">212</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">68</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">77</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ybmj" title="GitHub &rarr; https://github.com/ybmj" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:mwhybmj@gmail.com" title="E-Mail &rarr; mailto:mwhybmj@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cubercsl.cn/" title="https://cubercsl.cn/" rel="noopener" target="_blank">CSL</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://dengtesla.com/" title="http://dengtesla.com/" rel="noopener" target="_blank">D-Tesla</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#增广路"><span class="nav-number">1.</span> <span class="nav-text">增广路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二分图最大匹配"><span class="nav-number">2.</span> <span class="nav-text">二分图最大匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dinic"><span class="nav-number">2.1.</span> <span class="nav-text">Dinic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增广路算法（匈牙利）"><span class="nav-number">2.2.</span> <span class="nav-text">增广路算法（匈牙利）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二分图最大匹配关键点"><span class="nav-number">3.</span> <span class="nav-text">二分图最大匹配关键点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二分图最大匹配关键边"><span class="nav-number">4.</span> <span class="nav-text">二分图最大匹配关键边</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二分图最大独立集"><span class="nav-number">5.</span> <span class="nav-text">二分图最大独立集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二分图最小点覆盖"><span class="nav-number">6.</span> <span class="nav-text">二分图最小点覆盖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一般图最大匹配"><span class="nav-number">7.</span> <span class="nav-text">一般图最大匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#带花树算法"><span class="nav-number">7.1.</span> <span class="nav-text">带花树算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">7.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匹配顺序"><span class="nav-number">7.3.</span> <span class="nav-text">匹配顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建图技巧"><span class="nav-number">7.4.</span> <span class="nav-text">建图技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例题"><span class="nav-number">7.5.</span> <span class="nav-text">例题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二分图最大权匹配"><span class="nav-number">8.</span> <span class="nav-text">二分图最大权匹配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一般图最大权匹配"><span class="nav-number">9.</span> <span class="nav-text">一般图最大权匹配</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ybmj</span>
+  
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">727k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">11:01</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.7.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: true,
+    notify: true,
+    appId: 'uNA0DvdpgdBobRBt1UA5EaWj-gzGzoHsz',
+    appKey: 'wbsXRXRUnp6ENNaKNzUnGBNm',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var range = document.createRange(); //For Chrome
+        var sel = window.getSelection(); //For Chrome
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; //Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.value = code;
+        ta.textContent = code; //For FireFox
+        ta.contentEditable = true;
+        ta.readOnly = false;
+        document.body.appendChild(ta);
+        range.selectNode(ta);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        ta.setSelectionRange(0, code.length);
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('Copied');
+          else $(this).text('Copy failed');
+        
+        ta.blur(); //For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('Copy');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+  
+  
+
+  
+  
+
+  
+
+
+</body>
+</html>
